@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Power Integrate — Data Chassis™ | Power BI & Automation for Growing Businesses</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --charcoal: #1a1a2e;
+    --slate: #2d2d44;
+    --steel: #4a4a6a;
+    --accent: #00b4d8;
+    --accent-bright: #48cae4;
+    --accent-glow: rgba(0, 180, 216, 0.15);
+    --warm: #f8f7f4;
+    --warm-alt: #f0efe9;
+    --text-primary: #1a1a2e;
+    --text-secondary: #5a5a7a;
+    --orange: #ff6b35;
+    --green: #06d6a0;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--text-primary);
+    background: var(--warm);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ===== NAV ===== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 1rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(248, 247, 244, 0.9);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+  }
+
+  .logo {
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--charcoal);
+    text-decoration: none;
+    letter-spacing: -0.5px;
+  }
+  .logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    align-items: center;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--charcoal); }
+
+  .nav-cta {
+    background: var(--charcoal);
+    color: white !important;
+    padding: 0.6rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--steel) !important; }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 8rem 3rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: center;
+    width: 100%;
+  }
+
+  .hero-content h1 {
+    font-size: 3.6rem;
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -2px;
+    color: var(--charcoal);
+    margin-bottom: 1.5rem;
+  }
+  .hero-content h1 em {
+    font-style: normal;
+    color: var(--accent);
+    position: relative;
+  }
+
+  .hero-sub {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 480px;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--accent);
+    color: white;
+    padding: 0.9rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.25s;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-primary:hover {
+    background: var(--accent-bright);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 30px rgba(0, 180, 216, 0.3);
+  }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    color: var(--charcoal);
+    padding: 0.9rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    border: 2px solid rgba(0,0,0,0.12);
+    transition: all 0.25s;
+  }
+  .btn-outline:hover {
+    border-color: var(--charcoal);
+    transform: translateY(-1px);
+  }
+
+  /* Hero Visual */
+  .hero-visual {
+    position: relative;
+    height: 480px;
+  }
+
+  .chassis-diagram {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+
+  .chassis-layer {
+    width: 100%;
+    max-width: 420px;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    text-align: center;
+    position: relative;
+    animation: fadeSlideUp 0.6s ease both;
+  }
+
+  .chassis-layer:nth-child(1) { animation-delay: 0.2s; }
+  .chassis-layer:nth-child(2) { animation-delay: 0.35s; }
+  .chassis-layer:nth-child(3) { animation-delay: 0.5s; }
+  .chassis-layer:nth-child(4) { animation-delay: 0.65s; }
+  .chassis-layer:nth-child(5) { animation-delay: 0.8s; }
+
+  .layer-sources {
+    background: var(--warm-alt);
+    border: 1px dashed rgba(0,0,0,0.15);
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+  }
+  .layer-sources .layer-items {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .layer-sources .layer-items span {
+    font-size: 0.75rem;
+    opacity: 0.7;
+  }
+
+  .layer-arrow {
+    font-size: 1.2rem;
+    color: var(--steel);
+    margin: 0.3rem 0;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .layer-chassis {
+    background: linear-gradient(135deg, var(--charcoal) 0%, var(--slate) 100%);
+    color: white;
+    padding: 1.5rem 2rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    box-shadow: 0 8px 40px rgba(26, 26, 46, 0.3);
+    margin: 0.5rem 0;
+  }
+  .layer-chassis .chassis-sub {
+    font-weight: 400;
+    font-size: 0.7rem;
+    opacity: 0.6;
+    letter-spacing: 0.5px;
+    margin-top: 0.3rem;
+  }
+
+  .layer-outputs {
+    background: var(--accent-glow);
+    border: 1px solid rgba(0, 180, 216, 0.2);
+    color: var(--accent);
+    font-weight: 600;
+    margin-top: 0.5rem;
+  }
+  .layer-outputs .layer-items {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .layer-outputs .layer-items span { font-size: 0.75rem; }
+
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  /* ===== PROBLEM SECTION ===== */
+  .problem {
+    padding: 6rem 3rem;
+    background: var(--charcoal);
+    color: white;
+    position: relative;
+  }
+
+  .problem-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+
+  .problem h2 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -1px;
+    margin-bottom: 3rem;
+    max-width: 700px;
+  }
+
+  .pain-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .pain-card {
+    padding: 2rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    transition: all 0.3s;
+  }
+  .pain-card:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(0, 180, 216, 0.3);
+    transform: translateY(-3px);
+  }
+
+  .pain-icon {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .pain-card h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    color: white;
+  }
+
+  .pain-card p {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.6;
+  }
+
+  /* ===== DATA CHASSIS SECTION ===== */
+  .chassis-section {
+    padding: 6rem 3rem;
+    background: var(--warm);
+  }
+
+  .chassis-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .chassis-section h2 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -1px;
+    margin-bottom: 1rem;
+  }
+
+  .chassis-description {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 650px;
+    margin-bottom: 3rem;
+  }
+
+  .chassis-features {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .chassis-feature {
+    padding: 2rem;
+    background: white;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.06);
+    transition: all 0.3s;
+  }
+  .chassis-feature:hover {
+    box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+    transform: translateY(-2px);
+  }
+
+  .chassis-feature h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .chassis-feature p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* ===== SERVICES ===== */
+  .services {
+    padding: 6rem 3rem;
+    background: var(--warm-alt);
+  }
+
+  .services-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .services h2 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 1rem;
+  }
+
+  .services-sub {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    margin-bottom: 3rem;
+    max-width: 550px;
+    line-height: 1.6;
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  .price-card {
+    background: white;
+    border-radius: 14px;
+    padding: 2.5rem 2rem;
+    border: 1px solid rgba(0,0,0,0.06);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .price-card:hover {
+    box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    transform: translateY(-3px);
+  }
+
+  .price-card.featured {
+    border: 2px solid var(--accent);
+    box-shadow: 0 8px 40px rgba(0, 180, 216, 0.12);
+  }
+
+  .price-badge {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.2rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    text-transform: uppercase;
+  }
+
+  .price-tier {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+  }
+
+  .price-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--charcoal);
+  }
+
+  .price-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+  }
+
+  .price-amount {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--charcoal);
+    margin-bottom: 0.2rem;
+  }
+  .price-amount span {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+  }
+  .price-note {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.8rem;
+  }
+
+  .price-includes {
+    list-style: none;
+    margin-bottom: 2rem;
+  }
+  .price-includes li {
+    font-size: 0.88rem;
+    color: var(--text-primary);
+    padding: 0.45rem 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    line-height: 1.4;
+  }
+  .price-includes li::before {
+    content: "→";
+    color: var(--accent);
+    font-weight: 700;
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+  }
+
+  .price-cta {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 0.85rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.25s;
+  }
+
+  .price-cta-primary {
+    background: var(--accent);
+    color: white;
+  }
+  .price-cta-primary:hover {
+    background: var(--accent-bright);
+    box-shadow: 0 6px 25px rgba(0, 180, 216, 0.3);
+  }
+
+  .price-cta-outline {
+    background: transparent;
+    color: var(--charcoal);
+    border: 2px solid rgba(0,0,0,0.1);
+  }
+  .price-cta-outline:hover {
+    border-color: var(--charcoal);
+  }
+
+  /* ===== PROCESS ===== */
+  .process {
+    padding: 6rem 3rem;
+    background: var(--warm);
+  }
+
+  .process-inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .process h2 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 3rem;
+  }
+
+  .process-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+
+  .process-steps::before {
+    content: '';
+    position: absolute;
+    left: 24px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent-bright), var(--green));
+    opacity: 0.3;
+  }
+
+  .step {
+    display: flex;
+    gap: 2rem;
+    padding: 1.5rem 0;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    border-radius: 50%;
+    background: var(--charcoal);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.9rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .step-content h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+
+  .step-content p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* ===== TOOLS / TECH ===== */
+  .tech {
+    padding: 4rem 3rem;
+    background: var(--charcoal);
+    text-align: center;
+    color: white;
+  }
+
+  .tech-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 1.5rem;
+  }
+
+  .tech-logos {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .tech-item {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.5);
+    font-weight: 400;
+    transition: color 0.2s;
+  }
+  .tech-item:hover { color: var(--accent-bright); }
+
+  /* ===== CTA ===== */
+  .cta {
+    padding: 6rem 3rem;
+    background: var(--warm);
+    text-align: center;
+  }
+
+  .cta-inner {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .cta h2 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 1rem;
+  }
+
+  .cta p {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    padding: 3rem;
+    background: var(--charcoal);
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    font-size: 0.82rem;
+  }
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.5rem; }
+
+    .hero { padding: 7rem 1.5rem 3rem; }
+    .hero-grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    .hero-content h1 { font-size: 2.6rem; }
+    .hero-visual { height: 380px; }
+
+    .pain-grid { grid-template-columns: 1fr; }
+
+    .chassis-features { grid-template-columns: 1fr; }
+
+    .pricing-grid {
+      grid-template-columns: 1fr;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    .problem, .chassis-section, .services, .process, .cta {
+      padding: 4rem 1.5rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .hero-content h1 { font-size: 2.1rem; }
+    .hero-buttons { flex-direction: column; align-items: stretch; }
+    .nav-links { display: none; }
+    h2 { font-size: 1.8rem !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">power<span>/</span>integrate</a>
+  <ul class="nav-links">
+    <li><a href="#data-chassis">Data Chassis</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#contact" class="nav-cta">Book a Discovery Call</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid">
+    <div class="hero-content">
+      <h1>Stop emailing<br>spreadsheets.<br>Start <em>seeing</em><br>your data.</h1>
+      <p class="hero-sub">Power Integrate builds centralized data systems and Power BI dashboards for growing businesses — using the Microsoft tools you already pay for.</p>
+      <div class="hero-buttons">
+        <a href="#contact" class="btn-primary">Book a Free Discovery Call →</a>
+        <a href="#services" class="btn-outline">See Packages</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="chassis-diagram">
+        <div class="chassis-layer layer-sources">
+          <div class="layer-items">
+            <span>📊 Excel Files</span>
+            <span>💳 QuickBooks</span>
+            <span>📋 CRM</span>
+            <span>🗂️ SharePoint</span>
+          </div>
+        </div>
+        <div class="chassis-layer layer-arrow">▼</div>
+        <div class="chassis-layer layer-chassis">
+          DATA CHASSIS™
+          <div class="chassis-sub">Your centralized data layer</div>
+        </div>
+        <div class="chassis-layer layer-arrow">▼</div>
+        <div class="chassis-layer layer-outputs">
+          <div class="layer-items">
+            <span>📈 Dashboards</span>
+            <span>⚡ Automations</span>
+            <span>📩 Scheduled Reports</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem">
+  <div class="problem-inner">
+    <span class="section-label">The Problem</span>
+    <h2>Your data is everywhere.<br>Your insights are nowhere.</h2>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="pain-icon">📎</div>
+        <h3>Copy-Paste Reporting</h3>
+        <p>Someone on your team spends hours every week copying data between Excel files just to produce a report that's already outdated.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🔍</div>
+        <h3>No Single Source of Truth</h3>
+        <p>Finance has one version of the numbers. Ops has another. Leadership gets conflicting answers to the same questions.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">💸</div>
+        <h3>Paying for Tools You Don't Use</h3>
+        <p>Your Microsoft 365 subscription includes Power BI, Power Automate, and Dataverse. You're probably using about 10% of what's available.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DATA CHASSIS -->
+<section class="chassis-section" id="data-chassis">
+  <div class="chassis-inner">
+    <span class="section-label" style="color: var(--accent);">Introducing</span>
+    <h2>Data Chassis™</h2>
+    <p class="chassis-description">The foundational data layer that everything else bolts onto. We consolidate your scattered spreadsheets, exports, and manual processes into one clean, structured data model — purpose-built for your business.</p>
+    <div class="chassis-features">
+      <div class="chassis-feature">
+        <h3>🔗 Unified Data Model</h3>
+        <p>All your critical data consolidated into a Power BI semantic model with defined relationships, hierarchies, and business logic baked in.</p>
+      </div>
+      <div class="chassis-feature">
+        <h3>⚙️ Automated ETL</h3>
+        <p>Power Query dataflows that pull, clean, and transform your data on a schedule. No more copy-paste. No more "let me update the spreadsheet."</p>
+      </div>
+      <div class="chassis-feature">
+        <h3>📐 Built on What You Own</h3>
+        <p>Designed around Microsoft 365 Business Standard — SharePoint, Dataverse, Power BI Pro. No new software licenses to buy.</p>
+      </div>
+      <div class="chassis-feature">
+        <h3>🧱 Designed to Scale</h3>
+        <p>Start with the essentials. Add dashboards, automations, and integrations over time. The chassis supports whatever you bolt on next.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES / PRICING -->
+<section class="services" id="services">
+  <div class="services-inner">
+    <span class="section-label" style="color: var(--accent);">Packages</span>
+    <h2>Three ways to get started.</h2>
+    <p class="services-sub">Every engagement starts with your Data Chassis. From there, choose the level of reporting and automation your team needs.</p>
+
+    <div class="pricing-grid">
+      <!-- FOUNDATION -->
+      <div class="price-card">
+        <div class="price-tier">Tier 1</div>
+        <div class="price-name">Foundation</div>
+        <p class="price-desc">For teams ready to replace spreadsheets with a real data layer and their first dashboards.</p>
+        <div class="price-amount">$3,500 <span>starting</span></div>
+        <p class="price-note">One-time project engagement</p>
+        <ul class="price-includes">
+          <li>Data audit & source mapping</li>
+          <li>Data Chassis™ build (semantic model)</li>
+          <li>Power Query ETL configuration</li>
+          <li>2–3 core Power BI dashboards</li>
+          <li>Shared Power BI workspace setup</li>
+          <li>Team training session</li>
+        </ul>
+        <a href="#contact" class="price-cta price-cta-outline">Get Started →</a>
+      </div>
+
+      <!-- AUTOMATION -->
+      <div class="price-card featured">
+        <div class="price-badge">Most Popular</div>
+        <div class="price-tier">Tier 2</div>
+        <div class="price-name">Automation</div>
+        <p class="price-desc">For teams drowning in manual processes who need data flowing automatically.</p>
+        <div class="price-amount">$6,500 <span>starting</span></div>
+        <p class="price-note">One-time + optional retainer</p>
+        <ul class="price-includes">
+          <li>Everything in Foundation</li>
+          <li>Automated ETL pipelines (scheduled refresh)</li>
+          <li>Power Automate workflows (up to 5)</li>
+          <li>Automated report distribution</li>
+          <li>Up to 5 Power BI dashboards</li>
+          <li>30-day post-launch support</li>
+        </ul>
+        <a href="#contact" class="price-cta price-cta-primary">Book Discovery Call →</a>
+      </div>
+
+      <!-- INTEGRATION -->
+      <div class="price-card">
+        <div class="price-tier">Tier 3</div>
+        <div class="price-name">Integration</div>
+        <p class="price-desc">For businesses ready to connect all their systems and build a complete data ecosystem.</p>
+        <div class="price-amount">Custom</div>
+        <p class="price-note">Project-based scoping</p>
+        <ul class="price-includes">
+          <li>Everything in Automation</li>
+          <li>Custom API connections (CRM, ERP, etc.)</li>
+          <li>Third-party connector builds</li>
+          <li>Azure SQL / centralized data warehouse</li>
+          <li>Advanced DAX & calculated measures</li>
+          <li>Ongoing managed services available</li>
+        </ul>
+        <a href="#contact" class="price-cta price-cta-outline">Let's Scope It →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RETAINER -->
+<section style="padding: 3rem; background: var(--warm-alt);">
+  <div style="max-width: 800px; margin: 0 auto; display: flex; align-items: center; gap: 2rem; padding: 2.5rem; background: white; border-radius: 14px; border: 1px solid rgba(0,0,0,0.06);">
+    <div style="flex: 1;">
+      <div class="price-tier" style="margin-bottom: 0.4rem;">Ongoing Support</div>
+      <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem;">Monthly Retainer</h3>
+      <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">Dedicated hours each month for dashboard updates, new automations, data model expansion, and priority support. Available as a 10-hour or 20-hour monthly block.</p>
+    </div>
+    <div style="text-align: center; min-width: 180px;">
+      <div style="font-size: 1.6rem; font-weight: 700; color: var(--charcoal);">$1,500 <span style="font-size: 0.8rem; font-weight: 400; color: var(--text-secondary);">/mo</span></div>
+      <div style="font-size: 0.78rem; color: var(--text-secondary);">Starting at 10 hrs/month</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="process-inner">
+    <span class="section-label" style="color: var(--accent);">How It Works</span>
+    <h2>From messy to managed<br>in four steps.</h2>
+    <div class="process-steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <h3>Discovery Call</h3>
+          <p>We map your current data landscape — where it lives, how it moves, and where the bottlenecks are. Free, 30 minutes, no commitment.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <h3>Data Audit & Blueprint</h3>
+          <p>We document every data source, report, and manual process. You get a clear blueprint showing exactly what your Data Chassis will look like and what it will cost.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <h3>Build & Validate</h3>
+          <p>We build your Data Chassis, dashboards, and automations in 2–4 week sprints. You see progress every week and validate against your real data.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <h3>Launch & Train</h3>
+          <p>We deploy to your Power BI workspace, train your team, and hand off documentation. Optional retainer keeps everything running and evolving.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH STRIP -->
+<section class="tech">
+  <div class="tech-label">Built With The Microsoft Stack</div>
+  <div class="tech-logos">
+    <span class="tech-item">Power BI</span>
+    <span class="tech-item">Power Automate</span>
+    <span class="tech-item">Power Query</span>
+    <span class="tech-item">Dataverse</span>
+    <span class="tech-item">SharePoint</span>
+    <span class="tech-item">Azure SQL</span>
+    <span class="tech-item">DAX</span>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="contact">
+  <div class="cta-inner">
+    <h2>Ready to stop<br>fighting your data?</h2>
+    <p>Book a free 30-minute discovery call. We'll map your current data workflow and show you exactly where a Data Chassis fits.</p>
+    <a href="mailto:sean@powerintegrate.co" class="btn-primary" style="font-size: 1.05rem; padding: 1rem 2.5rem;">Book Your Free Discovery Call →</a>
+    <p style="margin-top: 1.5rem; font-size: 0.82rem; color: var(--text-secondary);">Or email us directly at <a href="mailto:sean@powerintegrate.co" style="color: var(--accent); text-decoration: none; font-weight: 600;">sean@powerintegrate.co</a></p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Power Integrate LLC. Nashville, TN. &nbsp;|&nbsp; <a href="#">Privacy</a> &nbsp;|&nbsp; <a href="#">Terms</a></p>
+  <p style="margin-top: 0.5rem; opacity: 0.6;">Data Chassis™ is a trademark of Power Integrate LLC.</p>
+</footer>
+
+</body>
+</html>
