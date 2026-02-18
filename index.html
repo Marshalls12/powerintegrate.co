@@ -871,6 +871,123 @@
     box-shadow: 0 8px 30px rgba(0,0,0,0.06);
   }
 
+  /* ===== LEARN ===== */
+  .learn {
+    padding: 6rem 3rem;
+    background: var(--charcoal);
+    color: white;
+  }
+  .learn-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .learn h2 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 1rem;
+    color: white;
+  }
+  .learn-description {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.7;
+    max-width: 600px;
+    margin-bottom: 3rem;
+  }
+  .learn-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  .learn-card {
+    padding: 2.5rem 2rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    transition: all 0.3s;
+  }
+  .learn-card:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(0, 180, 216, 0.3);
+    transform: translateY(-3px);
+  }
+  .learn-card-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+    display: block;
+  }
+  .learn-card h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.5rem;
+  }
+  .learn-card-price {
+    font-family: var(--font-mono);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .learn-card p {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.6;
+    margin-bottom: 1.2rem;
+  }
+  .learn-topics {
+    list-style: none;
+    margin-bottom: 1.5rem;
+  }
+  .learn-topics li {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.5);
+    padding: 0.3rem 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    line-height: 1.4;
+  }
+  .learn-topics li::before {
+    content: "→";
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    flex-shrink: 0;
+    font-size: 0.8rem;
+  }
+  .learn-cta {
+    display: inline-block;
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    text-decoration: none;
+    transition: all 0.25s;
+  }
+  .learn-cta-free {
+    background: var(--accent);
+    color: white;
+  }
+  .learn-cta-free:hover {
+    background: var(--accent-bright);
+    box-shadow: 0 6px 25px rgba(0, 180, 216, 0.3);
+  }
+  .learn-cta-paid {
+    background: transparent;
+    color: white;
+    border: 2px solid rgba(255,255,255,0.15);
+  }
+  .learn-cta-paid:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
   /* ===== FAQ ===== */
   .faq {
     padding: 5rem 3rem;
@@ -950,9 +1067,11 @@
       text-align: center;
     }
 
-    .problem, .chassis-section, .services, .process, .cta, .about, .faq {
+    .problem, .chassis-section, .services, .process, .cta, .about, .faq, .learn {
       padding: 4rem 1.5rem;
     }
+
+    .learn-grid { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 600px) {
@@ -1002,6 +1121,7 @@
     <li><a href="#services" onclick="document.querySelector('.nav-links').classList.remove('open'); document.querySelector('.nav-toggle').classList.remove('active');">Services</a></li>
     <li><a href="#process" onclick="document.querySelector('.nav-links').classList.remove('open'); document.querySelector('.nav-toggle').classList.remove('active');">Process</a></li>
     <li><a href="#about" onclick="document.querySelector('.nav-links').classList.remove('open'); document.querySelector('.nav-toggle').classList.remove('active');">About</a></li>
+    <li><a href="#learn" onclick="document.querySelector('.nav-links').classList.remove('open'); document.querySelector('.nav-toggle').classList.remove('active');">Learn</a></li>
     <li><a href="https://calendly.com/seanmarshall715-hdk0/discovery-call" target="_blank" class="nav-cta">Book a Discovery Call</a></li>
   </ul>
 </nav>
@@ -1237,6 +1357,45 @@
       <span class="proof-case-label">Real Results</span>
       <p>A <strong>40-person healthcare company</strong> was spending 4 hours every Monday manually compiling compliance reports from 3 different systems — exporting, matching patient IDs, calculating flag changes, and formatting for leadership.</p>
       <p>We built a Data Chassis that connected all three sources, automated the ETL with Power Query, and deployed a dashboard that refreshes daily. <strong>Result: 200+ hours saved per year, zero manual errors, real-time visibility for the clinical team.</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- LEARN -->
+<section class="learn" id="learn">
+  <div class="learn-inner">
+    <span class="section-label">Learn</span>
+    <h2>Excel tutoring for people<br>who want to level up.</h2>
+    <p class="learn-description">Whether you're a student getting started or a professional who wants to stop feeling lost in spreadsheets — we offer 1-on-1 Excel tutoring designed for real beginners. No jargon, no judgment.</p>
+    <div class="learn-grid">
+      <div class="learn-card">
+        <span class="learn-card-label">For Students</span>
+        <h3>Free Excel Tutoring</h3>
+        <div class="learn-card-price">$0</div>
+        <p>Currently enrolled students get free 1-on-1 sessions to build a skill that will serve them in any career. We start from zero and go at your pace.</p>
+        <ul class="learn-topics">
+          <li>Navigating Excel and getting comfortable</li>
+          <li>Formulas, functions, and cell references</li>
+          <li>Sorting, filtering, and organizing data</li>
+          <li>Building your first charts and tables</li>
+          <li>Practical exercises with real-world data</li>
+        </ul>
+        <a href="https://calendly.com/seanmarshall715-hdk0/discovery-call" target="_blank" class="learn-cta learn-cta-free">Book a Free Session →</a>
+      </div>
+      <div class="learn-card">
+        <span class="learn-card-label">For Professionals</span>
+        <h3>Excel Fundamentals</h3>
+        <div class="learn-card-price">$25 <span style="font-size: 0.75rem; font-weight: 400; color: rgba(255,255,255,0.4);">/hr</span></div>
+        <p>For business professionals who want to get confident with Excel. No experience required — just bring curiosity and a laptop.</p>
+        <ul class="learn-topics">
+          <li>Everything in the student track</li>
+          <li>PivotTables and summarizing business data</li>
+          <li>VLOOKUP, INDEX/MATCH, and IF logic</li>
+          <li>Cleaning and formatting messy data</li>
+          <li>Building reports your team can actually use</li>
+        </ul>
+        <a href="https://calendly.com/seanmarshall715-hdk0/discovery-call" target="_blank" class="learn-cta learn-cta-paid">Book a Session →</a>
+      </div>
     </div>
   </div>
 </section>
