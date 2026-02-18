@@ -871,6 +871,38 @@
     box-shadow: 0 8px 30px rgba(0,0,0,0.06);
   }
 
+  /* ===== FAQ ===== */
+  .faq {
+    padding: 5rem 3rem;
+    background: var(--warm-alt);
+  }
+  .faq-inner {
+    max-width: 750px;
+    margin: 0 auto;
+  }
+  .faq h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 2.5rem;
+  }
+  .faq-item {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+  }
+  .faq-item:last-child { border-bottom: none; }
+  .faq-q {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--charcoal);
+    margin-bottom: 0.5rem;
+  }
+  .faq-a {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
   /* ===== FOOTER ===== */
   footer {
     padding: 3rem;
@@ -918,7 +950,7 @@
       text-align: center;
     }
 
-    .problem, .chassis-section, .services, .process, .cta, .about {
+    .problem, .chassis-section, .services, .process, .cta, .about, .faq {
       padding: 4rem 1.5rem;
     }
   }
@@ -979,7 +1011,7 @@
   <div class="hero-grid">
     <div class="hero-content">
       <h1>Stop emailing<br>spreadsheets.<br>Start <em>seeing</em><br>your data.</h1>
-      <p class="hero-sub">Power Integrate builds centralized data systems and Power BI dashboards for growing businesses — using the Microsoft tools you already pay for.</p>
+      <p class="hero-sub">Power Integrate helps small and mid-size teams turn scattered spreadsheets into automated dashboards and reporting — using the Microsoft tools you already pay for.</p>
       <div class="hero-buttons">
         <a href="https://calendly.com/seanmarshall715-hdk0/discovery-call" target="_blank" class="btn-primary">Book a Free Discovery Call →</a>
         <a href="#services" class="btn-outline">See Packages</a>
@@ -1020,17 +1052,17 @@
     <h2>Your data is everywhere.<br>Your insights are nowhere.</h2>
     <div class="pain-grid">
       <div class="pain-card">
-        <div class="pain-icon">📎</div>
+        
         <h3>Copy-Paste Reporting</h3>
         <p>Someone on your team spends hours every week copying data between Excel files just to produce a report that's already outdated.</p>
       </div>
       <div class="pain-card">
-        <div class="pain-icon">🔍</div>
+        
         <h3>No Single Source of Truth</h3>
         <p>Finance has one version of the numbers. Ops has another. Leadership gets conflicting answers to the same questions.</p>
       </div>
       <div class="pain-card">
-        <div class="pain-icon">💸</div>
+        
         <h3>Paying for Tools You Don't Use</h3>
         <p>Your Microsoft 365 subscription includes Power BI, Power Automate, and Dataverse. You're probably using about 10% of what's available.</p>
       </div>
@@ -1043,7 +1075,7 @@
   <div class="chassis-inner">
     <span class="section-label" style="color: var(--accent);">Introducing</span>
     <h2>Data Chassis™</h2>
-    <p class="chassis-description">The foundational data layer that everything else bolts onto. We consolidate your scattered spreadsheets, exports, and manual processes into one clean, structured data model — purpose-built for your business.</p>
+    <p class="chassis-description"><strong>Think of it as the foundation your reports, dashboards, and automations sit on.</strong> We consolidate your scattered spreadsheets, exports, and manual processes into one clean, structured data model — purpose-built for your business.</p>
     <div class="chassis-features">
       <div class="chassis-feature">
         <h3>🔗 Unified Data Model</h3>
@@ -1070,7 +1102,7 @@
   <div class="services-inner">
     <span class="section-label" style="color: var(--accent);">Packages</span>
     <h2>Three ways to get started.</h2>
-    <p class="services-sub">Every engagement starts with your Data Chassis. From there, choose the level of reporting and automation your team needs.</p>
+    <p class="services-sub">Every engagement starts with your Data Chassis. From there, choose the level of reporting and automation your team needs. Ideal for teams with 5–150 employees using Microsoft 365.</p>
 
     <div class="pricing-grid">
       <!-- FOUNDATION -->
@@ -1137,7 +1169,7 @@
     <div style="flex: 1;">
       <div class="price-tier" style="margin-bottom: 0.4rem;">Ongoing Support</div>
       <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem;">Monthly Retainer</h3>
-      <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">Dedicated hours each month for dashboard updates, new automations, data model expansion, and priority support. Available as a 10-hour or 20-hour monthly block.</p>
+      <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">Dedicated hours each month for dashboard updates, new automations, data model expansion, and priority support. Perfect for teams that want ongoing improvements without hiring a full-time analyst. Available as a 10-hour or 20-hour monthly block.</p>
     </div>
     <div style="text-align: center; min-width: 180px;">
       <div style="font-size: 1.6rem; font-weight: 700; color: var(--charcoal);">$1,500 <span style="font-size: 0.8rem; font-weight: 400; color: var(--text-secondary);">/mo</span></div>
@@ -1219,10 +1251,10 @@
       <p>I've spent 6+ years building data systems across healthcare and financial services — from patient compliance dashboards to fund performance reporting. I started Power Integrate because I kept seeing the same pattern: small and mid-market companies have enterprise-level data problems, but not the budget for enterprise solutions.</p>
       <p>The good news? Most of them are already paying for the tools. They just need someone to set them up right.</p>
       <div class="about-creds">
-        <span class="cred-badge">📊 Microsoft Power BI Certified</span>
-        <span class="cred-badge">🏥 Healthcare Analytics</span>
-        <span class="cred-badge">💼 Financial Services</span>
-        <span class="cred-badge">📍 Nashville, TN</span>
+        <span class="cred-badge">Microsoft Power BI Certified</span>
+        <span class="cred-badge">Healthcare Analytics</span>
+        <span class="cred-badge">Financial Services</span>
+        <span class="cred-badge">Nashville, TN</span>
       </div>
     </div>
   </div>
@@ -1242,11 +1274,35 @@
   </div>
 </section>
 
+<!-- FAQ -->
+<section class="faq">
+  <div class="faq-inner">
+    <span class="section-label" style="color: var(--accent);">Common Questions</span>
+    <h2>Before you book a call.</h2>
+    <div class="faq-item">
+      <div class="faq-q">Do I need Power BI already?</div>
+      <div class="faq-a">Nope. If you have Microsoft 365 Business Standard or higher, Power BI Pro is included in your subscription — you just may not have activated it yet. We handle the full setup.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How long does a typical engagement take?</div>
+      <div class="faq-a">Most Foundation projects wrap in 3–4 weeks. Automation engagements run 4–6 weeks. We work in weekly sprints so you see progress — and can give feedback — every step of the way.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Will this replace my existing reports?</div>
+      <div class="faq-a">That's the goal. We rebuild your most critical reports as live dashboards that refresh automatically. Your team still gets the numbers they need — just without the manual work to produce them.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What if my data is messy?</div>
+      <div class="faq-a">Most of our clients' data is messy — that's usually why they call us. The Data Chassis process starts with a full audit and cleanup. We build the structure so your data stays clean going forward.</div>
+    </div>
+  </div>
+</section>
+
 <!-- CTA -->
 <section class="cta" id="contact">
   <div class="cta-inner">
     <h2>Ready to stop<br>fighting your data?</h2>
-    <p>Book a free 30-minute discovery call. We'll map your current data workflow and show you exactly where a Data Chassis fits.</p>
+    <p>Book a free 30-minute discovery call. We'll map your current data workflow and show you exactly where a Data Chassis fits. No sales pitch. Just clarity.</p>
     <a href="https://calendly.com/seanmarshall715-hdk0/discovery-call" target="_blank" class="btn-primary" style="font-size: 1.05rem; padding: 1rem 2.5rem;">Book Your Free Discovery Call →</a>
     <p style="margin-top: 1.5rem; font-size: 0.82rem; color: var(--text-secondary);">Or email us directly at <a href="mailto:sean@powerintegrate.co" style="color: var(--accent); text-decoration: none; font-weight: 600;">sean@powerintegrate.co</a></p>
   </div>
