@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ConveyorGuard Reliability Services</title>
-<meta name="description" content="Predictive maintenance for industrial conveyor systems. Free 10-minute plant floor walk-through. Nashville, TN - 150-mile service radius.">
+<title>RunSafe Industrial</title>
+<meta name="description" content="Predictive maintenance for industrial conveyor systems. Free 10-minute plant floor walk-through. Nashville, TN - 150-mile service radius. RunSafe Industrial.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -93,7 +93,17 @@ a { text-decoration:none; color:inherit; }
 .hud-tr { top:12px;right:12px; border-right:2px solid var(--amber); border-top:2px solid var(--amber); }
 .hud-bl { bottom:12px;left:12px; border-left:2px solid var(--amber); border-bottom:2px solid var(--amber); }
 .hud-br { bottom:12px;right:12px; border-right:2px solid var(--amber); border-bottom:2px solid var(--amber); }
-.hotspot { position:absolute; top:42%; left:53%; }
+.hotspot { position:absolute; top:42%; left:53%; animation: hotspotWander 12s ease-in-out infinite; }
+@keyframes hotspotWander {
+  0%   { top:42%; left:53%; }
+  15%  { top:30%; left:40%; }
+  30%  { top:55%; left:60%; }
+  45%  { top:35%; left:70%; }
+  60%  { top:60%; left:35%; }
+  75%  { top:25%; left:55%; }
+  90%  { top:50%; left:45%; }
+  100% { top:42%; left:53%; }
+}
 .hotspot-dot { position:absolute; width:12px; height:12px; border-radius:50%; background:var(--red); transform:translate(-50%,-50%); box-shadow:0 0 12px rgba(239,68,68,0.6); }
 .hotspot-ring { position:absolute; border-radius:50%; border:1px solid rgba(239,68,68,0.55); animation:hpulse 2s ease-out infinite; }
 .hotspot-ring.r1 { width:40px; height:40px; } .hotspot-ring.r2 { width:64px; height:64px; animation-delay:0.5s; }
@@ -200,7 +210,7 @@ a { text-decoration:none; color:inherit; }
 <body>
 
 <nav id="navbar"><div class="nav-inner">
-  <button class="nav-brand" onclick="window.scrollTo({top:0,behavior:'smooth'})">Conveyor<span>Guard</span></button>
+  <button class="nav-brand" onclick="window.scrollTo({top:0,behavior:'smooth'})">Run<span>Safe</span></button>
   <div class="nav-links">
     <div class="nav-links-desktop" style="display:flex;gap:32px;align-items:center">
       <button class="nav-link" onclick="document.getElementById('diagnostics').scrollIntoView({behavior:'smooth'})">DIAGNOSTICS</button>
@@ -215,7 +225,7 @@ a { text-decoration:none; color:inherit; }
 <section class="hero" id="hero-section"><div class="eng-grid"></div>
   <div class="container hero-grid">
     <div>
-      <h1 class="anim" style="color:var(--concrete);font-family:var(--font-head)">Conveyor failure is</h1>
+      <h1 class="anim" style="color:var(--concrete);font-family:var(--font-head)">Equipment failure is</h1>
       <h1 class="anim" data-delay="1" style="color:var(--amber);font-family:var(--font-drama);font-weight:800;margin-top:4px">preventable.</h1>
       <p class="anim hero-sub" data-delay="2">Free 10-minute plant floor walk-through. No tools opened. No production disrupted. One-page status report delivered on the spot.</p>
       <div class="anim" data-delay="3" style="margin-top:32px">
@@ -273,7 +283,7 @@ a { text-decoration:none; color:inherit; }
       <path class="lc-fill" d="M 20 90 Q 80 70 140 55 T 260 30 L 260 130 L 20 130 Z" fill="#22C55E"/>
       <path class="lc-green-line" d="M 20 90 Q 80 70 140 55 T 260 30" fill="none" stroke="#22C55E" stroke-width="2.5"/>
       <text class="lc-lbl" x="262" y="123" fill="#EF4444" font-size="8" font-family="monospace" opacity="0">NO PM</text>
-      <text class="lc-lbl" x="262" y="33" fill="#22C55E" font-size="8" font-family="monospace" opacity="0">W/ CG</text>
+      <text class="lc-lbl" x="262" y="33" fill="#22C55E" font-size="8" font-family="monospace" opacity="0">W/ RS</text>
       <text x="4" y="130" fill="#94A3B8" font-size="7" font-family="monospace">TIME</text>
       <text x="4" y="38" fill="#94A3B8" font-size="7" font-family="monospace">LIFE</text>
     </svg></div></div><div class="diag-body"><div class="diag-tag">SYS.03 // LIFECYCLE TRACKING</div><div class="diag-title">Component Lifecycle & Condition Monitoring</div><div class="diag-desc">Extend component life with documented condition tracking. Know exactly when parts need replacement, not after they fail.</div></div></div>
@@ -284,7 +294,7 @@ a { text-decoration:none; color:inherit; }
   <div>
     <div class="anim eyebrow">THE DELIVERABLE</div>
     <h2 class="anim section-title" data-delay="1" style="margin-bottom:24px">One Page. Zero Complexity.</h2>
-    <p class="anim" data-delay="2" style="font-size:13px;line-height:1.7;font-family:var(--font-mono);color:var(--text-muted);margin-bottom:24px">No 40-page PDF. No software login. One printed page with a RED/YELLOW/GREEN status for every critical conveyor component. The maintenance manager reads it in two minutes and knows exactly what needs attention.</p>
+    <p class="anim" data-delay="2" style="font-size:13px;line-height:1.7;font-family:var(--font-mono);color:var(--text-muted);margin-bottom:24px">No 40-page PDF. No software login. One printed page with a RED/YELLOW/GREEN status for every critical component. The maintenance manager reads it in two minutes and knows exactly what needs attention.</p>
     <p class="anim report-quote" data-delay="3">"This bearing is running 40 degrees hotter than the others. I'd plan a replacement within two weeks."</p>
   </div>
   <div class="report-card anim-slide">
@@ -319,7 +329,7 @@ a { text-decoration:none; color:inherit; }
 
 <section class="cta-section" id="cta"><div class="cta-inner">
   <div class="anim eyebrow">DISPATCH</div>
-  <h2 class="anim section-title" data-delay="1" style="margin-bottom:24px">Your conveyors are talking.<br>Are you listening?</h2>
+  <h2 class="anim section-title" data-delay="1" style="margin-bottom:24px">Your equipment is talking.<br>Are you listening?</h2>
   <p class="anim" data-delay="2" style="font-size:13px;font-family:var(--font-mono);color:var(--text-muted);max-width:480px;margin:0 auto 40px">Free 10-minute walk-through. No tools opened, no production disrupted. One-page status report delivered on the spot.</p>
   <div class="anim" data-delay="3">
     <button class="cg-btn" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">REQUEST A RELIABILITY ASSESSMENT <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
@@ -328,16 +338,16 @@ a { text-decoration:none; color:inherit; }
 
 <footer class="footer" id="footer"><div class="footer-line"></div><div class="container" style="padding-top:64px;padding-bottom:64px">
   <div class="footer-grid">
-    <div><div class="footer-brand">Conveyor<span>Guard</span></div><div class="footer-tagline">Predictive maintenance for industrial conveyor systems.</div><div class="footer-status"><div class="footer-status-dot"></div><span class="footer-status-label">SYSTEM OPERATIONAL</span></div></div>
+    <div><div class="footer-brand">Run<span>Safe</span></div><div class="footer-tagline">Predictive maintenance for industrial conveyor systems.</div><div class="footer-status"><div class="footer-status-dot"></div><span class="footer-status-label">SYSTEM OPERATIONAL</span></div></div>
     <div><div class="footer-col-title">SERVICES</div><div class="footer-col-item">Thermal Profiling</div><div class="footer-col-item">Vibration Analysis</div><div class="footer-col-item">Belt & Chain Inspection</div><div class="footer-col-item">Lubrication Auditing</div><div class="footer-col-item">Reliability Contracts</div></div>
     <div><div class="footer-col-title">INDUSTRIES</div><div class="footer-col-item">Manufacturing</div><div class="footer-col-item">Distribution Centers</div><div class="footer-col-item">Food & Beverage</div><div class="footer-col-item">Automotive</div><div class="footer-col-item">Aggregate & Mining</div></div>
     <div><div class="footer-col-title">CONTACT</div>
       <div class="footer-contact-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>(615) 555-0142</span></div>
-      <div class="footer-contact-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span>inspect&#64;conveyorguard.com</span></div>
+      <div class="footer-contact-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span>inspect&#64;runsafeindustrial.com</span></div>
       <div class="footer-contact-row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>Nashville, TN<br>150-mile service radius<br>TN / North GA / North AL</span></div>
     </div>
   </div>
-  <div class="footer-bottom"><span>&#169; 2025 ConveyorGuard Reliability Services. All rights reserved.</span><span style="font-style:italic">Built for maintenance managers, not marketing departments.</span></div>
+  <div class="footer-bottom"><span>&#169; 2025 RunSafe Industrial. All rights reserved.</span><span style="font-style:italic">Built for maintenance managers, not marketing departments.</span></div>
 </div></footer>
 
 <script>
@@ -355,20 +365,58 @@ a { text-decoration:none; color:inherit; }
   window.addEventListener('scroll',reveal,{passive:true});
   reveal();setTimeout(reveal,50);setTimeout(reveal,200);setTimeout(reveal,500);
 
-  var gS=false;function tryG(){var w=document.getElementById('gauge-wrap');if(!w||gS)return;if(w.getBoundingClientRect().top<window.innerHeight){gS=true;aG()}}
-  function aG(){
+  var gS=false;function tryG(){var w=document.getElementById('gauge-wrap');if(!w||gS)return;if(w.getBoundingClientRect().top<window.innerHeight){gS=true;loopGauge()}}
+  function loopGauge(){
     var a=document.getElementById('gauge-arc'),n=document.getElementById('gauge-needle'),c=document.getElementById('gauge-center'),v=document.getElementById('gauge-val'),s=document.getElementById('gauge-status');
-    var st=performance.now();
-    function t(now){var p=Math.min((now-st)/2000,1),e=1-Math.pow(1-p,3),val=Math.round(92-e*47),ang=((val-30)/70)*180,off=251-(ang/180)*251,col=val>70?'#EF4444':val>50?'#FBBF24':'#22C55E';
-    a.setAttribute('stroke-dashoffset',off);a.setAttribute('stroke',col);var r=((180+ang)*Math.PI)/180;n.setAttribute('x2',100+65*Math.cos(r));n.setAttribute('y2',100+65*Math.sin(r));n.setAttribute('stroke',col);c.setAttribute('fill',col);v.textContent=val+'\u00B0C';v.style.color=col;if(val<=50)s.textContent='NORMAL RANGE';if(p<1)requestAnimationFrame(t)}
-    requestAnimationFrame(t);
+    function run(from,to,cb){
+      var st=performance.now();
+      function t(now){var p=Math.min((now-st)/2000,1),e=1-Math.pow(1-p,3),val=Math.round(from+e*(to-from)),ang=((val-30)/70)*180,off=251-(ang/180)*251,col=val>70?'#EF4444':val>50?'#FBBF24':'#22C55E';
+      a.setAttribute('stroke-dashoffset',off);a.setAttribute('stroke',col);var r=((180+ang)*Math.PI)/180;n.setAttribute('x2',100+65*Math.cos(r));n.setAttribute('y2',100+65*Math.sin(r));n.setAttribute('stroke',col);c.setAttribute('fill',col);v.textContent=val+'\u00B0C';v.style.color=col;
+      s.textContent=val<=50?'NORMAL RANGE':val>70?'WARNING':'MONITORING';
+      if(p<1)requestAnimationFrame(t);else if(cb)setTimeout(cb,1500)}
+      requestAnimationFrame(t);
+    }
+    function cycle(){run(92,45,function(){run(45,92,function(){setTimeout(cycle,1000)})})}
+    cycle();
   }
   window.addEventListener('scroll',tryG,{passive:true});setTimeout(tryG,300);setTimeout(tryG,700);
 
-  var cS=false;function tryC(){var cl=document.getElementById('checklist');if(!cl||cS)return;if(cl.getBoundingClientRect().top<window.innerHeight){cS=true;var it=cl.querySelectorAll('.check-item');for(var i=0;i<it.length;i++)(function(el,d){setTimeout(function(){el.classList.add('done');el.querySelector('.check-box').classList.add('done')},d)})(it[i],300+i*350)}}
+  var cS=false;function tryC(){var cl=document.getElementById('checklist');if(!cl||cS)return;if(cl.getBoundingClientRect().top<window.innerHeight){cS=true;loopChecklist()}}
+  function loopChecklist(){
+    var cl=document.getElementById('checklist'),items=cl.querySelectorAll('.check-item');
+    function checkAll(cb){
+      for(var i=0;i<items.length;i++)(function(el,d){setTimeout(function(){el.classList.add('done');el.querySelector('.check-box').classList.add('done')},d)})(items[i],300+i*350);
+      setTimeout(cb,300+items.length*350+1500);
+    }
+    function uncheckAll(cb){
+      for(var i=items.length-1;i>=0;i--)(function(el,d){setTimeout(function(){el.classList.remove('done');el.querySelector('.check-box').classList.remove('done')},d)})(items[i],(items.length-1-i)*150);
+      setTimeout(cb,(items.length)*150+800);
+    }
+    function cycle(){checkAll(function(){uncheckAll(function(){setTimeout(cycle,600)})})}
+    cycle();
+  }
   window.addEventListener('scroll',tryC,{passive:true});setTimeout(tryC,300);setTimeout(tryC,700);
 
-  var lS=false;function tryL(){var ch=document.getElementById('lifecycle-chart');if(!ch||lS)return;if(ch.getBoundingClientRect().top<window.innerHeight){lS=true;ch.querySelector('.lc-red').classList.add('drawn');ch.querySelector('.lc-green-line').classList.add('drawn');ch.querySelector('.lc-fill').classList.add('drawn');var lb=ch.querySelectorAll('.lc-lbl');for(var i=0;i<lb.length;i++)(function(el,d){setTimeout(function(){el.style.opacity='1'},d)})(lb[i],1000+i*500)}}
+  var lS=false;function tryL(){var ch=document.getElementById('lifecycle-chart');if(!ch||lS)return;if(ch.getBoundingClientRect().top<window.innerHeight){lS=true;loopLC()}}
+  function loopLC(){
+    var ch=document.getElementById('lifecycle-chart'),red=ch.querySelector('.lc-red'),green=ch.querySelector('.lc-green-line'),fill=ch.querySelector('.lc-fill'),lbls=ch.querySelectorAll('.lc-lbl');
+    function drawOn(cb){
+      red.classList.add('drawn');green.classList.add('drawn');fill.classList.add('drawn');
+      for(var i=0;i<lbls.length;i++)(function(el,d){setTimeout(function(){el.style.opacity='1'},d)})(lbls[i],800+i*400);
+      setTimeout(cb,4000);
+    }
+    function drawOff(cb){
+      green.style.transition='none';fill.style.transition='none';red.style.transition='none';
+      red.classList.remove('drawn');green.classList.remove('drawn');fill.classList.remove('drawn');
+      for(var i=0;i<lbls.length;i++)lbls[i].style.opacity='0';
+      setTimeout(function(){
+        green.style.transition='stroke-dashoffset 2s ease-out';fill.style.transition='opacity 1.5s ease-out 0.5s';red.style.transition='opacity 0.5s';
+        if(cb)cb();
+      },100);
+    }
+    function cycle(){drawOn(function(){drawOff(function(){setTimeout(cycle,600)})})}
+    cycle();
+  }
   window.addEventListener('scroll',tryL,{passive:true});setTimeout(tryL,300);setTimeout(tryL,700);
 
   var tS=false;function tryT(){var s=document.getElementById('trust-strip');if(!s||tS)return;if(s.getBoundingClientRect().top<window.innerHeight){tS=true;
