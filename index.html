@@ -1,1147 +1,773 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ConveyorGuard Reliability Services</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<meta name="description" content="Predictive maintenance for industrial conveyor systems. Free 10-minute plant floor walk-through. Nashville, TN - 150-mile service radius.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* ============================================================
-   RESET & VARIABLES
-   ============================================================ */
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-
+/* ═══════════════════════════════════════════
+   DESIGN TOKENS - Preset B: Control Room
+   ═══════════════════════════════════════════ */
 :root {
-  --steel: #2C3539;
-  --steel-light: #3D474C;
-  --steel-dark: #1A2024;
-  --orange: #FF5F1F;
-  --orange-hover: #E8520F;
-  --orange-glow: rgba(255,95,31,0.25);
-  --white: #F4F6F8;
-  --white-pure: #FFFFFF;
-  --carbon: #111111;
-  --carbon-80: rgba(17,17,17,0.8);
-  --gray-100: #E8ECEF;
-  --gray-200: #D0D5DA;
-  --gray-300: #A8B0B6;
-  --gray-400: #6B7680;
-  --red: #EF4444;
-  --yellow: #F59E0B;
+  --obsidian: #0D0D12;
+  --amber: #F59E0B;
+  --concrete: #E8ECEF;
+  --deep-slate: #0F172A;
+  --card-dark: #13131A;
+  --border-subtle: rgba(245,158,11,0.12);
+  --border-med: rgba(245,158,11,0.25);
+  --text-muted: #94A3B8;
   --green: #22C55E;
-  --font-heading: 'Inter', system-ui, sans-serif;
+  --red: #EF4444;
+  --yellow-soft: #FBBF24;
+  --font-head: 'Inter', sans-serif;
+  --font-drama: 'Sora', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
 
-html { scroll-behavior: smooth; }
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+body { font-family: var(--font-head); background: var(--obsidian); color: var(--concrete); overflow-x:hidden; }
+a { text-decoration:none; color:inherit; }
 
-body {
-  font-family: var(--font-heading);
-  background: var(--white);
-  color: var(--carbon);
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* Grid background texture */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
+/* ═══ Utility ═══ */
+.container { max-width:1280px; margin:0 auto; padding:0 24px; }
+.eng-grid {
   background-image:
-    linear-gradient(rgba(44,53,57,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(44,53,57,0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
-  pointer-events: none;
-  z-index: 0;
+    linear-gradient(rgba(245,158,11,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245,158,11,0.03) 1px, transparent 1px);
+  background-size:50px 50px;
 }
+.mono { font-family: var(--font-mono); }
+.eyebrow { font-family:var(--font-mono); font-size:11px; letter-spacing:0.2em; color:var(--amber); margin-bottom:12px; }
+.section-title { font-family:var(--font-head); font-size:clamp(1.6rem,3vw,2.2rem); font-weight:700; letter-spacing:-0.02em; color:var(--concrete); line-height:1.2; }
 
-/* ============================================================
-   UTILITY CLASSES
-   ============================================================ */
-.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
-.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
+/* ═══ Scroll Animations ═══ */
+.fi { opacity:0; transform:translateY(22px); transition: opacity 0.5s cubic-bezier(.25,.46,.45,.94), transform 0.5s cubic-bezier(.25,.46,.45,.94); }
+.fi.vis { opacity:1; transform:translateY(0); }
+.fi-d1{transition-delay:.07s}.fi-d2{transition-delay:.14s}.fi-d3{transition-delay:.21s}
+.fi-d4{transition-delay:.28s}.fi-d5{transition-delay:.35s}.fi-d6{transition-delay:.42s}
+.fi-d7{transition-delay:.50s}.fi-d8{transition-delay:.58s}
 
-/* ============================================================
-   BUTTONS
-   ============================================================ */
-.btn-primary {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: var(--orange); color: var(--white-pure);
-  font-family: var(--font-heading); font-weight: 700; font-size: 14px;
-  letter-spacing: 0.06em; text-transform: uppercase;
-  padding: 14px 28px; border: none; border-radius: 2px;
-  cursor: pointer; text-decoration: none;
-  transition: background 0.15s, transform 0.1s cubic-bezier(0,0,0.2,1), box-shadow 0.15s;
-  box-shadow: 0 2px 8px var(--orange-glow);
-  position: relative; overflow: hidden;
+.si { opacity:0; transform:scale(0.97); transition: opacity 0.55s ease, transform 0.55s ease; transition-delay:0.35s; }
+.si.vis { opacity:1; transform:scale(1); }
+
+.cs { opacity:0; transform:translateY(22px); transition: opacity 0.45s ease, transform 0.45s ease; }
+.cs.vis { opacity:1; transform:translateY(0); }
+
+.rc { opacity:0; transform:translateY(40px) rotate(1deg); transition: opacity 0.55s ease, transform 0.55s ease; transition-delay:0.15s; }
+.rc.vis { opacity:1; transform:translateY(0) rotate(0); }
+
+/* ═══ Buttons ═══ */
+.cg-btn {
+  display:inline-flex; align-items:center; gap:8px;
+  background:var(--amber); color:var(--obsidian); border:none;
+  font-family:var(--font-head); font-size:13px; font-weight:700;
+  letter-spacing:0.08em; padding:14px 28px; border-radius:4px;
+  cursor:pointer;
+  transition: transform 0.1s cubic-bezier(0,0,0.2,1), box-shadow 0.2s ease;
 }
-.btn-primary:hover { background: var(--orange-hover); box-shadow: 0 4px 20px var(--orange-glow); }
-.btn-primary:active { transform: scale(0.98); }
-.btn-primary::after {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.4s;
-}
-.btn-primary:hover::after { transform: translateX(100%); }
+.cg-btn:hover { box-shadow:0 0 24px rgba(245,158,11,0.25); }
+.cg-btn:active { transform:scale(0.98); }
+.cg-btn svg { width:16px; height:16px; }
 
-.btn-ghost {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: transparent; color: var(--white);
-  font-family: var(--font-mono); font-weight: 500; font-size: 13px;
-  padding: 10px 20px; border: 1px solid rgba(255,255,255,0.2); border-radius: 2px;
-  cursor: pointer; text-decoration: none;
-  transition: border-color 0.2s, color 0.2s, background 0.2s;
+/* ═══ Keyframes ═══ */
+@keyframes scanMove { 0%{left:-2px} 50%{left:100%} 100%{left:-2px} }
+@keyframes hpulse {
+  0%{transform:translate(-50%,-50%) scale(0.8);opacity:0.7}
+  100%{transform:translate(-50%,-50%) scale(1.9);opacity:0}
 }
-.btn-ghost:hover { border-color: var(--orange); color: var(--orange); background: rgba(255,95,31,0.05); }
+@keyframes pdot { 0%,100%{opacity:1} 50%{opacity:0.35} }
+@keyframes flickerTemp { 0%,100%{opacity:1} 50%{opacity:0.85} }
 
-/* ============================================================
+/* ═══════════════════════════════════════════
    NAVBAR
-   ============================================================ */
-.navbar {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-  background: rgba(26,32,36,0.95);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  height: 64px;
+   ═══════════════════════════════════════════ */
+#navbar {
+  position:fixed; top:0; left:0; width:100%; z-index:100;
+  transition: background-color 0.3s, backdrop-filter 0.3s, border-color 0.3s;
+  border-bottom:1px solid transparent;
 }
-.navbar-inner {
-  max-width: 1200px; margin: 0 auto; padding: 0 24px;
-  display: flex; align-items: center; justify-content: space-between;
-  height: 100%;
+#navbar.scrolled {
+  background-color:rgba(13,13,18,0.95);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom-color:var(--border-subtle);
 }
-.navbar-logo {
-  display: flex; align-items: center; gap: 10px;
-  text-decoration: none;
+.nav-inner {
+  max-width:1280px; margin:0 auto; display:flex;
+  align-items:center; justify-content:space-between;
+  padding:0 24px; height:64px;
 }
-.navbar-logo-icon {
-  width: 32px; height: 32px; background: var(--orange);
-  border-radius: 2px; display: flex; align-items: center; justify-content: center;
+.nav-brand { font-size:18px; font-weight:700; letter-spacing:-0.02em; color:var(--concrete); cursor:pointer; background:none; border:none; font-family:var(--font-head); }
+.nav-brand span { color:var(--amber); }
+.nav-links { display:flex; align-items:center; gap:32px; }
+.nav-link {
+  background:none; border:none; color:var(--concrete); opacity:0.55;
+  font-size:11px; letter-spacing:0.15em; font-family:var(--font-mono);
+  cursor:pointer; transition:opacity 0.2s;
 }
-.navbar-logo-icon svg { width: 18px; height: 18px; }
-.navbar-logo-text {
-  font-family: var(--font-heading); font-weight: 800; font-size: 15px;
-  letter-spacing: 0.08em; text-transform: uppercase; color: var(--white);
+.nav-link:hover { opacity:1; }
+.nav-cta {
+  background:var(--amber); color:var(--obsidian); border:none;
+  font-size:11px; font-weight:700; letter-spacing:0.1em;
+  padding:8px 20px; border-radius:4px; font-family:var(--font-head);
+  cursor:pointer; transition: box-shadow 0.2s;
 }
-.navbar-logo-text span { color: var(--orange); }
+.nav-cta:hover { box-shadow:0 0 16px rgba(245,158,11,0.2); }
+@media(max-width:768px) { .nav-links-desktop { display:none!important; } }
 
-.navbar-links { display: flex; align-items: center; gap: 32px; }
-.navbar-links a {
-  font-family: var(--font-mono); font-size: 12px; font-weight: 500;
-  color: var(--gray-300); text-decoration: none;
-  letter-spacing: 0.04em; text-transform: uppercase;
-  transition: color 0.2s;
-  position: relative;
-}
-.navbar-links a::after {
-  content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px;
-  background: var(--orange); transition: width 0.25s;
-}
-.navbar-links a:hover { color: var(--white); }
-.navbar-links a:hover::after { width: 100%; }
-
-.navbar-cta { margin-left: 16px; }
-.navbar-cta .btn-primary { font-size: 11px; padding: 10px 20px; }
-
-.mobile-toggle {
-  display: none; background: none; border: none; cursor: pointer; padding: 8px;
-}
-.mobile-toggle span {
-  display: block; width: 22px; height: 2px; background: var(--white);
-  margin: 5px 0; transition: transform 0.3s, opacity 0.3s;
-}
-
-/* ============================================================
+/* ═══════════════════════════════════════════
    HERO
-   ============================================================ */
+   ═══════════════════════════════════════════ */
 .hero {
-  min-height: 85dvh; display: flex; align-items: center;
-  padding-top: 64px;
-  background: var(--steel-dark);
-  position: relative; overflow: hidden;
+  position:relative; min-height:85dvh; display:flex;
+  align-items:center; overflow:hidden; background:var(--obsidian);
 }
-.hero::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 70% 50%, rgba(255,95,31,0.06), transparent),
-    linear-gradient(180deg, rgba(17,17,17,0.4) 0%, transparent 40%);
-  pointer-events: none;
+.hero .eng-grid { position:absolute; inset:0; opacity:0.03; pointer-events:none; }
+.hero-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:64px;
+  align-items:center; position:relative; z-index:10;
+  padding:96px 24px;
 }
-.hero::after {
-  content: '';
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-  background-size: 60px 60px;
-  pointer-events: none;
+.hero h1 { font-size:clamp(2.2rem,5vw,3.6rem); font-weight:700; line-height:1.08; letter-spacing:-0.02em; }
+.hero-sub { margin-top:24px; font-size:13px; line-height:1.7; color:var(--text-muted); font-family:var(--font-mono); max-width:440px; }
+.hero-cta { margin-top:32px; }
+.hero-stats { display:flex; flex-wrap:wrap; gap:32px; margin-top:40px; }
+.hero-stat-val { font-size:clamp(1.4rem,3vw,1.8rem); font-weight:700; color:var(--amber); font-family:var(--font-drama); }
+.hero-stat-label { font-size:10px; letter-spacing:0.15em; font-family:var(--font-mono); margin-top:4px; color:var(--text-muted); }
+
+/* Thermal Viewport */
+.thermal-vp {
+  position:relative; aspect-ratio:4/3; width:100%; max-width:520px;
+  border-radius:4px; border:1px solid var(--border-subtle); overflow:hidden;
+}
+.thermal-vp img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:saturate(0.3) brightness(0.4); }
+.thermal-overlay { position:absolute; inset:0; background:radial-gradient(ellipse at 55% 45%, rgba(239,68,68,0.35) 0%, rgba(245,158,11,0.2) 30%, rgba(59,130,246,0.1) 60%, transparent 80%); }
+.scan-line { position:absolute; height:100%; width:2px; background:linear-gradient(to bottom,transparent,rgba(245,158,11,0.4),transparent); animation:scanMove 4s ease-in-out infinite; }
+.hud-corner { position:absolute; width:24px; height:24px; }
+.hud-tl { top:12px;left:12px; border-left:2px solid var(--amber); border-top:2px solid var(--amber); }
+.hud-tr { top:12px;right:12px; border-right:2px solid var(--amber); border-top:2px solid var(--amber); }
+.hud-bl { bottom:12px;left:12px; border-left:2px solid var(--amber); border-bottom:2px solid var(--amber); }
+.hud-br { bottom:12px;right:12px; border-right:2px solid var(--amber); border-bottom:2px solid var(--amber); }
+.hotspot { position:absolute; top:42%; left:53%; }
+.hotspot-dot { position:absolute; width:12px; height:12px; border-radius:50%; background:var(--red); transform:translate(-50%,-50%); box-shadow:0 0 12px rgba(239,68,68,0.6); }
+.hotspot-ring { position:absolute; border-radius:50%; border:1px solid rgba(239,68,68,0.55); animation:hpulse 2s ease-out infinite; }
+.hotspot-ring.r1 { width:40px; height:40px; }
+.hotspot-ring.r2 { width:64px; height:64px; animation-delay:0.5s; }
+.thermal-readouts { position:absolute; bottom:16px; left:16px; display:flex; flex-direction:column; gap:4px; }
+.temp-val { font-family:var(--font-mono); font-size:12px; letter-spacing:0.1em; color:var(--amber); animation:flickerTemp 3s ease-in-out infinite; }
+.live-dot { width:6px; height:6px; border-radius:50%; background:var(--green); animation:pdot 1.5s ease-in-out infinite; }
+.live-label { font-family:var(--font-mono); font-size:10px; letter-spacing:0.15em; color:var(--green); display:flex; align-items:center; gap:6px; }
+.thermal-ch { position:absolute; top:16px; right:16px; font-family:var(--font-mono); font-size:10px; letter-spacing:0.15em; color:var(--text-muted); }
+
+@media(max-width:768px) {
+  .hero-grid { grid-template-columns:1fr!important; padding:120px 20px 60px!important; gap:40px!important; }
+  .thermal-vp { max-width:100%; }
 }
 
-.hero-inner {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
-  align-items: center; position: relative; z-index: 2;
-  max-width: 1200px; margin: 0 auto; padding: 0 24px;
-  width: 100%;
+/* ═══════════════════════════════════════════
+   DIAGNOSTIC READOUT
+   ═══════════════════════════════════════════ */
+.diagnostics { padding:96px 0; background:var(--deep-slate); }
+.diag-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px; }
+.diag-card {
+  border-radius:4px; border:1px solid var(--border-subtle);
+  overflow:hidden; background:var(--card-dark);
+  transition: border-color 0.25s, box-shadow 0.25s;
 }
+.diag-card:hover { border-color:var(--border-med); box-shadow:0 4px 24px rgba(0,0,0,0.3); }
+.diag-visual { background:var(--obsidian); min-height:190px; display:flex; align-items:center; justify-content:center; padding:16px; }
+.diag-body { padding:20px; }
+.diag-tag { font-size:9px; font-family:var(--font-mono); letter-spacing:0.15em; color:var(--amber); margin-bottom:8px; }
+.diag-title { font-size:15px; font-weight:700; color:var(--concrete); margin-bottom:8px; font-family:var(--font-head); }
+.diag-desc { font-size:12px; line-height:1.65; font-family:var(--font-mono); color:var(--text-muted); }
 
-.hero-content { padding: 40px 0; }
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(255,95,31,0.1); border: 1px solid rgba(255,95,31,0.2);
-  border-radius: 2px; padding: 6px 14px; margin-bottom: 24px;
-  font-family: var(--font-mono); font-size: 11px; font-weight: 600;
-  color: var(--orange); text-transform: uppercase; letter-spacing: 0.08em;
-}
-.hero-badge-dot {
-  width: 6px; height: 6px; background: var(--orange); border-radius: 50%;
-  animation: pulse-dot 2s infinite;
-}
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 var(--orange-glow); }
-  50% { opacity: 0.7; box-shadow: 0 0 0 6px transparent; }
-}
+/* Gauge */
+.gauge-wrap { display:flex; flex-direction:column; align-items:center; }
+.gauge-val { font-size:28px; font-weight:700; font-family:var(--font-mono); margin-top:8px; transition:color 0.5s; }
+.gauge-status { font-size:10px; font-family:var(--font-mono); letter-spacing:0.15em; color:var(--text-muted); margin-top:4px; }
 
-.hero h1 {
-  font-family: var(--font-heading); font-weight: 900;
-  font-size: clamp(32px, 4.5vw, 52px); line-height: 1.08;
-  color: var(--white); margin-bottom: 8px;
-  letter-spacing: -0.02em;
-}
-.hero h1 .accent { color: var(--orange); }
-.hero-sub {
-  font-family: var(--font-heading); font-weight: 700;
-  font-size: clamp(22px, 2.5vw, 30px); line-height: 1.2;
-  color: var(--orange); margin-bottom: 20px;
-  letter-spacing: -0.01em;
-}
-.hero-desc {
-  font-family: var(--font-mono); font-size: 14px; line-height: 1.7;
-  color: var(--gray-300); max-width: 480px; margin-bottom: 32px;
-}
-.hero-cta-group { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-.hero-stats {
-  display: flex; gap: 32px; margin-top: 40px;
-  padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.06);
-}
-.hero-stat-num {
-  font-family: var(--font-heading); font-weight: 900; font-size: 28px;
-  color: var(--orange); line-height: 1;
-}
-.hero-stat-label {
-  font-family: var(--font-mono); font-size: 11px; color: var(--gray-400);
-  text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px;
-}
-
-/* Thermal imaging visual */
-.hero-visual {
-  position: relative; display: flex; align-items: center; justify-content: center;
-  height: 100%; min-height: 400px;
-}
-.thermal-container {
-  position: relative; width: 100%; max-width: 460px;
-  aspect-ratio: 1; border-radius: 4px; overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.08);
-  background: #0a0f12;
-}
-.thermal-image {
-  width: 100%; height: 100%; object-fit: cover;
-  filter: saturate(0.3) brightness(0.5);
-}
-.thermal-overlay {
-  position: absolute; inset: 0;
-  background: radial-gradient(circle at 55% 45%, rgba(255,60,20,0.5) 0%, rgba(255,150,0,0.3) 25%, rgba(0,100,255,0.15) 50%, rgba(0,50,150,0.1) 75%, transparent 100%);
-  mix-blend-mode: screen;
-  animation: thermal-shift 4s ease-in-out infinite alternate;
-}
-@keyframes thermal-shift {
-  0% { background: radial-gradient(circle at 55% 45%, rgba(255,60,20,0.55) 0%, rgba(255,150,0,0.3) 25%, rgba(0,100,255,0.15) 50%, transparent 100%); }
-  100% { background: radial-gradient(circle at 50% 50%, rgba(255,80,20,0.6) 0%, rgba(255,180,0,0.35) 30%, rgba(0,80,200,0.2) 55%, transparent 100%); }
-}
-.thermal-scanline {
-  position: absolute; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-  animation: scanline 3s linear infinite;
-  z-index: 5;
-}
-@keyframes scanline { 0% { top: -2px; } 100% { top: 100%; } }
-
-.thermal-hud {
-  position: absolute; inset: 0; z-index: 10; pointer-events: none;
-}
-.thermal-hud-corner {
-  position: absolute; width: 20px; height: 20px; border-color: var(--orange); border-style: solid;
-}
-.thermal-hud-corner.tl { top: 12px; left: 12px; border-width: 2px 0 0 2px; }
-.thermal-hud-corner.tr { top: 12px; right: 12px; border-width: 2px 2px 0 0; }
-.thermal-hud-corner.bl { bottom: 12px; left: 12px; border-width: 0 0 2px 2px; }
-.thermal-hud-corner.br { bottom: 12px; right: 12px; border-width: 0 2px 2px 0; }
-
-.thermal-reading {
-  position: absolute; top: 16px; right: 40px;
-  font-family: var(--font-mono); font-size: 22px; font-weight: 700;
-  color: var(--red); text-shadow: 0 0 12px rgba(239,68,68,0.6);
-  z-index: 10;
-}
-.thermal-reading-label {
-  font-size: 10px; color: rgba(255,255,255,0.5); font-weight: 400;
-  display: block; text-shadow: none;
-}
-.thermal-status {
-  position: absolute; bottom: 16px; left: 16px;
-  font-family: var(--font-mono); font-size: 10px;
-  color: var(--green); text-transform: uppercase; letter-spacing: 0.1em;
-  z-index: 10; display: flex; align-items: center; gap: 6px;
-}
-.thermal-status-dot {
-  width: 6px; height: 6px; background: var(--green); border-radius: 50%;
-  animation: pulse-dot 1.5s infinite;
-}
-
-/* Hotspot marker */
-.thermal-hotspot {
-  position: absolute; top: 40%; left: 52%; z-index: 10;
-  width: 48px; height: 48px; transform: translate(-50%, -50%);
-}
-.thermal-hotspot-ring {
-  position: absolute; inset: 0; border: 2px solid var(--orange);
-  border-radius: 50%; animation: hotspot-pulse 2s ease-out infinite;
-}
-.thermal-hotspot-ring:nth-child(2) { animation-delay: 0.5s; }
-@keyframes hotspot-pulse {
-  0% { transform: scale(0.6); opacity: 1; }
-  100% { transform: scale(2.2); opacity: 0; }
-}
-.thermal-hotspot-core {
-  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  width: 10px; height: 10px; background: var(--orange); border-radius: 50%;
-  box-shadow: 0 0 16px var(--orange-glow);
-}
-
-/* ============================================================
-   FEATURES / DIAGNOSTIC READOUT
-   ============================================================ */
-.features {
-  padding: 100px 0; background: var(--white);
-  position: relative;
-}
-.section-eyebrow {
-  font-family: var(--font-mono); font-size: 11px; font-weight: 600;
-  color: var(--orange); text-transform: uppercase; letter-spacing: 0.12em;
-  margin-bottom: 12px; display: flex; align-items: center; gap: 10px;
-}
-.section-eyebrow::before {
-  content: ''; width: 24px; height: 1px; background: var(--orange);
-}
-.section-title {
-  font-family: var(--font-heading); font-weight: 900; font-size: clamp(28px, 3vw, 40px);
-  color: var(--carbon); letter-spacing: -0.02em; margin-bottom: 12px;
-}
-.section-desc {
-  font-size: 15px; color: var(--gray-400); max-width: 560px; line-height: 1.6;
-  margin-bottom: 48px;
-}
-
-.features-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
-}
-
-.feature-card {
-  background: var(--white-pure);
-  border: 1px solid var(--gray-100);
-  border-radius: 3px; padding: 0; overflow: hidden;
-  transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
-  position: relative;
-}
-.feature-card:hover {
-  border-color: rgba(255,95,31,0.3);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.06);
-  transform: translateY(-2px);
-}
-
-.feature-card-visual {
-  height: 200px; background: var(--steel-dark);
-  position: relative; overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
-}
-.feature-card-visual::after {
-  content: '';
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 20px 20px;
-  pointer-events: none;
-}
-
-.feature-card-body { padding: 28px; }
-.feature-card-tag {
-  font-family: var(--font-mono); font-size: 10px; font-weight: 600;
-  color: var(--orange); text-transform: uppercase; letter-spacing: 0.1em;
-  margin-bottom: 10px;
-}
-.feature-card-title {
-  font-family: var(--font-heading); font-weight: 800; font-size: 18px;
-  color: var(--carbon); margin-bottom: 8px; letter-spacing: -0.01em;
-}
-.feature-card-desc {
-  font-size: 13px; color: var(--gray-400); line-height: 1.6;
-}
-
-/* Thermal gauge animation */
-.gauge-wrapper {
-  width: 140px; height: 140px; position: relative; z-index: 2;
-}
-.gauge-bg {
-  fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 10;
-}
-.gauge-fill {
-  fill: none; stroke-width: 10; stroke-linecap: round;
-  stroke-dasharray: 283; stroke-dashoffset: 283;
-  transition: stroke-dashoffset 2s ease-out, stroke 1s;
-  transform: rotate(-90deg); transform-origin: center;
-}
-.gauge-fill.safe { stroke: var(--green); stroke-dashoffset: 85; }
-.gauge-fill.danger { stroke: var(--red); stroke-dashoffset: 28; }
-.gauge-text {
-  position: absolute; inset: 0; display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  font-family: var(--font-mono); color: var(--white);
-}
-.gauge-temp { font-size: 26px; font-weight: 700; line-height: 1; }
-.gauge-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gray-300); margin-top: 2px; }
-
-/* Checklist animation */
-.checklist { text-align: left; z-index: 2; }
-.check-item {
-  display: flex; align-items: center; gap: 10px;
-  font-family: var(--font-mono); font-size: 12px; color: var(--gray-300);
-  padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
-  transition: color 0.3s;
-}
-.check-item.checked { color: var(--green); }
+/* Checklist */
+.checklist { display:flex; flex-direction:column; gap:10px; padding:4px 8px; width:100%; }
+.check-item { display:flex; align-items:center; gap:12px; transition:all 0.3s; }
 .check-box {
-  width: 18px; height: 18px; border: 1.5px solid var(--gray-400);
-  border-radius: 2px; display: flex; align-items: center; justify-content: center;
-  transition: border-color 0.3s, background 0.3s;
-  flex-shrink: 0;
+  width:20px; height:20px; border-radius:2px;
+  border:2px solid rgba(255,255,255,0.15);
+  display:flex; align-items:center; justify-content:center;
+  transition:all 0.3s; flex-shrink:0;
 }
-.check-item.checked .check-box {
-  border-color: var(--green); background: var(--green);
-}
-.check-box svg { width: 12px; height: 12px; opacity: 0; transition: opacity 0.3s; }
-.check-item.checked .check-box svg { opacity: 1; }
+.check-box.done { border-color:var(--green); background:var(--green); }
+.check-box svg { opacity:0; transition:opacity 0.2s; }
+.check-box.done svg { opacity:1; }
+.check-label { font-size:13px; font-family:var(--font-mono); color:var(--text-muted); transition:color 0.3s; }
+.check-item.done .check-label { color:var(--green); }
 
-/* Line chart animation */
-.chart-wrapper { width: 200px; height: 120px; z-index: 2; }
-.chart-line {
-  fill: none; stroke: var(--green); stroke-width: 2.5;
-  stroke-dasharray: 300; stroke-dashoffset: 300;
-  transition: stroke-dashoffset 2s ease-out;
-}
-.chart-line.animated { stroke-dashoffset: 0; }
-.chart-area {
-  fill: url(#chartGradient); opacity: 0;
-  transition: opacity 1.5s ease-out 0.5s;
-}
-.chart-area.animated { opacity: 1; }
-.chart-grid { stroke: rgba(255,255,255,0.06); stroke-width: 0.5; }
-.chart-label {
-  font-family: var(--font-mono); font-size: 9px; fill: var(--gray-400);
-}
+/* Lifecycle Chart */
+.lifecycle-chart { width:100%; padding:8px; }
+.lifecycle-chart svg { width:100%; }
+.lc-green-line { stroke-dasharray:300; stroke-dashoffset:300; transition:stroke-dashoffset 2s ease-out; }
+.lc-green-line.drawn { stroke-dashoffset:0; }
+.lc-red { opacity:0; transition:opacity 0.5s; }
+.lc-red.drawn { opacity:0.7; }
+.lc-fill { opacity:0; transition:opacity 1.5s ease-out 0.5s; }
+.lc-fill.drawn { opacity:0.06; }
+.lc-label { transition:opacity 0.5s; }
+.lc-label.l1 { transition-delay:1s; }
+.lc-label.l2 { transition-delay:1.5s; }
 
-/* ============================================================
-   PROCESS / ONE-PAGE REPORT
-   ============================================================ */
-.process {
-  padding: 100px 0;
-  background: var(--steel-dark);
-  position: relative; overflow: hidden;
-}
-.process::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-  background-size: 60px 60px;
-  pointer-events: none;
-}
+/* ═══════════════════════════════════════════
+   REPORT
+   ═══════════════════════════════════════════ */
+.report-section { position:relative; padding:96px 0; overflow:hidden; background:var(--obsidian); }
+.report-section .eng-grid { position:absolute; inset:0; opacity:0.02; pointer-events:none; }
+.report-grid { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; position:relative; z-index:10; }
+.report-quote { font-size:13px; line-height:1.7; font-style:italic; padding-left:16px; border-left:2px solid var(--amber); color:var(--concrete); }
+.report-card { background:#fff; border-radius:4px; padding:24px; box-shadow:0 8px 40px rgba(0,0,0,0.4); }
+.report-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid #e5e7eb; }
+.report-header-title { font-size:14px; font-weight:700; letter-spacing:-0.01em; color:#111; }
+.report-header-date { font-size:12px; font-family:var(--font-mono); color:#9CA3AF; }
+.report-rows { display:flex; flex-direction:column; gap:12px; }
+.report-row { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.report-row-left { display:flex; align-items:center; gap:12px; min-width:0; }
+.report-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+.report-dot.red { background:var(--red); }
+.report-dot.yellow { background:var(--yellow-soft); }
+.report-dot.green { background:var(--green); }
+.report-name { font-size:12px; color:#374151; font-family:var(--font-mono); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.report-label { font-size:10px; font-weight:700; font-family:var(--font-mono); letter-spacing:0.1em; flex-shrink:0; }
+.report-label.red { color:var(--red); }
+.report-label.yellow { color:var(--yellow-soft); }
+.report-label.green { color:var(--green); }
+.report-footer { margin-top:20px; padding-top:16px; border-top:1px solid #e5e7eb; display:flex; align-items:center; justify-content:space-between; }
+.report-footer-note { font-size:12px; color:#6B7280; font-family:var(--font-mono); }
+.report-footer-link { font-size:12px; font-weight:700; font-family:var(--font-mono); color:var(--amber); cursor:pointer; }
+@media(max-width:768px) { .report-grid { grid-template-columns:1fr!important; } }
 
-.process-inner {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
-  position: relative; z-index: 2;
+/* ═══════════════════════════════════════════
+   PROCESS
+   ═══════════════════════════════════════════ */
+.process-section { padding:96px 0; background:var(--deep-slate); }
+.process-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:24px; }
+.process-card {
+  position:relative; padding:24px; border-radius:4px;
+  border:1px solid var(--border-subtle); background:var(--card-dark);
+  transition:border-color 0.25s, box-shadow 0.25s;
 }
-.process-content .section-eyebrow { color: var(--orange); }
-.process-content .section-eyebrow::before { background: var(--orange); }
-.process-content .section-title { color: var(--white); }
-.process-content .section-desc { color: var(--gray-300); }
-.process-quote {
-  font-family: var(--font-mono); font-size: 14px; color: var(--gray-400);
-  border-left: 2px solid var(--orange); padding-left: 16px; margin-top: 24px;
-  line-height: 1.7; font-style: italic;
-}
+.process-card:hover { border-color:var(--border-med); box-shadow:0 4px 24px rgba(0,0,0,0.2); }
+.process-num { position:absolute; top:16px; right:20px; font-size:48px; font-weight:700; font-family:var(--font-drama); color:rgba(245,158,11,0.07); line-height:1; }
+.process-icon { width:36px; height:36px; border-radius:4px; background:rgba(245,158,11,0.1); display:flex; align-items:center; justify-content:center; margin-bottom:16px; }
+.process-icon svg { width:18px; height:18px; color:var(--amber); }
+.process-title { font-size:15px; font-weight:700; color:var(--concrete); margin-bottom:8px; font-family:var(--font-head); }
+.process-desc { font-size:12px; line-height:1.65; font-family:var(--font-mono); color:var(--text-muted); }
 
-/* Report card */
-.report-card {
-  background: var(--white-pure); border-radius: 4px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-  padding: 32px; max-width: 380px; margin: 0 auto;
-  transform: translateY(40px) rotate(1deg);
-  opacity: 0;
-  transition: transform 0.8s ease-out, opacity 0.6s;
-}
-.report-card.visible { transform: translateY(0) rotate(0deg); opacity: 1; }
+/* ═══════════════════════════════════════════
+   TRUST STRIP
+   ═══════════════════════════════════════════ */
+.trust-strip { padding:64px 0; background:var(--obsidian); border-top:2px solid var(--amber); }
+.trust-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:32px; }
+.trust-val { font-size:clamp(1.6rem,3vw,2.2rem); font-weight:700; font-family:var(--font-mono); color:var(--amber); text-align:center; }
+.trust-label { font-size:10px; letter-spacing:0.15em; font-family:var(--font-mono); color:var(--text-muted); margin-top:8px; text-align:center; }
+@media(max-width:768px) { .trust-grid { grid-template-columns:repeat(2,1fr)!important; } }
 
-.report-header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 20px; padding-bottom: 16px;
-  border-bottom: 2px solid var(--carbon);
-}
-.report-header-title {
-  font-family: var(--font-heading); font-weight: 800; font-size: 14px;
-  text-transform: uppercase; letter-spacing: 0.06em; color: var(--carbon);
-}
-.report-header-date {
-  font-family: var(--font-mono); font-size: 10px; color: var(--gray-400);
-}
+/* ═══════════════════════════════════════════
+   CTA
+   ═══════════════════════════════════════════ */
+.cta-section { padding:96px 0; background:var(--deep-slate); text-align:center; }
+.cta-inner { max-width:640px; margin:0 auto; }
 
-.report-row {
-  display: flex; align-items: center; gap: 12px;
-  padding: 12px 0; border-bottom: 1px solid var(--gray-100);
-}
-.report-dot {
-  width: 10px; height: 10px; border-radius: 50; flex-shrink: 0;
-  border-radius: 50%;
-}
-.report-dot.red { background: var(--red); box-shadow: 0 0 8px rgba(239,68,68,0.4); }
-.report-dot.yellow { background: var(--yellow); box-shadow: 0 0 8px rgba(245,158,11,0.4); }
-.report-dot.green { background: var(--green); box-shadow: 0 0 8px rgba(34,197,94,0.4); }
-
-.report-component {
-  font-family: var(--font-heading); font-weight: 600; font-size: 13px;
-  color: var(--carbon); flex: 1;
-}
-.report-status {
-  font-family: var(--font-mono); font-size: 10px; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.06em;
-}
-.report-status.red { color: var(--red); }
-.report-status.yellow { color: var(--yellow); }
-.report-status.green { color: var(--green); }
-
-.report-footer {
-  margin-top: 20px; padding-top: 16px;
-  border-top: 1px solid var(--gray-100);
-  display: flex; justify-content: space-between; align-items: center;
-}
-.report-footer-label {
-  font-family: var(--font-mono); font-size: 10px; color: var(--gray-400);
-  text-transform: uppercase; letter-spacing: 0.06em;
-}
-.report-footer-action {
-  font-family: var(--font-heading); font-size: 11px; font-weight: 700;
-  color: var(--orange); text-transform: uppercase; letter-spacing: 0.04em;
-}
-
-/* ============================================================
-   CTA SECTION
-   ============================================================ */
-.cta-section {
-  padding: 80px 0; background: var(--white);
-  text-align: center; position: relative;
-}
-.cta-section .section-eyebrow { justify-content: center; }
-.cta-section .section-title { margin: 0 auto 12px; }
-.cta-section .section-desc { margin: 0 auto 32px; text-align: center; }
-
-/* ============================================================
+/* ═══════════════════════════════════════════
    FOOTER
-   ============================================================ */
-.footer {
-  background: var(--carbon); padding: 60px 0 32px;
-  position: relative;
-}
-.footer::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0;
-  height: 1px; background: linear-gradient(90deg, transparent, var(--orange), transparent);
-}
-.footer-inner {
-  display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.2fr; gap: 40px;
-  margin-bottom: 40px;
-}
-.footer-brand-name {
-  font-family: var(--font-heading); font-weight: 800; font-size: 16px;
-  color: var(--white); letter-spacing: 0.04em; text-transform: uppercase;
-  margin-bottom: 12px;
-}
-.footer-brand-name span { color: var(--orange); }
-.footer-brand-desc {
-  font-family: var(--font-mono); font-size: 12px; color: var(--gray-400);
-  line-height: 1.7;
-}
-.footer-status {
-  display: inline-flex; align-items: center; gap: 8px;
-  margin-top: 16px; font-family: var(--font-mono); font-size: 11px;
-  color: var(--green); text-transform: uppercase; letter-spacing: 0.06em;
-}
-.footer-status-dot {
-  width: 8px; height: 8px; background: var(--green); border-radius: 50%;
-  animation: pulse-dot 2s infinite;
-}
+   ═══════════════════════════════════════════ */
+.footer { background:var(--obsidian); }
+.footer-line { height:1px; background:linear-gradient(90deg,transparent,var(--amber),transparent); }
+.footer-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:48px; }
+.footer-brand { font-size:18px; font-weight:700; letter-spacing:-0.02em; color:var(--concrete); font-family:var(--font-head); margin-bottom:12px; }
+.footer-brand span { color:var(--amber); }
+.footer-tagline { font-size:12px; line-height:1.6; font-family:var(--font-mono); color:var(--text-muted); margin-bottom:16px; }
+.footer-status { display:flex; align-items:center; gap:8px; }
+.footer-status-dot { width:8px; height:8px; border-radius:50%; background:var(--green); animation:pdot 1.5s ease-in-out infinite; }
+.footer-status-label { font-size:10px; font-family:var(--font-mono); letter-spacing:0.15em; color:var(--green); }
+.footer-col-title { font-size:10px; font-family:var(--font-mono); letter-spacing:0.15em; color:var(--amber); margin-bottom:16px; }
+.footer-col-item { font-size:12px; font-family:var(--font-mono); color:var(--concrete); opacity:0.6; margin-bottom:8px; cursor:pointer; transition:opacity 0.2s; }
+.footer-col-item:hover { opacity:1; }
+.footer-contact-row { display:flex; align-items:flex-start; gap:8px; margin-bottom:12px; }
+.footer-contact-row svg { width:13px; height:13px; color:var(--text-muted); flex-shrink:0; margin-top:2px; }
+.footer-contact-row span { font-size:12px; font-family:var(--font-mono); color:var(--concrete); line-height:1.6; }
+.footer-bottom { margin-top:48px; padding-top:24px; border-top:1px solid var(--border-subtle); display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; }
+.footer-bottom span { font-size:10px; font-family:var(--font-mono); color:var(--text-muted); }
 
-.footer-col-title {
-  font-family: var(--font-heading); font-weight: 700; font-size: 11px;
-  color: var(--gray-300); text-transform: uppercase; letter-spacing: 0.1em;
-  margin-bottom: 16px;
-}
-.footer-col a {
-  display: block; font-family: var(--font-mono); font-size: 12px;
-  color: var(--gray-400); text-decoration: none; padding: 4px 0;
-  transition: color 0.2s;
-}
-.footer-col a:hover { color: var(--orange); }
-
-.footer-contact-item {
-  display: flex; align-items: flex-start; gap: 10px;
-  font-family: var(--font-mono); font-size: 12px; color: var(--gray-400);
-  margin-bottom: 12px; line-height: 1.5;
-}
-.footer-contact-item svg { width: 14px; height: 14px; color: var(--orange); flex-shrink: 0; margin-top: 2px; }
-
-.footer-bottom {
-  border-top: 1px solid rgba(255,255,255,0.06);
-  padding-top: 24px;
-  display: flex; justify-content: space-between; align-items: center;
-}
-.footer-copy {
-  font-family: var(--font-mono); font-size: 11px; color: var(--gray-400);
-}
-
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
-@media (max-width: 1024px) {
-  .hero-inner { grid-template-columns: 1fr; gap: 40px; }
-  .hero-visual { min-height: 320px; }
-  .features-grid { grid-template-columns: 1fr; max-width: 480px; }
-  .process-inner { grid-template-columns: 1fr; gap: 40px; }
-  .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; }
-}
-@media (max-width: 768px) {
-  .navbar-links { display: none; }
-  .navbar-cta { display: none; }
-  .mobile-toggle { display: block; }
-  .hero { min-height: auto; padding: 100px 0 60px; }
-  .hero-stats { flex-wrap: wrap; gap: 20px; }
-  .thermal-container { max-width: 320px; }
-  .footer-inner { grid-template-columns: 1fr; }
-  .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
-}
+/* ═══ Scrollbar ═══ */
+::selection { background:rgba(245,158,11,0.3); color:var(--concrete); }
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:var(--obsidian); }
+::-webkit-scrollbar-thumb { background:rgba(245,158,11,0.2); border-radius:3px; }
+::-webkit-scrollbar-thumb:hover { background:rgba(245,158,11,0.4); }
 </style>
 </head>
 <body>
 
-<!-- ============================================================
+<!-- ═══════════════════════════════════════
      NAVBAR
-     ============================================================ -->
-<nav class="navbar" id="navbar">
-  <div class="navbar-inner">
-    <a href="#" class="navbar-logo">
-      <div class="navbar-logo-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+     ═══════════════════════════════════════ -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <button class="nav-brand" onclick="window.scrollTo({top:0,behavior:'smooth'})">Conveyor<span>Guard</span></button>
+    <div class="nav-links">
+      <div class="nav-links-desktop" style="display:flex;gap:32px;align-items:center">
+        <button class="nav-link" onclick="scrollTo('diagnostics')">DIAGNOSTICS</button>
+        <button class="nav-link" onclick="scrollTo('process')">PROCESS</button>
+        <button class="nav-link" onclick="scrollTo('report')">REPORT</button>
+        <button class="nav-link" onclick="scrollTo('footer')">CONTACT</button>
       </div>
-      <div class="navbar-logo-text">Conveyor<span>Guard</span></div>
-    </a>
-    <div class="navbar-links">
-      <a href="#how-it-works">How It Works</a>
-      <a href="#what-we-inspect">What We Inspect</a>
-      <a href="#the-report">The Report</a>
-      <div class="navbar-cta">
-        <a href="#book" class="btn-primary">Book Walk-Through</a>
-      </div>
+      <button class="nav-cta" onclick="scrollTo('cta')">REQUEST A RELIABILITY ASSESSMENT</button>
     </div>
-    <button class="mobile-toggle" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
   </div>
 </nav>
 
-<!-- ============================================================
+<!-- ═══════════════════════════════════════
      HERO
-     ============================================================ -->
-<section class="hero" id="hero">
-  <div class="hero-inner">
-    <div class="hero-content">
-      <div class="hero-badge">
-        <div class="hero-badge-dot"></div>
-        Non-disruptive inspection
-      </div>
-      <h1>Stop reacting to unexpected conveyor <span class="accent">shutdowns.</span></h1>
-      <div class="hero-sub">Start preventing them.</div>
-      <p class="hero-desc">We perform non-disruptive, 10-minute floor walks to flag early warning signs on motors, bearings, and belts. No tools opened. No production disrupted.</p>
-      <div class="hero-cta-group">
-        <a href="#book" class="btn-primary">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-          Book Your Free 10-Minute Walk-Through
-        </a>
-        <a href="#how-it-works" class="btn-ghost">Learn More</a>
+     ═══════════════════════════════════════ -->
+<section class="hero" id="hero-section">
+  <div class="eng-grid"></div>
+  <div class="container hero-grid">
+    <!-- Left -->
+    <div>
+      <h1 class="fi" style="color:var(--concrete);font-family:var(--font-head)">Conveyor failure is</h1>
+      <h1 class="fi fi-d1" style="color:var(--amber);font-family:var(--font-drama);font-weight:800;margin-top:4px">preventable.</h1>
+      <p class="fi fi-d2 hero-sub">Free 10-minute plant floor walk-through. No tools opened. No production disrupted. One-page status report delivered on the spot.</p>
+      <div class="fi fi-d3 hero-cta">
+        <button class="cg-btn" onclick="scrollTo('cta')">
+          REQUEST A RELIABILITY ASSESSMENT
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
       </div>
       <div class="hero-stats">
-        <div>
-          <div class="hero-stat-num" id="stat1">0%</div>
-          <div class="hero-stat-label">Failures preventable</div>
+        <div class="fi fi-d5">
+          <div class="hero-stat-val">82%</div>
+          <div class="hero-stat-label">OF FAILURES PREVENTABLE</div>
         </div>
-        <div>
-          <div class="hero-stat-num" id="stat2">0 min</div>
-          <div class="hero-stat-label">Inspection time</div>
+        <div class="fi fi-d6">
+          <div class="hero-stat-val">10</div>
+          <div class="hero-stat-label">MIN INSPECTION</div>
         </div>
-        <div>
-          <div class="hero-stat-num" id="stat3">$0K</div>
-          <div class="hero-stat-label">Avg. downtime cost</div>
+        <div class="fi fi-d7">
+          <div class="hero-stat-val">$260K</div>
+          <div class="hero-stat-label">AVG. DOWNTIME COST</div>
         </div>
       </div>
     </div>
-
-    <div class="hero-visual">
-      <div class="thermal-container">
-        <img class="thermal-image"
-             src="https://images.unsplash.com/photo-1565793298747-9547adde61d8?w=600&h=600&fit=crop&crop=center"
-             alt="Industrial motor bearing assembly"
-             loading="eager"/>
-        <div class="thermal-overlay"></div>
-        <div class="thermal-scanline"></div>
-        <div class="thermal-hud">
-          <div class="thermal-hud-corner tl"></div>
-          <div class="thermal-hud-corner tr"></div>
-          <div class="thermal-hud-corner bl"></div>
-          <div class="thermal-hud-corner br"></div>
-        </div>
-        <div class="thermal-reading">
-          <span class="thermal-reading-label">Peak Temp</span>
-          <span id="thermal-temp">187&deg;F</span>
-        </div>
-        <div class="thermal-status">
-          <div class="thermal-status-dot"></div>
-          Live scan active
-        </div>
-        <div class="thermal-hotspot">
-          <div class="thermal-hotspot-ring"></div>
-          <div class="thermal-hotspot-ring"></div>
-          <div class="thermal-hotspot-core"></div>
-        </div>
+    <!-- Thermal Viewport -->
+    <div class="thermal-vp si">
+      <img src="https://images.unsplash.com/photo-1565008447742-97f6f38c985c?w=800&q=80" alt="Industrial motor bearing assembly">
+      <div class="thermal-overlay"></div>
+      <div style="position:absolute;inset:0;overflow:hidden"><div class="scan-line"></div></div>
+      <div class="hud-corner hud-tl"></div>
+      <div class="hud-corner hud-tr"></div>
+      <div class="hud-corner hud-bl"></div>
+      <div class="hud-corner hud-br"></div>
+      <div class="hotspot">
+        <div class="hotspot-ring r1"></div>
+        <div class="hotspot-ring r2"></div>
+        <div class="hotspot-dot"></div>
       </div>
+      <div class="thermal-readouts">
+        <div class="temp-val" id="temp-readout">PEAK TEMP: 187&deg;F</div>
+        <div class="live-label"><div class="live-dot"></div>LIVE SCAN ACTIVE</div>
+      </div>
+      <div class="thermal-ch">IR-7200 // CH.04</div>
     </div>
   </div>
 </section>
 
-<!-- ============================================================
-     FEATURES — DIAGNOSTIC READOUT
-     ============================================================ -->
-<section class="features" id="what-we-inspect">
+<!-- ═══════════════════════════════════════
+     DIAGNOSTICS
+     ═══════════════════════════════════════ -->
+<section class="diagnostics" id="diagnostics">
   <div class="container">
-    <div class="section-eyebrow">Diagnostic Readout</div>
-    <h2 class="section-title">What We Inspect</h2>
-    <p class="section-desc">Three core diagnostic systems that catch 82% of preventable conveyor failures before they stop your line.</p>
-    <div class="features-grid">
-      <!-- Card 1: Thermal Telemetry -->
-      <div class="feature-card" id="card-thermal">
-        <div class="feature-card-visual">
-          <div class="gauge-wrapper">
-            <svg viewBox="0 0 100 100" width="140" height="140">
-              <circle class="gauge-bg" cx="50" cy="50" r="45"/>
-              <circle class="gauge-fill" id="gauge-arc" cx="50" cy="50" r="45"/>
+    <div style="margin-bottom:64px">
+      <div class="fi eyebrow">DIAGNOSTIC READOUT</div>
+      <h2 class="fi fi-d1 section-title">What We Find on Your Floor</h2>
+    </div>
+    <div class="diag-grid">
+      <!-- Card 1: Thermal Gauge -->
+      <div class="diag-card cs" style="transition-delay:0s">
+        <div class="diag-visual">
+          <div class="gauge-wrap" id="gauge-wrap">
+            <svg viewBox="0 0 200 120" width="192">
+              <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="8" stroke-linecap="round"/>
+              <path id="gauge-arc" d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#EF4444" stroke-width="8" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="0" style="transition:stroke-dashoffset 0.15s,stroke 0.5s"/>
+              <line id="gauge-needle" x1="100" y1="100" x2="20" y2="100" stroke="#EF4444" stroke-width="2" stroke-linecap="round" style="transition:all 0.15s"/>
+              <circle cx="100" cy="100" r="4" fill="#EF4444" id="gauge-center"/>
             </svg>
-            <div class="gauge-text">
-              <span class="gauge-temp" id="gauge-temp-text">--&deg;</span>
-              <span class="gauge-label">Motor Temp</span>
-            </div>
+            <div class="gauge-val" id="gauge-val" style="color:#EF4444">92&deg;C</div>
+            <div class="gauge-status" id="gauge-status">MONITORING</div>
           </div>
         </div>
-        <div class="feature-card-body">
-          <div class="feature-card-tag">SYS.01 // Thermal Telemetry</div>
-          <h3 class="feature-card-title">Prevent Line Stoppages</h3>
-          <p class="feature-card-desc">Thermal profiling identifies overheating motors and bearings weeks before catastrophic failure. We measure temperature deltas across every rotating asset.</p>
+        <div class="diag-body">
+          <div class="diag-tag">SYS.01 // THERMAL TELEMETRY</div>
+          <div class="diag-title">Thermal Profiling & Vibration Baselines</div>
+          <div class="diag-desc">Prevent line stoppages by identifying overheating motors, stressed bearings, and thermal anomalies before they cascade into unplanned downtime.</div>
         </div>
       </div>
-
-      <!-- Card 2: Maintenance Scheduler -->
-      <div class="feature-card" id="card-schedule">
-        <div class="feature-card-visual" style="padding: 24px 32px;">
-          <div class="checklist">
-            <div class="check-item" data-delay="0">
-              <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-              <span>Motor vibration baseline</span>
-            </div>
-            <div class="check-item" data-delay="400">
-              <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-              <span>Bearing thermal profile</span>
-            </div>
-            <div class="check-item" data-delay="800">
-              <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-              <span>Belt tracking &amp; tension</span>
-            </div>
-            <div class="check-item" data-delay="1200">
-              <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-              <span>Chain wear measurement</span>
-            </div>
-            <div class="check-item" data-delay="1600">
-              <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-              <span>Lubrication compliance</span>
-            </div>
+      <!-- Card 2: Checklist -->
+      <div class="diag-card cs" style="transition-delay:0.12s">
+        <div class="diag-visual" style="align-items:flex-start;padding:24px 20px">
+          <div class="checklist" id="checklist">
+            <div class="check-item" data-i="0"><div class="check-box"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="check-label">Motors & bearings</span></div>
+            <div class="check-item" data-i="1"><div class="check-box"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="check-label">Belt tracking</span></div>
+            <div class="check-item" data-i="2"><div class="check-box"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="check-label">Chain wear & alignment</span></div>
+            <div class="check-item" data-i="3"><div class="check-box"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="check-label">Lubrication points</span></div>
+            <div class="check-item" data-i="4"><div class="check-box"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="check-label">Safety guarding</span></div>
           </div>
         </div>
-        <div class="feature-card-body">
-          <div class="feature-card-tag">SYS.02 // Maintenance Scheduler</div>
-          <h3 class="feature-card-title">Schedule, Don't React</h3>
-          <p class="feature-card-desc">Our standardized inspection checklist covers every critical component. Move from emergency overtime to planned maintenance windows.</p>
+        <div class="diag-body">
+          <div class="diag-tag">SYS.02 // SYSTEMATIC INSPECTION</div>
+          <div class="diag-title">Belt Tracking & Chain Wear Analysis</div>
+          <div class="diag-desc">Move from reactive emergency repairs to scheduled maintenance windows with systematic inspection of tracking, tension, wear patterns, and alignment.</div>
         </div>
       </div>
-
-      <!-- Card 3: Lifecycle Tracker -->
-      <div class="feature-card" id="card-lifecycle">
-        <div class="feature-card-visual">
-          <div class="chart-wrapper">
-            <svg viewBox="0 0 200 120" width="200" height="120">
-              <defs>
-                <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="rgba(34,197,94,0.3)"/>
-                  <stop offset="100%" stop-color="rgba(34,197,94,0)"/>
-                </linearGradient>
-              </defs>
-              <!-- Grid lines -->
-              <line class="chart-grid" x1="0" y1="30" x2="200" y2="30"/>
-              <line class="chart-grid" x1="0" y1="60" x2="200" y2="60"/>
-              <line class="chart-grid" x1="0" y1="90" x2="200" y2="90"/>
-              <!-- Without ConveyorGuard (dashed) -->
-              <polyline fill="none" stroke="rgba(239,68,68,0.4)" stroke-width="1.5" stroke-dasharray="4 4"
-                        points="10,90 50,78 90,60 130,50 150,55 170,70 190,95"/>
-              <!-- With ConveyorGuard -->
-              <path class="chart-area" id="chart-area"
-                    d="M10,85 Q50,70 90,50 Q130,30 170,25 L190,22 L190,110 L10,110 Z"/>
-              <polyline class="chart-line" id="chart-line"
-                        points="10,85 50,70 90,50 130,32 170,25 190,22"/>
-              <!-- Labels -->
-              <text class="chart-label" x="5" y="115">0</text>
-              <text class="chart-label" x="90" y="115">Months</text>
-              <text class="chart-label" x="175" y="115">24</text>
+      <!-- Card 3: Lifecycle Chart -->
+      <div class="diag-card cs" style="transition-delay:0.24s">
+        <div class="diag-visual" style="padding:20px">
+          <div class="lifecycle-chart" id="lifecycle-chart">
+            <svg viewBox="0 0 280 140">
+              <line x1="20" y1="35" x2="260" y2="35" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+              <line x1="20" y1="70" x2="260" y2="70" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+              <line x1="20" y1="105" x2="260" y2="105" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+              <path class="lc-red" d="M 20 40 Q 80 45 140 75 T 260 120" fill="none" stroke="#EF4444" stroke-width="2" stroke-dasharray="6 4"/>
+              <path class="lc-fill" d="M 20 90 Q 80 70 140 55 T 260 30 L 260 130 L 20 130 Z" fill="#22C55E"/>
+              <path class="lc-green-line" d="M 20 90 Q 80 70 140 55 T 260 30" fill="none" stroke="#22C55E" stroke-width="2.5"/>
+              <text class="lc-label l1" x="262" y="123" fill="#EF4444" font-size="8" font-family="monospace" opacity="0">NO PM</text>
+              <text class="lc-label l2" x="262" y="33" fill="#22C55E" font-size="8" font-family="monospace" opacity="0">W/ CG</text>
+              <text x="4" y="130" fill="#94A3B8" font-size="7" font-family="monospace">TIME</text>
+              <text x="4" y="38" fill="#94A3B8" font-size="7" font-family="monospace">LIFE</text>
             </svg>
           </div>
         </div>
-        <div class="feature-card-body">
-          <div class="feature-card-tag">SYS.03 // Lifecycle Tracker</div>
-          <h3 class="feature-card-title">Extend Component Life</h3>
-          <p class="feature-card-desc">Documented condition tracking builds a historical profile for every asset. Predict replacements, extend useful life, and eliminate surprise capital requests.</p>
+        <div class="diag-body">
+          <div class="diag-tag">SYS.03 // LIFECYCLE TRACKING</div>
+          <div class="diag-title">Component Lifecycle & Condition Monitoring</div>
+          <div class="diag-desc">Extend component life with documented condition tracking. Know exactly when parts need replacement, not after they fail.</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============================================================
-     PROCESS — THE ONE-PAGE REPORT
-     ============================================================ -->
-<section class="process" id="the-report">
+<!-- ═══════════════════════════════════════
+     REPORT
+     ═══════════════════════════════════════ -->
+<section class="report-section" id="report">
+  <div class="eng-grid"></div>
+  <div class="container report-grid">
+    <div>
+      <div class="fi eyebrow">THE DELIVERABLE</div>
+      <h2 class="fi fi-d1 section-title" style="margin-bottom:24px">One Page. Zero Complexity.</h2>
+      <p class="fi fi-d2" style="font-size:13px;line-height:1.7;font-family:var(--font-mono);color:var(--text-muted);margin-bottom:24px">No 40-page PDF. No software login. One printed page with a RED/YELLOW/GREEN status for every critical conveyor component. The maintenance manager reads it in two minutes and knows exactly what needs attention.</p>
+      <p class="fi fi-d3 report-quote">"This bearing is running 40 degrees hotter than the others. I'd plan a replacement within two weeks."</p>
+    </div>
+    <div class="report-card rc">
+      <div class="report-header">
+        <div class="report-header-title">RELIABILITY REPORT</div>
+        <div class="report-header-date">2025-06-15</div>
+      </div>
+      <div class="report-rows">
+        <div class="report-row"><div class="report-row-left"><div class="report-dot red"></div><span class="report-name">Conveyor #4 -- Drive Motor</span></div><span class="report-label red">FAIL SOON</span></div>
+        <div class="report-row"><div class="report-row-left"><div class="report-dot yellow"></div><span class="report-name">Sorting Line B -- Idler Bearings</span></div><span class="report-label yellow">MONITOR</span></div>
+        <div class="report-row"><div class="report-row-left"><div class="report-dot green"></div><span class="report-name">Conveyor #1 -- Belt Tracking</span></div><span class="report-label green">GOOD</span></div>
+        <div class="report-row"><div class="report-row-left"><div class="report-dot green"></div><span class="report-name">Main Drive -- Chain & Sprocket</span></div><span class="report-label green">GOOD</span></div>
+        <div class="report-row"><div class="report-row-left"><div class="report-dot yellow"></div><span class="report-name">Packaging Line -- Lubrication</span></div><span class="report-label yellow">MONITOR</span></div>
+      </div>
+      <div class="report-footer">
+        <span class="report-footer-note">1 action required</span>
+        <span class="report-footer-link">Schedule Repair &rarr;</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     PROCESS
+     ═══════════════════════════════════════ -->
+<section class="process-section" id="process">
   <div class="container">
-    <div class="process-inner">
-      <div class="process-content">
-        <div class="section-eyebrow">The Deliverable</div>
-        <h2 class="section-title">One Page. Zero Complexity.</h2>
-        <p class="section-desc">You don't need another software dashboard. You get a one-page operational report after every inspection. Simple, actionable, and built for the floor, not a conference room.</p>
-        <div class="process-quote">
-          "This bearing is running 40&deg; hotter than the others. I'd plan a replacement within the next two weeks."<br/><br/>
-          &mdash; That's the kind of insight that prevents a $260K shutdown.
-        </div>
+    <div style="margin-bottom:64px">
+      <div class="fi eyebrow">THE PROCESS</div>
+      <h2 class="fi fi-d1 section-title">How It Works</h2>
+    </div>
+    <div class="process-grid">
+      <div class="process-card cs" style="transition-delay:0s">
+        <div class="process-num">01</div>
+        <div class="process-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-5 4.5-5 2.76 0 4.301.98 5.5 3 1.199-2.02 2.74-3 5.5-3 3.01 0 4.47 2.28 4.5 5 .03 2.5-.97 3.5-.97 5.62V16"/><path d="M7.5 16H4"/><path d="M20 16h-3.5"/><path d="M12 16V8"/><path d="M7.5 20h9"/></svg></div>
+        <div class="process-title">We Walk In</div>
+        <div class="process-desc">One-page checklist, plain paper. Ask for the maintenance manager.</div>
       </div>
-      <div>
-        <div class="report-card" id="report-card">
-          <div class="report-header">
-            <div class="report-header-title">Reliability Report</div>
-            <div class="report-header-date">FEB 27, 2026</div>
-          </div>
-          <div class="report-row">
-            <div class="report-dot red"></div>
-            <div class="report-component">Conveyor #4 - Drive Motor</div>
-            <div class="report-status red">Fail Soon</div>
-          </div>
-          <div class="report-row">
-            <div class="report-dot yellow"></div>
-            <div class="report-component">Line B - Bearing Assembly</div>
-            <div class="report-status yellow">Monitor</div>
-          </div>
-          <div class="report-row">
-            <div class="report-dot green"></div>
-            <div class="report-component">Main Belt - Tracking</div>
-            <div class="report-status green">Good</div>
-          </div>
-          <div class="report-row">
-            <div class="report-dot green"></div>
-            <div class="report-component">Gearbox #2 - Lubrication</div>
-            <div class="report-status green">Good</div>
-          </div>
-          <div class="report-row">
-            <div class="report-dot yellow"></div>
-            <div class="report-component">Sprocket - Chain Wear</div>
-            <div class="report-status yellow">Monitor</div>
-          </div>
-          <div class="report-footer">
-            <div class="report-footer-label">1 action required</div>
-            <div class="report-footer-action">Schedule Repair &rarr;</div>
-          </div>
-        </div>
+      <div class="process-card cs" style="transition-delay:0.08s">
+        <div class="process-num">02</div>
+        <div class="process-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><line x1="7" y1="12" x2="17" y2="12"/></svg></div>
+        <div class="process-title">10-Min Floor Walk</div>
+        <div class="process-desc">Non-disruptive inspection of motors, bearings, belts, and chains.</div>
+      </div>
+      <div class="process-card cs" style="transition-delay:0.16s">
+        <div class="process-num">03</div>
+        <div class="process-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 10h.01"/><path d="M12 10h.01"/><path d="M16 10h.01"/></svg></div>
+        <div class="process-title">Show Findings</div>
+        <div class="process-desc">Point out real issues on the spot. One concrete finding builds instant trust.</div>
+      </div>
+      <div class="process-card cs" style="transition-delay:0.24s">
+        <div class="process-num">04</div>
+        <div class="process-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+        <div class="process-title">Deliver Report</div>
+        <div class="process-desc">One-page RED/YELLOW/GREEN status report. Actionable, no software required.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============================================================
-     HOW IT WORKS
-     ============================================================ -->
-<section class="cta-section" id="how-it-works">
-  <div class="container">
-    <div class="section-eyebrow">How It Works</div>
-    <h2 class="section-title">Four Steps. Ten Minutes. Zero Disruption.</h2>
-    <p class="section-desc">Our walk-through is designed for zero interference with production. No tools opened. No machines stopped. Just trained eyes identifying what your team hasn't had time to check.</p>
-    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:20px; max-width:960px; margin:0 auto 40px; text-align:left;">
-      <div style="background:var(--white-pure); border:1px solid var(--gray-100); border-radius:3px; padding:24px; position:relative;">
-        <div style="font-family:var(--font-mono); font-size:32px; font-weight:800; color:rgba(255,95,31,0.15); position:absolute; top:12px; right:16px;">01</div>
-        <div style="width:36px; height:36px; background:rgba(255,95,31,0.1); border-radius:2px; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF5F1F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-        </div>
-        <div style="font-family:var(--font-heading); font-weight:700; font-size:14px; margin-bottom:6px;">We Walk In</div>
-        <div style="font-family:var(--font-mono); font-size:11px; color:var(--gray-400); line-height:1.6;">One-page checklist, plain paper. Ask for the maintenance manager.</div>
-      </div>
-      <div style="background:var(--white-pure); border:1px solid var(--gray-100); border-radius:3px; padding:24px; position:relative;">
-        <div style="font-family:var(--font-mono); font-size:32px; font-weight:800; color:rgba(255,95,31,0.15); position:absolute; top:12px; right:16px;">02</div>
-        <div style="width:36px; height:36px; background:rgba(255,95,31,0.1); border-radius:2px; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF5F1F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        </div>
-        <div style="font-family:var(--font-heading); font-weight:700; font-size:14px; margin-bottom:6px;">10-Min Floor Walk</div>
-        <div style="font-family:var(--font-mono); font-size:11px; color:var(--gray-400); line-height:1.6;">Non-disruptive inspection of motors, bearings, belts, and chains.</div>
-      </div>
-      <div style="background:var(--white-pure); border:1px solid var(--gray-100); border-radius:3px; padding:24px; position:relative;">
-        <div style="font-family:var(--font-mono); font-size:32px; font-weight:800; color:rgba(255,95,31,0.15); position:absolute; top:12px; right:16px;">03</div>
-        <div style="width:36px; height:36px; background:rgba(255,95,31,0.1); border-radius:2px; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF5F1F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        </div>
-        <div style="font-family:var(--font-heading); font-weight:700; font-size:14px; margin-bottom:6px;">Show Findings</div>
-        <div style="font-family:var(--font-mono); font-size:11px; color:var(--gray-400); line-height:1.6;">Point out real issues on the spot. One concrete finding builds instant trust.</div>
-      </div>
-      <div style="background:var(--white-pure); border:1px solid var(--gray-100); border-radius:3px; padding:24px; position:relative;">
-        <div style="font-family:var(--font-mono); font-size:32px; font-weight:800; color:rgba(255,95,31,0.15); position:absolute; top:12px; right:16px;">04</div>
-        <div style="width:36px; height:36px; background:rgba(255,95,31,0.1); border-radius:2px; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF5F1F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-        </div>
-        <div style="font-family:var(--font-heading); font-weight:700; font-size:14px; margin-bottom:6px;">Deliver Report</div>
-        <div style="font-family:var(--font-mono); font-size:11px; color:var(--gray-400); line-height:1.6;">One-page RED/YELLOW/GREEN status report. Actionable, no software required.</div>
-      </div>
-    </div>
-    <a href="#book" class="btn-primary" id="book">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      Book Your Free 10-Minute Walk-Through
-    </a>
+<!-- ═══════════════════════════════════════
+     TRUST STRIP
+     ═══════════════════════════════════════ -->
+<section class="trust-strip" id="trust-strip">
+  <div class="container trust-grid">
+    <div><div class="trust-val" data-target="8" data-prefix="5-" data-suffix="">5-0</div><div class="trust-label">PLANTS TO PROFITABILITY</div></div>
+    <div><div class="trust-val" data-target="51" data-prefix="" data-suffix="%">0%</div><div class="trust-label">GROSS MARGIN / TECH</div></div>
+    <div><div class="trust-val" data-target="2400" data-prefix="$" data-suffix="/mo">$0/mo</div><div class="trust-label">AVG. CONTRACT VALUE</div></div>
+    <div><div class="trust-val" data-target="1" data-prefix="< " data-suffix="%">&lt; 0%</div><div class="trust-label">CLIENT CHURN RATE</div></div>
   </div>
 </section>
 
-<!-- ============================================================
+<!-- ═══════════════════════════════════════
+     CTA
+     ═══════════════════════════════════════ -->
+<section class="cta-section" id="cta">
+  <div class="cta-inner" style="padding:0 24px">
+    <div class="fi eyebrow">DISPATCH</div>
+    <h2 class="fi fi-d1 section-title" style="margin-bottom:24px">Your conveyors are talking.<br>Are you listening?</h2>
+    <p class="fi fi-d2" style="font-size:13px;font-family:var(--font-mono);color:var(--text-muted);max-width:480px;margin:0 auto 40px">Free 10-minute walk-through. No tools opened, no production disrupted. One-page status report delivered on the spot.</p>
+    <button class="cg-btn fi fi-d3" onclick="scrollTo('cta')">
+      REQUEST A RELIABILITY ASSESSMENT
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    </button>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
      FOOTER
-     ============================================================ -->
-<footer class="footer">
-  <div class="container">
-    <div class="footer-inner">
+     ═══════════════════════════════════════ -->
+<footer class="footer" id="footer">
+  <div class="footer-line"></div>
+  <div class="container" style="padding-top:64px;padding-bottom:64px">
+    <div class="footer-grid">
       <div>
-        <div class="footer-brand-name">Conveyor<span>Guard</span></div>
-        <div class="footer-brand-desc">
-          Predictive maintenance for industrial conveyor systems. We reduce unplanned downtime by catching failures early.
-        </div>
+        <div class="footer-brand">Conveyor<span>Guard</span></div>
+        <div class="footer-tagline">Predictive maintenance for industrial conveyor systems.</div>
         <div class="footer-status">
           <div class="footer-status-dot"></div>
-          System Operational
+          <span class="footer-status-label">SYSTEM OPERATIONAL</span>
         </div>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-title">Services</div>
-        <a href="#">Monthly Inspections</a>
-        <a href="#">Thermal Imaging</a>
-        <a href="#">Vibration Analysis</a>
-        <a href="#">Lubrication Audits</a>
-        <a href="#">Condition Tracking</a>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-title">Industries</div>
-        <a href="#">Manufacturing</a>
-        <a href="#">Distribution</a>
-        <a href="#">Food Processing</a>
-        <a href="#">Mining &amp; Aggregate</a>
-        <a href="#">Warehousing</a>
       </div>
       <div>
-        <div class="footer-col-title">Contact</div>
-        <div class="footer-contact-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          (615) 555-0142
+        <div class="footer-col-title">SERVICES</div>
+        <div class="footer-col-item">Thermal Profiling</div>
+        <div class="footer-col-item">Vibration Analysis</div>
+        <div class="footer-col-item">Belt & Chain Inspection</div>
+        <div class="footer-col-item">Lubrication Auditing</div>
+        <div class="footer-col-item">Reliability Contracts</div>
+      </div>
+      <div>
+        <div class="footer-col-title">INDUSTRIES</div>
+        <div class="footer-col-item">Manufacturing</div>
+        <div class="footer-col-item">Distribution Centers</div>
+        <div class="footer-col-item">Food & Beverage</div>
+        <div class="footer-col-item">Automotive</div>
+        <div class="footer-col-item">Aggregate & Mining</div>
+      </div>
+      <div>
+        <div class="footer-col-title">CONTACT</div>
+        <div class="footer-contact-row">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span>(615) 555-0142</span>
         </div>
-        <div class="footer-contact-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          inspect@conveyorguard.com
+        <div class="footer-contact-row">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <span>inspect@conveyorguard.com</span>
         </div>
-        <div class="footer-contact-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          Nashville, Tennessee<br/>150-mile service radius
+        <div class="footer-contact-row">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Nashville, TN<br>150-mile service radius<br>TN / North GA / North AL</span>
         </div>
-        <a href="#book" class="btn-primary" style="margin-top:12px; font-size:11px; padding:10px 20px;">
-          Book Free Walk-Through
-        </a>
       </div>
     </div>
     <div class="footer-bottom">
-      <div class="footer-copy">&copy; 2026 ConveyorGuard Reliability Services. All rights reserved.</div>
-      <div class="footer-copy" style="font-family:var(--font-mono); font-size:10px; color:var(--gray-400);">
-        Built for maintenance managers, not marketing departments.
-      </div>
+      <span>&copy; 2025 ConveyorGuard Reliability Services. All rights reserved.</span>
+      <span style="font-style:italic">Built for maintenance managers, not marketing departments.</span>
     </div>
   </div>
 </footer>
 
-<!-- ============================================================
-     SCRIPTS
-     ============================================================ -->
+<!-- ═══════════════════════════════════════
+     JAVASCRIPT
+     ═══════════════════════════════════════ -->
 <script>
-gsap.registerPlugin(ScrollTrigger);
+(function(){
+  'use strict';
 
-// --- HERO ANIMATIONS ---
-const heroTl = gsap.timeline({ defaults: { ease: "power3.out" } });
-heroTl
-  .from(".hero-badge", { opacity: 0, y: 20, duration: 0.5 }, 0.2)
-  .from(".hero h1", { opacity: 0, y: 30, duration: 0.6 }, 0.3)
-  .from(".hero-sub", { opacity: 0, y: 20, duration: 0.5 }, 0.5)
-  .from(".hero-desc", { opacity: 0, y: 20, duration: 0.5 }, 0.6)
-  .from(".hero-cta-group", { opacity: 0, y: 20, duration: 0.5 }, 0.7)
-  .from(".hero-stats > div", { opacity: 0, y: 15, duration: 0.4, stagger: 0.1 }, 0.9)
-  .from(".thermal-container", { opacity: 0, scale: 0.95, duration: 0.7 }, 0.4);
-
-// Counter animations
-function animateCounter(el, target, suffix, duration) {
-  let start = 0;
-  const step = () => {
-    start += target / (duration / 16);
-    if (start >= target) { start = target; }
-    el.textContent = Math.round(start) + suffix;
-    if (start < target) requestAnimationFrame(step);
+  /* ─── Smooth scroll helper ─── */
+  window.scrollTo_ = window.scrollTo;
+  window.scrollTo = function(idOrObj) {
+    if (typeof idOrObj === 'string') {
+      const el = document.getElementById(idOrObj);
+      if (el) el.scrollIntoView({ behavior:'smooth' });
+    } else {
+      window.scrollTo_(idOrObj);
+    }
   };
-  requestAnimationFrame(step);
-}
-setTimeout(() => {
-  animateCounter(document.getElementById("stat1"), 82, "%", 1200);
-  animateCounter(document.getElementById("stat2"), 10, " min", 800);
-  animateCounter(document.getElementById("stat3"), 260, "K", 1400);
-}, 600);
 
-// Thermal temperature flicker
-const thermalTemp = document.getElementById("thermal-temp");
-function flickerTemp() {
-  const base = 187;
-  const variation = Math.floor(Math.random() * 8) - 3;
-  thermalTemp.innerHTML = (base + variation) + "&deg;F";
-  setTimeout(flickerTemp, 800 + Math.random() * 1200);
-}
-flickerTemp();
+  /* ─── Navbar morph ─── */
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 80) navbar.classList.add('scrolled');
+    else navbar.classList.remove('scrolled');
+  }, { passive:true });
 
-// --- FEATURE CARD ANIMATIONS ---
+  /* ─── Temperature flicker ─── */
+  const tempEl = document.getElementById('temp-readout');
+  let temp = 187;
+  setInterval(function() {
+    temp += Math.random() > 0.5 ? 1 : -1;
+    temp = Math.max(182, Math.min(194, temp));
+    tempEl.textContent = 'PEAK TEMP: ' + temp + '\u00B0F';
+  }, 800);
 
-// Gauge animation (Card 1)
-ScrollTrigger.create({
-  trigger: "#card-thermal",
-  start: "top 75%",
-  once: true,
-  onEnter: () => {
-    const arc = document.getElementById("gauge-arc");
-    const tempText = document.getElementById("gauge-temp-text");
-    // Animate from danger to safe
-    arc.classList.add("danger");
-    tempText.innerHTML = "214&deg;";
-    tempText.style.color = "#EF4444";
-    setTimeout(() => {
-      arc.classList.remove("danger");
-      arc.classList.add("safe");
-      tempText.innerHTML = "156&deg;";
-      tempText.style.color = "#22C55E";
-    }, 1500);
-  }
-});
-
-// Checklist animation (Card 2)
-ScrollTrigger.create({
-  trigger: "#card-schedule",
-  start: "top 75%",
-  once: true,
-  onEnter: () => {
-    document.querySelectorAll(".check-item").forEach((item, i) => {
-      setTimeout(() => { item.classList.add("checked"); }, parseInt(item.dataset.delay));
+  /* ─── IntersectionObserver: fade-in elements ─── */
+  const fiObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('vis');
+        fiObserver.unobserve(e.target);
+      }
     });
-  }
-});
-
-// Chart animation (Card 3)
-ScrollTrigger.create({
-  trigger: "#card-lifecycle",
-  start: "top 75%",
-  once: true,
-  onEnter: () => {
-    document.getElementById("chart-line").classList.add("animated");
-    document.getElementById("chart-area").classList.add("animated");
-  }
-});
-
-// --- REPORT CARD ANIMATION ---
-ScrollTrigger.create({
-  trigger: "#report-card",
-  start: "top 80%",
-  once: true,
-  onEnter: () => {
-    document.getElementById("report-card").classList.add("visible");
-  }
-});
-
-// --- GENERAL SCROLL REVEALS ---
-gsap.utils.toArray(".feature-card").forEach((card, i) => {
-  gsap.from(card, {
-    scrollTrigger: { trigger: card, start: "top 80%", once: true },
-    opacity: 0, y: 30, duration: 0.5, delay: i * 0.1
+  }, { threshold:0.1 });
+  document.querySelectorAll('.fi, .si, .cs, .rc').forEach(function(el) {
+    fiObserver.observe(el);
   });
-});
 
-// Process section
-gsap.from(".process-content", {
-  scrollTrigger: { trigger: ".process", start: "top 70%", once: true },
-  opacity: 0, x: -30, duration: 0.6
-});
+  /* ─── Thermal Gauge animation ─── */
+  let gaugeTriggered = false;
+  const gaugeObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting && !gaugeTriggered) {
+        gaugeTriggered = true;
+        gaugeObs.disconnect();
+        animateGauge();
+      }
+    });
+  }, { threshold:0.15 });
+  gaugeObs.observe(document.getElementById('gauge-wrap'));
 
-// CTA steps
-gsap.utils.toArray(".cta-section [style*='position:relative']").forEach((step, i) => {
-  gsap.from(step, {
-    scrollTrigger: { trigger: step, start: "top 85%", once: true },
-    opacity: 0, y: 20, duration: 0.4, delay: i * 0.08
-  });
-});
+  function animateGauge() {
+    const arc = document.getElementById('gauge-arc');
+    const needle = document.getElementById('gauge-needle');
+    const center = document.getElementById('gauge-center');
+    const valEl = document.getElementById('gauge-val');
+    const statusEl = document.getElementById('gauge-status');
+    const startVal = 92, endVal = 45;
+    const duration = 2000;
+    const start = performance.now();
 
-// --- NAVBAR SCROLL EFFECT ---
-let lastScroll = 0;
-window.addEventListener("scroll", () => {
-  const navbar = document.getElementById("navbar");
-  const current = window.scrollY;
-  if (current > 100) {
-    navbar.style.boxShadow = "0 2px 20px rgba(0,0,0,0.2)";
-  } else {
-    navbar.style.boxShadow = "none";
+    function tick(now) {
+      const p = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const val = Math.round(startVal - eased * (startVal - endVal));
+      const angle = ((val - 30) / 70) * 180;
+      const offset = 251 - (angle / 180) * 251;
+      const color = val > 70 ? '#EF4444' : val > 50 ? '#FBBF24' : '#22C55E';
+
+      arc.setAttribute('stroke-dashoffset', offset);
+      arc.setAttribute('stroke', color);
+      const rad = ((180 + angle) * Math.PI) / 180;
+      needle.setAttribute('x2', 100 + 65 * Math.cos(rad));
+      needle.setAttribute('y2', 100 + 65 * Math.sin(rad));
+      needle.setAttribute('stroke', color);
+      center.setAttribute('fill', color);
+      valEl.textContent = val + '\u00B0C';
+      valEl.style.color = color;
+      if (val <= 50) statusEl.textContent = 'NORMAL RANGE';
+
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
   }
-  lastScroll = current;
-});
+
+  /* ─── Checklist animation ─── */
+  let checkTriggered = false;
+  const checkObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting && !checkTriggered) {
+        checkTriggered = true;
+        checkObs.disconnect();
+        const items = document.querySelectorAll('#checklist .check-item');
+        items.forEach(function(item, i) {
+          setTimeout(function() {
+            item.classList.add('done');
+            item.querySelector('.check-box').classList.add('done');
+          }, 300 + i * 350);
+        });
+      }
+    });
+  }, { threshold:0.15 });
+  checkObs.observe(document.getElementById('checklist'));
+
+  /* ─── Lifecycle chart animation ─── */
+  let lcTriggered = false;
+  const lcObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting && !lcTriggered) {
+        lcTriggered = true;
+        lcObs.disconnect();
+        const chart = document.getElementById('lifecycle-chart');
+        chart.querySelector('.lc-red').classList.add('drawn');
+        chart.querySelector('.lc-green-line').classList.add('drawn');
+        chart.querySelector('.lc-fill').classList.add('drawn');
+        chart.querySelectorAll('.lc-label').forEach(function(l) { l.style.opacity = '1'; });
+      }
+    });
+  }, { threshold:0.15 });
+  lcObs.observe(document.getElementById('lifecycle-chart'));
+
+  /* ─── Trust strip count-up ─── */
+  let trustTriggered = false;
+  const trustObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting && !trustTriggered) {
+        trustTriggered = true;
+        trustObs.disconnect();
+        document.querySelectorAll('.trust-val').forEach(function(el) {
+          const target = parseInt(el.dataset.target);
+          const prefix = el.dataset.prefix || '';
+          const suffix = el.dataset.suffix || '';
+          const duration = 1500;
+          const start = performance.now();
+          function tick(now) {
+            const p = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - p, 3);
+            const val = Math.round(eased * target);
+            el.textContent = prefix + val.toLocaleString() + suffix;
+            if (p < 1) requestAnimationFrame(tick);
+          }
+          requestAnimationFrame(tick);
+        });
+      }
+    });
+  }, { threshold:0.15 });
+  trustObs.observe(document.getElementById('trust-strip'));
+
+})();
 </script>
 </body>
 </html>
