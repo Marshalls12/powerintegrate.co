@@ -1,924 +1,956 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Power Integrate | The Data Chassis</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@400;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            /* Preset C: Brutalist Signal */
-            --color-primary: #E8E4DD;
-            --color-accent: #E63B2E;
-            --color-bg: #F5F3EE;
-            --color-dark: #111111;
-            
-            --font-head: 'Space Grotesk', sans-serif;
-            --font-drama: 'DM Serif Display', serif;
-            --font-data: 'Space Mono', monospace;
-            
-            --radius-main: 2rem;
-            --radius-large: 3rem;
-            --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
-            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Power Integrate — Automated Dashboards for Microsoft Teams</title>
+  <meta name="description" content="We turn spreadsheet chaos into automated dashboards using the Microsoft tools your team already owns.">
 
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-                scroll-behavior: auto !important;
-            }
-        }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Lora:ital,wght@0,400;0,600;1,400;1,600;1,700&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
 
-        /* Global Reset & Texture */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
-        body {
-            background-color: var(--color-bg);
-            color: var(--color-dark);
-            font-family: var(--font-head);
-            line-height: 1.5;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --paper:   #EDEAE1;
+      --ink:     #181D2A;
+      --signal:  #1A52E8;
+      --copper:  #C05818;
+      --slate:   #5C6474;
+      --card:    #F5F2EA;
+      --dark:    #10141D;
+      --dark2:   #141824;
+      --signal-glow: rgba(26,82,232,0.28);
+      --copper-glow: rgba(192,88,24,0.28);
+      --font-sans:  'Outfit', sans-serif;
+      --font-drama: 'Lora', serif;
+      --font-mono:  'Fira Code', monospace;
+      --r-pill: 100px;
+    }
 
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            opacity: 0.05;
-            pointer-events: none;
-            z-index: 9999;
-        }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--paper);
+      color: var(--ink);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { text-decoration: none; color: inherit; }
 
-        /* Typography */
-        h1, h2, h3, h4 { font-family: var(--font-head); letter-spacing: -0.03em; }
-        .drama-text { font-family: var(--font-drama); font-style: italic; font-weight: 400; }
-        .data-text { font-family: var(--font-data); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
-        
-        /* Micro-Interactions */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem 2rem;
-            background: var(--color-dark);
-            color: var(--color-bg);
-            border: none;
-            border-radius: 3rem;
-            font-family: var(--font-head);
-            font-weight: 600;
-            text-decoration: none;
-            cursor: pointer;
-            overflow: hidden;
-            position: relative;
-            transition: transform 0.3s var(--ease-spring);
-            will-change: transform;
-        }
-        .btn-accent {
-            background: var(--color-accent);
-            color: #fff;
-        }
-        .btn:hover {
-            transform: scale(1.03);
-        }
-        .btn::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(255,255,255,0.1);
-            transform: translateY(100%);
-            transition: transform 0.3s var(--ease-out);
-        }
-        .btn:hover::after {
-            transform: translateY(0);
-        }
-        a {
-            color: inherit;
-            text-decoration: none;
-            transition: transform 0.3s ease;
-            display: inline-block;
-        }
-        a:hover:not(.btn) {
-            transform: translateY(-1px);
-        }
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: 9999;
+      pointer-events: none; opacity: 0.038;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+    }
 
-        /* Navbar */
-        .navbar {
-            position: fixed;
-            top: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.5rem 0.5rem 0.5rem 2rem;
-            border-radius: 4rem;
-            width: 90%;
-            max-width: 1200px;
-            color: var(--color-bg);
-            transition: all 0.4s ease;
-        }
-        .navbar.scrolled {
-            background: color-mix(in srgb, var(--color-bg) 60%, transparent);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid color-mix(in srgb, var(--color-dark) 10%, transparent);
-            color: var(--color-dark);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        }
-        .nav-logo { font-weight: 700; font-size: 1.2rem; }
-        .nav-links { display: flex; gap: 2rem; }
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-        }
+    .navbar {
+      position: fixed; top: 1.25rem; left: 50%;
+      transform: translateX(-50%);
+      z-index: 500;
+      display: flex; align-items: center; gap: 2.25rem;
+      padding: 0.7rem 0.7rem 0.7rem 1.625rem;
+      border-radius: var(--r-pill);
+      transition: background 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease;
+      white-space: nowrap;
+    }
+    .navbar.scrolled {
+      background: rgba(16,20,29,0.92);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(26,82,232,0.2);
+      box-shadow: 0 4px 32px rgba(0,0,0,0.35);
+    }
+    .nav-logo { font-weight: 800; font-size: 0.9rem; letter-spacing: -0.02em; color: rgba(255,255,255,0.92); }
+    .nav-links { display: flex; align-items: center; gap: 1.875rem; list-style: none; }
+    .nav-links a { font-size: 0.8125rem; font-weight: 500; color: rgba(255,255,255,0.46); transition: color 0.22s ease, transform 0.2s ease; display: inline-block; }
+    .nav-links a:hover { color: rgba(255,255,255,0.9); transform: translateY(-1px); }
+    .nav-cta {
+      display: inline-block; font-size: 0.8125rem; font-weight: 700;
+      color: #fff; background: var(--copper);
+      padding: 0.65rem 1.375rem; border-radius: var(--r-pill);
+      position: relative; overflow: hidden;
+      transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.3s ease;
+    }
+    .nav-cta::after { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.18); transform: translateX(-101%); transition: transform 0.3s ease; }
+    .nav-cta:hover { transform: scale(1.04); box-shadow: 0 0 20px var(--copper-glow); }
+    .nav-cta:hover::after { transform: translateX(0); }
+    .nav-hamburger { display: none; background: none; border: none; cursor: pointer; padding: 0.375rem; flex-direction: column; gap: 5px; }
+    .nav-hamburger span { display: block; width: 20px; height: 1.5px; background: rgba(255,255,255,0.7); border-radius: 2px; }
+    @media (max-width: 780px) {
+      .nav-links, .nav-cta { display: none; }
+      .nav-hamburger { display: flex; }
+      .navbar { gap: 1rem; padding: 0.75rem 1.25rem; }
+    }
 
-        /* Hero Section */
-        .hero {
-            height: 100dvh;
-            position: relative;
-            display: flex;
-            align-items: flex-end;
-            padding: 0 6vw 8vh;
-            background-color: var(--color-dark);
-            overflow: hidden;
-        }
-        .hero-bg {
-            position: absolute;
-            inset: 0;
-            background-image: url('https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1920&q=80');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.6;
-        }
-        .hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, var(--color-primary), transparent 60%, rgba(0,0,0,0.8));
-            z-index: 1;
-        }
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            color: var(--color-dark);
-            max-width: 1000px;
-        }
-        .hero-title-sans {
-            font-size: clamp(3rem, 8vw, 7rem);
-            font-weight: 700;
-            line-height: 0.9;
-            text-transform: uppercase;
-            letter-spacing: -0.04em;
-            display: block;
-        }
-        .hero-title-serif {
-            font-size: clamp(6rem, 15vw, 14rem);
-            line-height: 0.8;
-            display: block;
-            margin-left: 10vw;
-            color: var(--color-accent);
-        }
-        .hero-desc {
-            margin-top: 2rem;
-            font-size: clamp(1.1rem, 2vw, 1.5rem);
-            max-width: 600px;
-            font-weight: 400;
-        }
-        .hero-actions {
-            margin-top: 3rem;
-        }
-        .gsap-reveal { opacity: 0; transform: translateY(40px); }
+    .hero {
+      position: relative;
+      height: 100dvh; min-height: 660px;
+      background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1920&q=80');
+      background-size: cover; background-position: center 40%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 0 6vw;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(160deg, rgba(16,20,29,0.92) 0%, rgba(16,20,29,0.75) 60%, rgba(16,20,29,0.88) 100%);
+      z-index: 0;
+    }
+    .hero-grid {
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(26,82,232,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(26,82,232,0.06) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 900px; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 0.625rem;
+      font-family: var(--font-mono); font-size: 0.625rem;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--signal); margin-bottom: 2rem; opacity: 0;
+    }
+    .hero-eyebrow::before, .hero-eyebrow::after { content: ''; display: block; width: 28px; height: 1px; background: var(--signal); opacity: 0.6; }
+    .hero-line-sans {
+      display: block; font-weight: 800;
+      font-size: clamp(2rem, 5vw, 4.75rem);
+      color: rgba(255,255,255,0.68);
+      letter-spacing: -0.04em; line-height: 1.06;
+      opacity: 0; transform: translateY(40px);
+    }
+    .hero-line-drama {
+      display: block; font-family: var(--font-drama); font-style: italic; font-weight: 700;
+      font-size: clamp(5.5rem, 14vw, 13rem);
+      color: #fff; line-height: 0.85; margin-top: -0.04em;
+      opacity: 0; transform: translateY(50px);
+    }
+    .hero-line-drama .signal {
+      color: var(--signal);
+      text-shadow: 0 0 60px rgba(26,82,232,0.4), 0 0 120px rgba(26,82,232,0.15);
+    }
+    .hero-sub {
+      display: block; margin-top: 2.25rem;
+      font-size: clamp(0.9rem, 1.3vw, 1rem); font-weight: 300;
+      color: rgba(255,255,255,0.38); max-width: 520px; line-height: 1.78;
+      margin-left: auto; margin-right: auto;
+      opacity: 0; transform: translateY(25px);
+    }
+    .hero-actions {
+      display: flex; align-items: center; justify-content: center;
+      gap: 0.875rem; margin-top: 2.5rem; flex-wrap: wrap;
+      opacity: 0; transform: translateY(20px);
+    }
+    .btn-primary {
+      display: inline-block; font-weight: 700; font-size: 0.9rem;
+      color: #fff; background: var(--copper);
+      padding: 0.9rem 2.125rem; border-radius: var(--r-pill);
+      border: none; cursor: pointer; position: relative; overflow: hidden;
+      transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.3s ease;
+    }
+    .btn-primary::after { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.2); transform: translateX(-101%); transition: transform 0.35s ease; }
+    .btn-primary:hover { transform: scale(1.04); box-shadow: 0 0 36px var(--copper-glow), 0 10px 30px rgba(0,0,0,0.35); }
+    .btn-primary:hover::after { transform: translateX(0); }
+    .btn-ghost {
+      display: inline-block; font-weight: 500; font-size: 0.9rem;
+      color: rgba(255,255,255,0.5); background: transparent;
+      padding: 0.9rem 1.75rem; border-radius: var(--r-pill);
+      border: 1px solid rgba(255,255,255,0.14);
+      transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94), border-color 0.3s ease, color 0.3s ease;
+    }
+    .btn-ghost:hover { transform: scale(1.03) translateY(-1px); border-color: rgba(26,82,232,0.5); color: rgba(255,255,255,0.85); }
 
-        /* Features Section */
-        .features {
-            padding: 10rem 6vw;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-        }
-        @media (max-width: 1024px) {
-            .features { grid-template-columns: 1fr; }
-        }
-        .feature-card {
-            background: var(--color-bg);
-            border: 1px solid color-mix(in srgb, var(--color-dark) 12%, transparent);
-            border-radius: var(--radius-main);
-            box-shadow: 0 8px 40px rgba(0,0,0,0.08);
-            padding: 3rem;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-            height: 500px;
-            position: relative;
-            overflow: hidden;
-        }
-        .feature-header h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
-        .feature-header p { color: color-mix(in srgb, var(--color-dark) 60%, transparent); }
-        .feature-ui {
-            flex: 1;
-            position: relative;
-            background: color-mix(in srgb, var(--color-dark) 4%, transparent);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            border: 1px solid color-mix(in srgb, var(--color-dark) 8%, transparent);
-        }
+    .hero-stats {
+      position: absolute; bottom: 0; left: 0; right: 0; z-index: 1;
+      display: flex; align-items: stretch; justify-content: center;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      opacity: 0;
+    }
+    .hero-stat { padding: 1.375rem 3.5vw; border-right: 1px solid rgba(255,255,255,0.07); text-align: center; }
+    .hero-stat:last-child { border-right: none; }
+    .hs-n { font-weight: 900; font-size: 1.75rem; letter-spacing: -0.05em; color: #fff; line-height: 1; margin-bottom: 0.2rem; }
+    .hs-n span { color: var(--copper); }
+    .hs-l { font-family: var(--font-mono); font-size: 0.5625rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
 
-        /* Card 1: Diagnostic Shuffler */
-        .shuffler-container { position: relative; height: 100%; width: 100%; perspective: 1000px; }
-        .shuffle-item {
-            position: absolute;
-            width: 100%;
-            padding: 1.5rem;
-            background: var(--color-bg);
-            border: 1px solid color-mix(in srgb, var(--color-dark) 10%, transparent);
-            border-radius: 0.8rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            transition: all 0.6s var(--ease-spring);
-            font-family: var(--font-data);
-            font-size: 0.85rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .shuffle-item::before {
-            content: '';
-            width: 10px; height: 10px;
-            border-radius: 50%;
-            background: var(--color-accent);
-        }
+    .section-pad { padding: 6.5rem 6vw; }
+    .section-label {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: var(--font-mono); font-size: 0.625rem;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--signal); margin-bottom: 1rem;
+    }
+    .section-label::before { content: ''; display: block; width: 16px; height: 1px; background: var(--signal); }
+    .section-h2 { font-weight: 800; font-size: clamp(2rem, 4vw, 3.25rem); letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 1rem; color: var(--ink); }
+    .section-sub { font-size: 1rem; font-weight: 400; color: var(--slate); max-width: 480px; line-height: 1.75; }
 
-        /* Card 2: Telemetry Typewriter */
-        .typewriter-container {
-            font-family: var(--font-data);
-            font-size: 0.85rem;
-            color: var(--color-dark);
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-        .live-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.3rem 0.8rem;
-            background: color-mix(in srgb, var(--color-dark) 10%, transparent);
-            border-radius: 2rem;
-            margin-bottom: 1rem;
-            width: fit-content;
-        }
-        .dot {
-            width: 8px; height: 8px;
-            background: var(--color-accent);
-            border-radius: 50%;
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(230, 59, 46, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(230, 59, 46, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(230, 59, 46, 0); }
-        }
-        .type-content { white-space: pre-wrap; line-height: 1.6; }
-        .cursor {
-            display: inline-block;
-            width: 8px; height: 15px;
-            background: var(--color-accent);
-            vertical-align: middle;
-            animation: blink 1s step-end infinite;
-        }
-        @keyframes blink { 50% { opacity: 0; } }
+    .features { background: var(--paper); }
+    .features-hd { margin-bottom: 3.5rem; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1.55fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 1.125rem;
+    }
+    @media (max-width: 900px) { .features-grid { grid-template-columns: 1fr; } }
+    .fcard {
+      background: var(--card);
+      border: 1px solid rgba(24,29,42,0.09);
+      border-radius: 2rem; padding: 2.25rem;
+      display: flex; flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06), 0 8px 40px rgba(0,0,0,0.04);
+      opacity: 0; transform: translateY(28px);
+    }
+    #fcard1 { grid-row: 1 / 3; min-height: 520px; }
+    #fcard2, #fcard3 { min-height: 240px; }
+    .fcard-label {
+      display: inline-flex; align-items: center; gap: 0.375rem;
+      font-family: var(--font-mono); font-size: 0.5875rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--signal); margin-bottom: 0.875rem;
+    }
+    .fcard-label::before { content: ''; display: block; width: 10px; height: 1px; background: var(--signal); }
+    .fcard-title { font-weight: 700; font-size: 1.0625rem; letter-spacing: -0.025em; color: var(--ink); margin-bottom: 0.4rem; }
+    .fcard-desc { font-size: 0.8125rem; font-weight: 400; color: var(--slate); line-height: 1.65; margin-bottom: 1.375rem; flex-shrink: 0; }
+    .fcard-body { flex: 1; display: flex; flex-direction: column; min-height: 0; }
 
-        /* Card 3: Cursor Scheduler */
-        .scheduler-container { height: 100%; position: relative; }
-        .grid-days {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 0.2rem;
-            text-align: center;
-            font-family: var(--font-data);
-            font-size: 0.7rem;
-            margin-bottom: 1rem;
-        }
-        .grid-cells {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 0.2rem;
-        }
-        .cell {
-            aspect-ratio: 1;
-            background: color-mix(in srgb, var(--color-dark) 5%, transparent);
-            border-radius: 0.3rem;
-            transition: background 0.3s;
-        }
-        .cell.active { background: var(--color-primary); border: 1px solid var(--color-dark); }
-        .system-btn {
-            margin-top: 1.5rem;
-            width: 100%;
-            padding: 0.8rem;
-            background: var(--color-dark);
-            color: var(--color-bg);
-            border-radius: 0.5rem;
-            text-align: center;
-            font-family: var(--font-data);
-            font-size: 0.8rem;
-            transition: transform 0.1s;
-        }
-        .anim-cursor {
-            position: absolute;
-            width: 24px; height: 24px;
-            z-index: 10;
-            top: 40px; left: 10px;
-            animation: cursorMove 4s infinite cubic-bezier(0.25, 1, 0.5, 1);
-        }
-        @keyframes cursorMove {
-            0% { transform: translate(0, 0); opacity: 0; }
-            10% { opacity: 1; }
-            30% { transform: translate(120px, 20px); }
-            35% { transform: translate(120px, 20px) scale(0.9); }
-            50% { transform: translate(60px, 100px); }
-            55% { transform: translate(60px, 100px) scale(0.9); }
-            80% { transform: translate(60px, 100px); opacity: 0; }
-            100% { opacity: 0; }
-        }
+    #chassisCanvas { width: 100%; flex: 1; display: block; border-radius: 1.25rem; background: var(--ink); }
 
-        /* Philosophy */
-        .philosophy {
-            background: var(--color-dark);
-            color: var(--color-bg);
-            padding: 15rem 6vw;
-            position: relative;
-            overflow: hidden;
-            text-align: center;
-        }
-        .phil-bg {
-            position: absolute;
-            inset: -20%;
-            background-image: url('https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1920&q=80');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.12;
-            z-index: 0;
-        }
-        .phil-content {
-            position: relative;
-            z-index: 1;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        .phil-statement-1 {
-            font-size: clamp(1.5rem, 3vw, 2.5rem);
-            color: color-mix(in srgb, var(--color-bg) 60%, transparent);
-            margin-bottom: 3rem;
-        }
-        .phil-statement-2 {
-            font-size: clamp(2.5rem, 6vw, 5rem);
-            line-height: 1.1;
-        }
-        .phil-word { display: inline-block; opacity: 0; transform: translateY(30px); }
-        .accent-word { color: var(--color-accent); font-family: var(--font-drama); font-style: italic; }
+    .tty-shell {
+      background: var(--ink); border-radius: 1.125rem;
+      padding: 1rem 1.125rem; flex: 1;
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    .tty-bar { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; flex-shrink: 0; }
+    .tty-dots { display: flex; gap: 5px; }
+    .tty-dots span { width: 8px; height: 8px; border-radius: 50%; }
+    .tty-dots span:nth-child(1) { background: #FF5F56; }
+    .tty-dots span:nth-child(2) { background: #FFBD2E; }
+    .tty-dots span:nth-child(3) { background: #27C93F; }
+    .live-chip { display: flex; align-items: center; gap: 4px; margin-left: auto; font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.25); }
+    .live-pip { width: 5px; height: 5px; border-radius: 50%; background: #3ecf8e; animation: pip 1.6s ease-in-out infinite; }
+    @keyframes pip { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.3;transform:scale(0.6)} }
+    .tty-feed { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 0.25rem; overflow: hidden; }
+    .tty-line { font-family: var(--font-mono); font-size: 0.625rem; line-height: 1.5; color: rgba(255,255,255,0.22); }
+    .tty-line.hist { color: rgba(255,255,255,0.3); }
+    .tty-line.cur { color: rgba(255,255,255,0.85); }
+    .tty-line.ok { color: #3ecf8e; }
+    .blink { display: inline-block; width: 5px; height: 11px; background: var(--copper); vertical-align: middle; margin-left: 2px; animation: blink 1s step-end infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
-        /* Protocol Stacking Archive */
-        .protocol-wrapper {
-            padding: 5rem 6vw;
-            background: var(--color-primary);
-            position: relative;
-        }
-        .protocol-header { text-align: center; margin-bottom: 5rem; }
-        .protocol-header h2 { font-size: 3rem; text-transform: uppercase; }
-        
-        .card-stack-container {
-            position: relative;
-            height: 80vh;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        .stack-card {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--color-bg);
-            border-radius: var(--radius-large);
-            padding: 4rem;
-            display: flex;
-            align-items: center;
-            gap: 4rem;
-            box-shadow: 0 -10px 40px rgba(0,0,0,0.1);
-            transform-origin: top center;
-            will-change: transform, opacity, filter;
-            border: 1px solid color-mix(in srgb, var(--color-dark) 10%, transparent);
-        }
-        @media (max-width: 768px) {
-            .stack-card { flex-direction: column; padding: 2rem; gap: 2rem; }
-        }
-        .stack-visual { flex: 1; display: flex; justify-content: center; align-items: center; background: var(--color-dark); border-radius: var(--radius-main); height: 100%; min-height: 250px; overflow: hidden; position: relative;}
-        .stack-content { flex: 1; }
-        .step-num { font-family: var(--font-data); font-size: 4rem; color: var(--color-accent); line-height: 1; margin-bottom: 1rem; display: block; }
-        .stack-content h3 { font-size: 2.5rem; margin-bottom: 1rem; }
-        
-        /* Canvas & SVG visual styles */
-        #gearCanvas { width: 100%; height: 100%; object-fit: contain; }
-        .laser-grid { position: absolute; inset: 0; background-image: radial-gradient(var(--color-bg) 1px, transparent 1px); background-size: 20px 20px; opacity: 0.2; }
-        .laser-line { position: absolute; top: 0; left: 0; width: 2px; height: 100%; background: var(--color-accent); box-shadow: 0 0 15px var(--color-accent); animation: scan 3s ease-in-out infinite alternate; }
-        @keyframes scan { 0% { transform: translateX(0); } 100% { transform: translateX(100%); left: calc(100% - 2px); } }
-        
-        .ekg-path {
-            fill: none;
-            stroke: var(--color-accent);
-            stroke-width: 3;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
-            animation: dash 2.5s linear infinite;
-        }
-        @keyframes dash { to { stroke-dashoffset: 0; } }
+    .sched-wrap { flex: 1; display: flex; flex-direction: column; gap: 0.75rem; }
+    .sched-apps { display: flex; gap: 0.375rem; flex-wrap: wrap; }
+    .sched-tag { font-family: var(--font-mono); font-size: 0.5rem; color: var(--signal); background: rgba(26,82,232,0.08); padding: 0.2rem 0.5rem; border-radius: 100px; letter-spacing: 0.07em; border: 1px solid rgba(26,82,232,0.18); }
+    .sched-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 0.3rem; }
+    .sched-cell {
+      aspect-ratio: 1; border-radius: 0.375rem; background: rgba(24,29,42,0.05);
+      border: 1px solid rgba(24,29,42,0.08);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono); font-size: 0.5rem; color: rgba(24,29,42,0.3); font-weight: 500;
+      transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.12s ease, box-shadow 0.25s ease;
+    }
+    .sched-cell.press { transform: scale(0.88); }
+    .sched-cell.on { background: var(--signal); border-color: var(--signal); color: #fff; box-shadow: 0 0 10px var(--signal-glow); }
+    .sched-cell.hi { background: rgba(26,82,232,0.1); border-color: rgba(26,82,232,0.3); color: var(--signal); }
+    .sched-row2 { display: flex; align-items: center; justify-content: space-between; }
+    .sched-save { font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 600; color: var(--ink); background: rgba(24,29,42,0.07); border: 1px solid rgba(24,29,42,0.12); padding: 0.4rem 0.875rem; border-radius: 0.5rem; cursor: default; transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.12s ease, color 0.3s ease; }
+    .sched-save.fire { background: var(--copper); border-color: var(--copper); color: #fff; transform: scale(0.94); box-shadow: 0 0 14px var(--copper-glow); }
+    .sched-status { font-family: var(--font-mono); font-size: 0.5rem; color: rgba(24,29,42,0.3); letter-spacing: 0.08em; transition: color 0.3s ease; }
+    .sched-status.live { color: var(--copper); }
 
-        /* Pricing */
-        .pricing { padding: 10rem 6vw; }
-        .pricing-header { text-align: center; margin-bottom: 4rem; }
-        .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; max-width: 1200px; margin: 0 auto; align-items: center;}
-        @media (max-width: 1024px) { .pricing-grid { grid-template-columns: 1fr; gap: 4rem; } }
-        
-        .price-card {
-            background: var(--color-bg);
-            border: 1px solid color-mix(in srgb, var(--color-dark) 15%, transparent);
-            border-radius: var(--radius-main);
-            padding: 3rem;
-            display: flex; flex-direction: column;
-        }
-        .price-card h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
-        .price { font-size: 3rem; font-family: var(--font-drama); margin: 1rem 0 2rem; }
-        .price span { font-size: 1rem; font-family: var(--font-data); }
-        .price-features { list-style: none; margin-bottom: 3rem; flex: 1; }
-        .price-features li { padding: 0.8rem 0; border-bottom: 1px solid color-mix(in srgb, var(--color-dark) 10%, transparent); font-size: 0.9rem; }
-        
-        .price-card.pop {
-            background: var(--color-dark);
-            color: var(--color-bg);
-            transform: scale(1.04);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-            border: none;
-        }
-        .price-card.pop .price-features li { border-bottom-color: rgba(255,255,255,0.1); }
-        .price-card.pop .btn { width: 100%; background: var(--color-accent); color: #fff; }
-        .price-card:not(.pop) .btn { width: 100%; background: color-mix(in srgb, var(--color-dark) 10%, transparent); color: var(--color-dark); }
-        .price-card:not(.pop) .btn:hover { background: var(--color-dark); color: var(--color-bg); }
+    .philosophy { position: relative; background: var(--dark); padding: 9rem 6vw; overflow: hidden; }
+    .phil-bg { position: absolute; inset: 0; background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80'); background-size: cover; background-position: center; opacity: 0.04; }
+    .phil-grid {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(26,82,232,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(26,82,232,0.05) 1px, transparent 1px);
+      background-size: 64px 64px;
+    }
+    .phil-inner { position: relative; z-index: 1; max-width: 1060px; }
+    .phil-foil { font-size: clamp(0.875rem, 1.2vw, 0.9375rem); font-weight: 400; color: rgba(255,255,255,0.25); line-height: 1.8; max-width: 600px; margin-bottom: 3rem; }
+    .phil-foil strong { color: rgba(255,255,255,0.42); font-weight: 500; }
+    .phil-statement { font-family: var(--font-drama); font-style: italic; font-weight: 700; font-size: clamp(2.75rem, 6.5vw, 6.5rem); color: rgba(255,255,255,0.88); line-height: 1.08; }
+    .phil-statement .hl { color: var(--copper); }
+    .pw { display: inline-block; overflow: hidden; vertical-align: bottom; }
+    .pw-i { display: inline-block; }
 
-        /* Footer */
-        .footer {
-            background: var(--color-dark);
-            color: var(--color-bg);
-            border-radius: 4rem 4rem 0 0;
-            padding: 6rem 6vw 3rem;
-            margin-top: 2rem;
-        }
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 4rem;
-            margin-bottom: 4rem;
-        }
-        @media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr; } }
-        .footer-brand h2 { font-size: 2rem; margin-bottom: 1rem; }
-        .footer-brand p { color: color-mix(in srgb, var(--color-bg) 60%, transparent); max-width: 300px; }
-        .footer-links h4 { font-family: var(--font-data); font-size: 0.9rem; margin-bottom: 1.5rem; color: var(--color-accent); }
-        .footer-links ul { list-style: none; }
-        .footer-links li { margin-bottom: 0.8rem; }
-        .footer-links a { color: color-mix(in srgb, var(--color-bg) 80%, transparent); }
-        
-        .footer-bottom {
-            display: flex; justify-content: space-between; align-items: center;
-            padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1);
-            font-family: var(--font-data); font-size: 0.8rem; color: color-mix(in srgb, var(--color-bg) 50%, transparent);
-        }
-        .system-status { display: flex; align-items: center; gap: 0.5rem; }
-        .status-dot { width: 8px; height: 8px; background: #00FF66; border-radius: 50%; animation: pulse-green 2s infinite; }
-        @keyframes pulse-green { 0% { box-shadow: 0 0 0 0 rgba(0, 255, 102, 0.4); } 70% { box-shadow: 0 0 0 8px rgba(0, 255, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 255, 102, 0); } }
+    .protocol { background: var(--paper); padding: 6.5rem 6vw 0; }
+    .protocol-hd { margin-bottom: 3.5rem; }
+    .proto-card {
+      background: var(--card);
+      border: 1px solid rgba(24,29,42,0.09);
+      border-radius: 2rem;
+      min-height: 68vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 3rem; align-items: center;
+      padding: 4.5rem 5rem;
+      margin-bottom: 1.25rem; overflow: hidden;
+      will-change: transform, opacity, filter;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.05), 0 8px 40px rgba(0,0,0,0.04);
+    }
+    .proto-card.p1 { border-left: 3px solid var(--signal); }
+    .proto-card.p2 { border-left: 3px solid var(--copper); }
+    .proto-card.p3 { border-left: 3px solid var(--ink); }
+    .proto-text .step-n { font-family: var(--font-mono); font-size: 0.5875rem; letter-spacing: 0.22em; color: var(--slate); text-transform: uppercase; margin-bottom: 2rem; }
+    .proto-text .pt-title { font-weight: 800; font-size: clamp(1.625rem, 2.8vw, 2.5rem); color: var(--ink); letter-spacing: -0.035em; line-height: 1.18; margin-bottom: 1rem; }
+    .proto-text .pt-desc { font-size: 0.9375rem; font-weight: 400; color: var(--slate); line-height: 1.75; max-width: 380px; }
+    .proto-vis { display: flex; align-items: center; justify-content: center; height: 260px; }
+    @media (max-width: 780px) {
+      .proto-card { grid-template-columns: 1fr; padding: 2.5rem 2rem; gap: 2rem; min-height: auto; }
+      .proto-vis { height: 180px; }
+    }
 
-    </style>
+    .pricing { background: var(--paper); padding: 6.5rem 6vw; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.125rem; margin-top: 3.5rem; align-items: start; }
+    @media (max-width: 860px) { .pricing-grid { grid-template-columns: 1fr; max-width: 400px; } }
+    .pcard {
+      background: var(--card); border: 1px solid rgba(24,29,42,0.09);
+      border-radius: 2rem; padding: 2.5rem 2.125rem 2.25rem;
+      opacity: 0; transform: translateY(24px);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+    }
+    .pcard.feat {
+      background: var(--ink); border: none;
+      transform: scale(1.04) translateY(24px);
+      box-shadow: 0 24px 64px rgba(24,29,42,0.25), 0 0 0 2px var(--signal);
+    }
+    .pcard-tier { font-family: var(--font-mono); font-size: 0.5875rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--signal); margin-bottom: 0.875rem; }
+    .pcard-price { font-weight: 900; font-size: 2.75rem; letter-spacing: -0.05em; color: var(--ink); line-height: 1; margin-bottom: 0.25rem; }
+    .pcard.feat .pcard-price { color: #fff; }
+    .pcard-price sub { font-size: 0.875rem; font-weight: 400; opacity: 0.35; letter-spacing: 0; vertical-align: baseline; }
+    .pcard-tagline { font-size: 0.8125rem; font-weight: 400; color: var(--slate); line-height: 1.6; margin-bottom: 1.625rem; padding-bottom: 1.625rem; border-bottom: 1px solid rgba(24,29,42,0.08); }
+    .pcard.feat .pcard-tagline { color: rgba(255,255,255,0.45); border-color: rgba(255,255,255,0.08); }
+    .pcard-feats { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem; }
+    .pcard-feat { font-size: 0.875rem; color: var(--slate); display: flex; align-items: flex-start; gap: 0.625rem; line-height: 1.45; }
+    .pcard.feat .pcard-feat { color: rgba(255,255,255,0.55); }
+    .pcard-feat::before { content: ''; width: 14px; height: 14px; border-radius: 50%; background: rgba(26,82,232,0.1); border: 1px solid rgba(26,82,232,0.25); flex-shrink: 0; margin-top: 2px; }
+    .pcard.feat .pcard-feat::before { background: rgba(192,88,24,0.2); border-color: rgba(192,88,24,0.4); }
+    .pcard-btn { display: block; text-align: center; font-family: var(--font-sans); font-weight: 700; font-size: 0.875rem; padding: 0.9rem; border-radius: 0.9rem; border: none; cursor: pointer; position: relative; overflow: hidden; transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.3s ease; }
+    .pcard-btn::after { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.14); transform: translateX(-101%); transition: transform 0.3s ease; }
+    .pcard-btn:hover { transform: scale(1.025); }
+    .pcard-btn:hover::after { transform: translateX(0); }
+    .pcard-btn.outline { color: var(--ink); background: transparent; border: 1.5px solid rgba(24,29,42,0.18); }
+    .pcard-btn.outline:hover { border-color: var(--signal); color: var(--signal); }
+    .pcard-btn.accent { color: #fff; background: var(--copper); }
+    .pcard-btn.accent:hover { box-shadow: 0 0 28px var(--copper-glow), 0 8px 24px rgba(0,0,0,0.2); }
+
+    footer { background: var(--dark2); border-radius: 3rem 3rem 0 0; padding: 5.5rem 6vw 3rem; margin-top: 5rem; }
+    .foot-grid { display: grid; grid-template-columns: 2.25fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 4rem; }
+    @media (max-width: 780px) { .foot-grid { grid-template-columns: 1fr 1fr; gap: 2rem; } }
+    .foot-brand-name { font-weight: 800; font-size: 1.0625rem; letter-spacing: -0.025em; color: #fff; margin-bottom: 0.75rem; }
+    .foot-brand-tag { font-size: 0.875rem; font-weight: 400; color: rgba(255,255,255,0.28); line-height: 1.7; max-width: 260px; }
+    .foot-col-label { font-family: var(--font-mono); font-size: 0.5625rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(26,82,232,0.55); margin-bottom: 1.25rem; }
+    .foot-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+    .foot-col a { font-size: 0.875rem; font-weight: 400; color: rgba(255,255,255,0.32); transition: color 0.22s ease, transform 0.22s ease; display: inline-block; }
+    .foot-col a:hover { color: rgba(255,255,255,0.82); transform: translateY(-1px); }
+    .foot-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.06); flex-wrap: wrap; gap: 1rem; }
+    .foot-legal { font-family: var(--font-mono); font-size: 0.5625rem; color: rgba(255,255,255,0.16); letter-spacing: 0.07em; }
+    .foot-status { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.5625rem; color: rgba(255,255,255,0.24); letter-spacing: 0.12em; text-transform: uppercase; }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #3ecf8e; box-shadow: 0 0 7px rgba(62,207,142,0.55); animation: pip 2s ease-in-out infinite; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
+    }
+  </style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="nav-logo">Power Integrate.</div>
-        <div class="nav-links">
-            <a href="#features">Features</a>
-            <a href="#philosophy">Manifesto</a>
-            <a href="#protocol">Protocol</a>
+  <nav class="navbar" id="navbar">
+    <span class="nav-logo">Power Integrate</span>
+    <ul class="nav-links">
+      <li><a href="#features">Services</a></li>
+      <li><a href="#protocol">Process</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#footer">Contact</a></li>
+    </ul>
+    <a href="#footer" class="nav-cta">Book a Consultation</a>
+    <button class="nav-hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <section class="hero" id="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <span class="hero-eyebrow">Power BI &nbsp; Power Automate &nbsp; Microsoft 365</span>
+      <span class="hero-line-sans">Structure is the</span>
+      <span class="hero-line-drama"><span class="signal">strategy.</span></span>
+      <span class="hero-sub">We turn spreadsheet chaos into automated dashboards — using the Microsoft tools your team already owns and pays for.</span>
+      <div class="hero-actions">
+        <a href="#footer" class="btn-primary">Book a Consultation</a>
+        <a href="#features" class="btn-ghost">See How It Works</a>
+      </div>
+    </div>
+    <div class="hero-stats" id="heroStats">
+      <div class="hero-stat"><div class="hs-n">4<span>hr</span></div><div class="hs-l">Reports automated</div></div>
+      <div class="hero-stat"><div class="hs-n">0<span>x</span></div><div class="hs-l">Copy-paste per week</div></div>
+      <div class="hero-stat"><div class="hs-n">1<span>.</span></div><div class="hs-l">Source of truth</div></div>
+      <div class="hero-stat"><div class="hs-n">M365</div><div class="hs-l">No new subscriptions</div></div>
+    </div>
+  </section>
+
+  <section class="features section-pad" id="features">
+    <div class="features-hd">
+      <span class="section-label">What We Build</span>
+      <h2 class="section-h2">Three problems.<br>One engagement.</h2>
+      <p class="section-sub">Every Power Integrate project addresses the same root causes keeping your team buried in spreadsheets.</p>
+    </div>
+    <div class="features-grid">
+
+      <div class="fcard" id="fcard1">
+        <span class="fcard-label">Core Architecture</span>
+        <div class="fcard-title">The Data Chassis</div>
+        <div class="fcard-desc">We consolidate your scattered data into a single structured layer. Every source feeds one spine. Every report reads from it. Everyone sees the same numbers.</div>
+        <div class="fcard-body">
+          <canvas id="chassisCanvas"></canvas>
         </div>
-        <a href="#contact" class="btn btn-accent">Book a Consultation</a>
-    </nav>
+      </div>
 
-    <section class="hero">
-        <div class="hero-bg"></div>
-        <div class="hero-content">
-            <h1 class="gsap-reveal hero-title-sans">Structure the</h1>
-            <h1 class="gsap-reveal hero-title-serif drama-text">Chaos.</h1>
-            <p class="gsap-reveal hero-desc data-text">We turn spreadsheet chaos into automated dashboards for small and mid-size teams, using the Microsoft tools they already pay for.</p>
-            <div class="gsap-reveal hero-actions">
-                <a href="#features" class="btn btn-accent">Initialize Protocol</a>
+      <div class="fcard" id="fcard2">
+        <span class="fcard-label">Automation</span>
+        <div class="fcard-title">Runs While You Sleep</div>
+        <div class="fcard-desc">Reports that took 4 hours every Monday now refresh daily — automatically.</div>
+        <div class="fcard-body">
+          <div class="tty-shell">
+            <div class="tty-bar">
+              <div class="tty-dots"><span></span><span></span><span></span></div>
+              <div class="live-chip"><span class="live-pip"></span>Live Feed</div>
             </div>
+            <div class="tty-feed" id="ttyFeed">
+              <div class="tty-line hist">SharePoint sync initialized</div>
+              <div class="tty-line hist ok">✓ Power Query refresh complete</div>
+              <div class="tty-line cur"><span id="ttyText"></span><span class="blink"></span></div>
+            </div>
+          </div>
         </div>
-    </section>
+      </div>
 
-    <section id="features" class="features">
-        <div class="feature-card">
-            <div class="feature-header">
-                <h3>The Data Chassis</h3>
-                <p>One source of truth, not ten spreadsheets.</p>
+      <div class="fcard" id="fcard3">
+        <span class="fcard-label">Microsoft 365</span>
+        <div class="fcard-title">No New Subscriptions</div>
+        <div class="fcard-desc">Power BI, Automate, SharePoint — it's already in your plan. We unlock it.</div>
+        <div class="fcard-body">
+          <div class="sched-wrap">
+            <div class="sched-apps">
+              <span class="sched-tag">Power BI</span>
+              <span class="sched-tag">Automate</span>
+              <span class="sched-tag">SharePoint</span>
+              <span class="sched-tag">Dataverse</span>
             </div>
-            <div class="feature-ui">
-                <div class="shuffler-container" id="shuffler">
-                    <div class="shuffle-item" style="top: 0; z-index: 3; transform: scale(1);">Unified Dashboards</div>
-                    <div class="shuffle-item" style="top: 15px; z-index: 2; transform: scale(0.95); opacity: 0.7;">Single Source of Truth</div>
-                    <div class="shuffle-item" style="top: 30px; z-index: 1; transform: scale(0.9); opacity: 0.4;">Consolidated Data Layer</div>
-                </div>
+            <div class="sched-grid" id="schedGrid">
+              <div class="sched-cell">S</div><div class="sched-cell">M</div><div class="sched-cell">T</div>
+              <div class="sched-cell">W</div><div class="sched-cell">T</div><div class="sched-cell">F</div><div class="sched-cell">S</div>
             </div>
+            <div class="sched-row2">
+              <button class="sched-save" id="schedSave">Schedule Refresh</button>
+              <span class="sched-status" id="schedStatus">— idle</span>
+            </div>
+          </div>
         </div>
+      </div>
 
-        <div class="feature-card">
-            <div class="feature-header">
-                <h3>Automated Execution</h3>
-                <p>Automation that runs while you sleep.</p>
-            </div>
-            <div class="feature-ui">
-                <div class="typewriter-container">
-                    <div class="live-badge"><span class="dot"></span> LIVE FEED</div>
-                    <div class="type-content"><span id="type-text"></span><span class="cursor"></span></div>
-                </div>
-            </div>
+    </div>
+  </section>
+
+  <section class="philosophy" id="philosophy">
+    <div class="phil-bg" id="philBg"></div>
+    <div class="phil-grid"></div>
+    <div class="phil-inner">
+      <p class="phil-foil">
+        Most analytics firms focus on: <strong>building you a brand-new platform</strong>, locking you into
+        subscriptions you didn't budget for, and delivering a dashboard that only they can maintain —
+        leaving your team dependent and your data still siloed.
+      </p>
+      <div class="phil-statement" id="philStmt">
+        We focus on making your <span class="hl">existing tools</span> do the work they were always meant to do.
+      </div>
+    </div>
+  </section>
+
+  <section class="protocol" id="protocol">
+    <div class="protocol-hd">
+      <span class="section-label">The Engagement</span>
+      <h2 class="section-h2">Three steps.<br>Permanent results.</h2>
+      <p class="section-sub">Every project follows the same proven sequence — audit, build, automate. In that order. Every time.</p>
+    </div>
+    <div id="protoWrap">
+      <div class="proto-card p1" id="pc1">
+        <div class="proto-text">
+          <div class="step-n">Step 01 — Audit</div>
+          <div class="pt-title">We map where your data lives and why it's broken.</div>
+          <div class="pt-desc">A structured discovery session surfaces all your data sources, manual bottlenecks, and reporting gaps. You walk away with a clear architecture map before we write a single query.</div>
         </div>
-
-        <div class="feature-card">
-            <div class="feature-header">
-                <h3>Zero New Tools</h3>
-                <p>Built on Microsoft 365, which you already own.</p>
-            </div>
-            <div class="feature-ui">
-                <div class="scheduler-container">
-                    <div class="grid-days">
-                        <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
-                    </div>
-                    <div class="grid-cells" id="grid-cells">
-                        </div>
-                    <div class="system-btn" id="sys-btn">Deploy Integration</div>
-                    
-                    <svg class="anim-cursor" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5.5 3.5L18.5 11.5L12.5 13.5L10.5 20.5L5.5 3.5Z" fill="var(--color-dark)" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/>
-                    </svg>
-                </div>
-            </div>
+        <div class="proto-vis"><canvas id="cv1" width="280" height="260"></canvas></div>
+      </div>
+      <div class="proto-card p2" id="pc2">
+        <div class="proto-text">
+          <div class="step-n">Step 02 — Build</div>
+          <div class="pt-title">The Data Chassis goes in. Reports come out.</div>
+          <div class="pt-desc">We build your semantic model, Power Query pipelines, and Power BI dashboards — structured for your team to own, not just use. Every measure documented. Every source named.</div>
         </div>
-    </section>
-
-    <section id="philosophy" class="philosophy">
-        <div class="phil-bg" id="phil-bg"></div>
-        <div class="phil-content">
-            <div class="phil-statement-1" id="phil-1">Most data agencies focus on: selling you expensive new software stacks.</div>
-            <div class="phil-statement-2" id="phil-2">We focus on: unlocking the <span class="accent-word">Microsoft 365</span> power you already own.</div>
+        <div class="proto-vis">
+          <svg id="sv2" width="260" height="220" viewBox="0 0 260 220">
+            <g id="dg"></g>
+            <line x1="-260" y1="0" x2="0" y2="0" stroke="url(#lg2)" stroke-width="1.5">
+              <animateTransform attributeName="transform" type="translate" from="-260 110" to="520 110" dur="2.6s" repeatCount="indefinite"/>
+            </line>
+            <defs>
+              <linearGradient id="lg2" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="transparent"/>
+                <stop offset="50%" stop-color="#1A52E8" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="transparent"/>
+              </linearGradient>
+            </defs>
+          </svg>
         </div>
-    </section>
-
-    <section id="protocol" class="protocol-wrapper">
-        <div class="protocol-header">
-            <h2 class="data-text">Integration Sequence</h2>
+      </div>
+      <div class="proto-card p3" id="pc3">
+        <div class="proto-text">
+          <div class="step-n">Step 03 — Automate</div>
+          <div class="pt-title">The Monday report runs itself. Every day.</div>
+          <div class="pt-desc">Power Automate flows trigger on schedule or on event. Sources refresh. The dashboard updates. Your team opens it and it's already done — no one touched it, nothing broke.</div>
         </div>
-        
-        <div class="card-stack-container" id="stack-container">
-            <div class="stack-card protocol-card">
-                <div class="stack-content">
-                    <span class="step-num">01</span>
-                    <h3>Audit & Extract</h3>
-                    <p>Mapping your scattered spreadsheets and isolating key metrics to define the precise architecture of your data requirements.</p>
-                </div>
-                <div class="stack-visual">
-                    <canvas id="gearCanvas"></canvas>
-                </div>
-            </div>
-            
-            <div class="stack-card protocol-card">
-                <div class="stack-content">
-                    <span class="step-num">02</span>
-                    <h3>The Data Chassis</h3>
-                    <p>Constructing a singular structured layer using Power Query and Dataverse. Data is pulled, cleaned, and unified automatically.</p>
-                </div>
-                <div class="stack-visual">
-                    <div class="laser-grid"></div>
-                    <div class="laser-line"></div>
-                </div>
-            </div>
-            
-            <div class="stack-card protocol-card">
-                <div class="stack-content">
-                    <span class="step-num">03</span>
-                    <h3>Automated Delivery</h3>
-                    <p>Deploying self-refreshing Power BI dashboards to your team. No copy-pasting, no manual updates. Absolute synchronicity.</p>
-                </div>
-                <div class="stack-visual">
-                    <svg viewBox="0 0 500 200" style="width: 100%; height: 100%;">
-                        <path class="ekg-path" d="M0,100 L150,100 L170,50 L210,180 L250,20 L290,130 L310,100 L500,100" />
-                    </svg>
-                </div>
-            </div>
+        <div class="proto-vis">
+          <svg id="sv3" width="280" height="110" viewBox="0 0 280 110">
+            <path id="ekg" d="M0,55 L35,55 L48,18 L58,92 L68,35 L78,75 L88,55 L124,55 L137,18 L147,92 L157,35 L167,75 L177,55 L213,55 L226,18 L236,92 L246,35 L256,75 L266,55 L280,55"
+              fill="none" stroke="#C05818" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <section class="pricing">
-        <div class="pricing-header">
-            <h2 class="data-text">Engagement Models</h2>
-        </div>
-        <div class="pricing-grid">
-            <div class="price-card">
-                <h3>Foundation</h3>
-                <div class="price">$2,500 <span>/build</span></div>
-                <ul class="price-features">
-                    <li>Basic Automation Mapping</li>
-                    <li>Up to 5 Spreadsheet Sources</li>
-                    <li>1 Unified Power BI Dashboard</li>
-                    <li>Standard Daily Refresh</li>
-                </ul>
-                <a href="#" class="btn">Select Plan</a>
-            </div>
-            
-            <div class="price-card pop">
-                <h3>Integration</h3>
-                <div class="price">$5,000 <span>/build</span></div>
-                <ul class="price-features">
-                    <li>Full Data Chassis Architecture</li>
-                    <li>Unlimited Data Sources</li>
-                    <li>3 Power BI Executive Dashboards</li>
-                    <li>Real-time Power Automate Flows</li>
-                    <li>Team Training Session</li>
-                </ul>
-                <a href="#" class="btn btn-accent">Deploy Integration</a>
-            </div>
-            
-            <div class="price-card">
-                <h3>Enterprise</h3>
-                <div class="price">Custom <span>/scope</span></div>
-                <ul class="price-features">
-                    <li>Custom Power Apps Development</li>
-                    <li>SharePoint Intranet Integration</li>
-                    <li>Advanced Predictive Modeling</li>
-                    <li>Dedicated Support SLA</li>
-                </ul>
-                <a href="#" class="btn">Contact Us</a>
-            </div>
-        </div>
-    </section>
+  <section class="pricing" id="pricing">
+    <span class="section-label">Engagement Tiers</span>
+    <h2 class="section-h2">Scoped to where<br>you actually are.</h2>
+    <div class="pricing-grid">
+      <div class="pcard" id="pr1">
+        <div class="pcard-tier">Essential</div>
+        <div class="pcard-price">$1,500<sub> /project</sub></div>
+        <div class="pcard-tagline">One dashboard, one source, one team. The fastest path to your first automated report.</div>
+        <ul class="pcard-feats">
+          <li class="pcard-feat">1 Power BI dashboard</li>
+          <li class="pcard-feat">Power Query data pipeline</li>
+          <li class="pcard-feat">SharePoint data source setup</li>
+          <li class="pcard-feat">2-week delivery window</li>
+        </ul>
+        <a href="#footer" class="pcard-btn outline">Book a Consultation</a>
+      </div>
+      <div class="pcard feat" id="pr2">
+        <div class="pcard-tier">Performance</div>
+        <div class="pcard-price">$4,500<sub> /project</sub></div>
+        <div class="pcard-tagline">Full Data Chassis build with automated refresh, multi-source integration, and team training.</div>
+        <ul class="pcard-feats">
+          <li class="pcard-feat">Full semantic model (star schema)</li>
+          <li class="pcard-feat">Up to 5 dashboards</li>
+          <li class="pcard-feat">Power Automate scheduled flows</li>
+          <li class="pcard-feat">SharePoint or Dataverse architecture</li>
+          <li class="pcard-feat">Team walkthrough and documentation</li>
+        </ul>
+        <a href="#footer" class="pcard-btn accent">Book a Consultation</a>
+      </div>
+      <div class="pcard" id="pr3">
+        <div class="pcard-tier">Enterprise</div>
+        <div class="pcard-price">Custom<sub> /retainer</sub></div>
+        <div class="pcard-tagline">Ongoing BI partnership for teams with complex environments and evolving reporting needs.</div>
+        <ul class="pcard-feats">
+          <li class="pcard-feat">Unlimited dashboards</li>
+          <li class="pcard-feat">Azure SQL and Dataverse integration</li>
+          <li class="pcard-feat">Monthly model maintenance</li>
+          <li class="pcard-feat">Priority support and iterations</li>
+        </ul>
+        <a href="#footer" class="pcard-btn outline">Book a Consultation</a>
+      </div>
+    </div>
+  </section>
 
-    <footer class="footer">
-        <div class="footer-grid">
-            <div class="footer-brand">
-                <h2>Power Integrate.</h2>
-                <p>Turning spreadsheet chaos into precision dashboards using the tools you already own.</p>
-            </div>
-            <div class="footer-links">
-                <h4>NAVIGATION</h4>
-                <ul>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#philosophy">Manifesto</a></li>
-                    <li><a href="#protocol">Protocol</a></li>
-                </ul>
-            </div>
-            <div class="footer-links">
-                <h4>LEGAL</h4>
-                <ul>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <div>&copy; 2026 Power Integrate. All rights reserved.</div>
-            <div class="system-status">
-                <span class="status-dot"></span>
-                SYSTEM OPERATIONAL
-            </div>
-        </div>
-    </footer>
+  <footer id="footer">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand-name">Power Integrate</div>
+        <div class="foot-brand-tag">We turn spreadsheet chaos into automated dashboards — using the Microsoft tools your team already owns.</div>
+      </div>
+      <div class="foot-col">
+        <div class="foot-col-label">Services</div>
+        <ul>
+          <li><a href="#">Power BI Build</a></li>
+          <li><a href="#">Data Chassis</a></li>
+          <li><a href="#">Power Automate</a></li>
+          <li><a href="#">SharePoint Setup</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <div class="foot-col-label">Company</div>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Process</a></li>
+          <li><a href="#">Case Studies</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <div class="foot-col-label">Contact</div>
+        <ul>
+          <li><a href="#">Book a Consultation</a></li>
+          <li><a href="mailto:hello@powerintegrate.com">hello@powerintegrate.com</a></li>
+          <li><a href="#">Nashville, TN</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span class="foot-legal">© 2025 Power Integrate LLC · All rights reserved</span>
+      <div class="foot-status"><span class="status-dot"></span><span>All systems operational</span></div>
+    </div>
+  </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            gsap.registerPlugin(ScrollTrigger);
+    document.addEventListener('DOMContentLoaded', () => {
 
-            /* --- Navbar Morph --- */
-            const navbar = document.querySelector('.navbar');
-            const hero = document.querySelector('.hero');
-            const observer = new IntersectionObserver((entries) => {
-                if (!entries[0].isIntersecting) {
-                    navbar.classList.add('scrolled');
-                    navbar.style.color = "var(--color-dark)";
-                } else {
-                    navbar.classList.remove('scrolled');
-                    navbar.style.color = "var(--color-bg)";
-                }
-            }, { threshold: 0.1 });
-            observer.observe(hero);
+      /* NAVBAR */
+      const navbar = document.getElementById('navbar');
+      new IntersectionObserver(([e]) => {
+        navbar.classList.toggle('scrolled', !e.isIntersecting);
+      }, { threshold: 0.05 }).observe(document.getElementById('hero'));
 
-            /* --- Hero Animations --- */
-            gsap.to('.gsap-reveal', {
-                y: 0,
-                opacity: 1,
-                duration: 1.2,
-                stagger: 0.15,
-                ease: "power3.out",
-                delay: 0.2
-            });
+      /* HERO ENTRANCE */
+      gsap.timeline({ defaults: { ease: 'power3.out' } })
+        .to('.hero-eyebrow',    { opacity: 1, duration: 1.0 }, 0.3)
+        .to('.hero-line-sans',  { opacity: 1, y: 0, duration: 1.1 }, 0.45)
+        .to('.hero-line-drama', { opacity: 1, y: 0, duration: 1.2 }, 0.62)
+        .to('.hero-sub',        { opacity: 1, y: 0, duration: 0.9 }, 0.82)
+        .to('.hero-actions',    { opacity: 1, y: 0, duration: 0.8 }, 1.0)
+        .to('#heroStats',       { opacity: 1, duration: 0.7 }, 1.15);
 
-            /* --- Card 1: Diagnostic Shuffler --- */
-            const shuffler = document.getElementById('shuffler');
-            const items = Array.from(shuffler.querySelectorAll('.shuffle-item'));
-            setInterval(() => {
-                items.unshift(items.pop());
-                items.forEach((item, index) => {
-                    if (index === 0) {
-                        item.style.top = '0';
-                        item.style.zIndex = '3';
-                        item.style.transform = 'scale(1)';
-                        item.style.opacity = '1';
-                    } else if (index === 1) {
-                        item.style.top = '15px';
-                        item.style.zIndex = '2';
-                        item.style.transform = 'scale(0.95)';
-                        item.style.opacity = '0.7';
-                    } else {
-                        item.style.top = '30px';
-                        item.style.zIndex = '1';
-                        item.style.transform = 'scale(0.9)';
-                        item.style.opacity = '0.4';
-                    }
-                });
-            }, 3000);
-
-            /* --- Card 2: Telemetry Typewriter --- */
-            const typeText = document.getElementById('type-text');
-            const messages = [
-                "> INITIALIZING CHASSIS...\n",
-                "> LOCATING SPREADSHEETS...\n",
-                "> 10 FILES FOUND.\n",
-                "> CLEANING ROWS...\n",
-                "> POWER BI SYNC: SUCCESS.\n",
-                "> DASHBOARD LIVE."
-            ];
-            let msgIdx = 0; let charIdx = 0;
-            
-            function typeWriter() {
-                if (msgIdx < messages.length) {
-                    if (charIdx < messages[msgIdx].length) {
-                        typeText.innerHTML += messages[msgIdx].charAt(charIdx);
-                        charIdx++;
-                        setTimeout(typeWriter, Math.random() * 50 + 30);
-                    } else {
-                        msgIdx++;
-                        charIdx = 0;
-                        setTimeout(typeWriter, 500);
-                    }
-                } else {
-                    setTimeout(() => {
-                        typeText.innerHTML = "";
-                        msgIdx = 0;
-                        typeWriter();
-                    }, 4000);
-                }
-            }
-            setTimeout(typeWriter, 1000);
-
-            /* --- Card 3: Cursor Protocol Scheduler --- */
-            const gridContainer = document.getElementById('grid-cells');
-            for(let i=0; i<14; i++) {
-                let cell = document.createElement('div');
-                cell.className = 'cell';
-                gridContainer.appendChild(cell);
-            }
-            // Sync cell highlight with CSS keyframe timing
-            const cells = gridContainer.querySelectorAll('.cell');
-            const sysBtn = document.getElementById('sys-btn');
-            
-            setInterval(() => {
-                // Time map roughly based on cursorMove animation
-                setTimeout(() => { cells[3].classList.add('active'); }, 1200); // Hit Tuesday
-                setTimeout(() => { cells[3].classList.remove('active'); }, 2000);
-                setTimeout(() => { sysBtn.style.transform = 'scale(0.95)'; sysBtn.style.background = 'var(--color-accent)'; }, 2200); // Hit button
-                setTimeout(() => { sysBtn.style.transform = 'scale(1)'; sysBtn.style.background = 'var(--color-dark)'; }, 2600);
-            }, 4000);
-
-            /* --- Philosophy Parallax & Text Reveal --- */
-            gsap.to('#phil-bg', {
-                backgroundPositionY: "100%",
-                ease: "none",
-                scrollTrigger: {
-                    trigger: ".philosophy",
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: true
-                }
-            });
-
-            // Split text for word animation
-            const p1 = document.getElementById('phil-1');
-            const p2 = document.getElementById('phil-2');
-            
-            function splitText(element) {
-                const words = element.innerHTML.split(' ');
-                element.innerHTML = '';
-                words.forEach(word => {
-                    const span = document.createElement('span');
-                    span.className = 'phil-word';
-                    span.innerHTML = word + ' ';
-                    element.appendChild(span);
-                });
-            }
-            
-            // Re-apply special span for Microsoft 365
-            p1.innerHTML = p1.textContent.split(' ').map(w => `<span class='phil-word'>${w} </span>`).join('');
-            p2.innerHTML = p2.innerHTML.replace('<span class="accent-word">Microsoft 365</span>', '[[MS365]]');
-            p2.innerHTML = p2.textContent.split(' ').map(w => {
-                if(w.includes('[[MS365]]')) return `<span class='phil-word accent-word'>Microsoft 365 </span>`;
-                return `<span class='phil-word'>${w} </span>`;
-            }).join('');
-
-            gsap.to('.phil-word', {
-                scrollTrigger: {
-                    trigger: ".philosophy",
-                    start: "top 60%"
-                },
-                y: 0,
-                opacity: 1,
-                duration: 0.8,
-                stagger: 0.05,
-                ease: "power3.out"
-            });
-
-            /* --- Protocol Stacking Archive --- */
-            const cards = gsap.utils.toArray('.protocol-card');
-            
-            // Set initial z-indexes
-            cards.forEach((card, i) => {
-                gsap.set(card, { zIndex: cards.length - i });
-            });
-
-            ScrollTrigger.create({
-                trigger: "#stack-container",
-                start: "top 10%",
-                end: () => `+=${cards.length * 800}`, // Add artificial scroll distance
-                pin: true,
-                pinSpacing: true,
-                animation: gsap.timeline()
-                    .to(cards[0], { scale: 0.9, opacity: 0.5, filter: "blur(20px)", ease: "none" }, 0)
-                    .to(cards[1], { scale: 0.9, opacity: 0.5, filter: "blur(20px)", ease: "none" }, 1),
-                scrub: true
-            });
-
-            /* --- Canvas Gear Animation (Card 1) --- */
-            const canvas = document.getElementById('gearCanvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = 300; canvas.height = 300;
-            let angle = 0;
-
-            function drawGear() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.save();
-                ctx.translate(canvas.width/2, canvas.height/2);
-                ctx.rotate(angle);
-                
-                ctx.strokeStyle = '#E8E4DD';
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                for(let i=0; i<12; i++) {
-                    ctx.lineTo(80, -20);
-                    ctx.lineTo(100, -10);
-                    ctx.lineTo(100, 10);
-                    ctx.lineTo(80, 20);
-                    ctx.rotate((Math.PI * 2) / 12);
-                }
-                ctx.closePath();
-                ctx.stroke();
-                
-                ctx.beginPath();
-                ctx.arc(0, 0, 60, 0, Math.PI * 2);
-                ctx.stroke();
-                
-                ctx.restore();
-                angle += 0.005;
-                requestAnimationFrame(drawGear);
-            }
-            drawGear();
+      /* FEATURE CARDS */
+      document.querySelectorAll('.fcard').forEach((el, i) => {
+        gsap.to(el, {
+          opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
+          delay: i * 0.1,
+          scrollTrigger: { trigger: el, start: 'top 88%', once: true }
         });
-    </script>
+      });
+
+      /* DATA CHASSIS CANVAS */
+      const canvas = document.getElementById('chassisCanvas');
+      function drawChassis() {
+        const W = canvas.offsetWidth, H = canvas.offsetHeight;
+        canvas.width = W * window.devicePixelRatio;
+        canvas.height = H * window.devicePixelRatio;
+        const ctx = canvas.getContext('2d');
+        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+        const SIGNAL = '#1A52E8', COPPER = '#C05818';
+        const TEXT_DIM = 'rgba(255,255,255,0.38)', TEXT_BRIGHT = 'rgba(255,255,255,0.75)';
+        const srcX = 16, srcW = 74, srcH = 22;
+        const cX = W * 0.42, cW = W * 0.22, cH = 48, cY = H / 2 - cH / 2;
+        const outX = W - 16 - 76;
+
+        const sources = [
+          { label: 'Excel',      color: '#1D6F42' },
+          { label: 'SharePoint', color: '#038387' },
+          { label: 'CSV',        color: '#5C6474' },
+          { label: 'SQL Server', color: '#CC2936' },
+        ];
+        const outputs = [
+          { label: 'Power BI',  color: SIGNAL },
+          { label: 'Reports',   color: '#5C6474' },
+          { label: 'Automate',  color: COPPER },
+        ];
+
+        const srcSpacing = (H - 32) / sources.length;
+        const outSpacing = (H - 32) / outputs.length;
+        function srcY(i) { return 16 + i * srcSpacing + srcSpacing / 2; }
+        function outY(i) { return 16 + i * outSpacing + outSpacing / 2; }
+
+        const packets = [];
+        sources.forEach((_, i) => packets.push({ t: i * 0.22 + 0.05, srcIdx: i, isOutput: false, color: SIGNAL }));
+        outputs.forEach((_, i) => packets.push({ t: i * 0.30 + 0.12, srcIdx: i, isOutput: true,  color: COPPER }));
+
+        function roundRect(ctx, x, y, w, h, r) {
+          ctx.beginPath();
+          ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y);
+          ctx.arcTo(x + w, y, x + w, y + r, r); ctx.lineTo(x + w, y + h - r);
+          ctx.arcTo(x + w, y + h, x + w - r, y + h, r); ctx.lineTo(x + r, y + h);
+          ctx.arcTo(x, y + h, x, y + h - r, r); ctx.lineTo(x, y + r);
+          ctx.arcTo(x, y, x + r, y, r); ctx.closePath();
+        }
+
+        let frame = 0;
+        function render() {
+          ctx.clearRect(0, 0, W, H);
+
+          ctx.strokeStyle = 'rgba(26,82,232,0.06)'; ctx.lineWidth = 0.5;
+          for (let x = 0; x < W; x += 24) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+          for (let y = 0; y < H; y += 24) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+          sources.forEach((s, i) => {
+            const sy = srcY(i), ex = cX, ey = cY + cH / 2;
+            const cp1x = srcX + srcW + (ex - srcX - srcW) * 0.55, cp1y = sy;
+            const cp2x = ex - (ex - srcX - srcW) * 0.25, cp2y = ey;
+            ctx.beginPath(); ctx.moveTo(srcX + srcW, sy);
+            ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, ex, ey);
+            ctx.strokeStyle = 'rgba(255,255,255,0.07)'; ctx.lineWidth = 1; ctx.stroke();
+          });
+
+          outputs.forEach((o, i) => {
+            const oy = outY(i), sx = cX + cW, sy2 = cY + cH / 2;
+            const cp1x = sx + (outX - sx) * 0.28, cp1y = sy2;
+            const cp2x = outX - (outX - sx) * 0.28, cp2y = oy;
+            ctx.beginPath(); ctx.moveTo(sx, sy2);
+            ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, outX, oy);
+            ctx.strokeStyle = 'rgba(255,255,255,0.07)'; ctx.lineWidth = 1; ctx.stroke();
+          });
+
+          packets.forEach(p => {
+            p.t += p.isOutput ? 0.0042 : 0.0048;
+            if (p.t > 1) p.t = 0;
+            let px, py;
+            if (!p.isOutput) {
+              const sy = srcY(p.srcIdx), ex = cX, ey = cY + cH / 2;
+              const cp1x = srcX + srcW + (ex - srcX - srcW) * 0.55, cp1y = sy;
+              const cp2x = ex - (ex - srcX - srcW) * 0.25, cp2y = ey;
+              const t = p.t, mt = 1 - t;
+              px = mt*mt*mt*(srcX+srcW) + 3*mt*mt*t*cp1x + 3*mt*t*t*cp2x + t*t*t*ex;
+              py = mt*mt*mt*sy          + 3*mt*mt*t*cp1y + 3*mt*t*t*cp2y + t*t*t*ey;
+            } else {
+              const oy = outY(p.srcIdx), sx = cX + cW, sy2 = cY + cH / 2;
+              const cp1x = sx + (outX - sx) * 0.28, cp1y = sy2;
+              const cp2x = outX - (outX - sx) * 0.28, cp2y = oy;
+              const t = p.t, mt = 1 - t;
+              px = mt*mt*mt*sx  + 3*mt*mt*t*cp1x + 3*mt*t*t*cp2x + t*t*t*outX;
+              py = mt*mt*mt*sy2 + 3*mt*mt*t*cp1y + 3*mt*t*t*cp2y + t*t*t*oy;
+            }
+            ctx.beginPath(); ctx.arc(px, py, 2.5, 0, Math.PI * 2);
+            ctx.fillStyle = p.color; ctx.shadowColor = p.color; ctx.shadowBlur = 8;
+            ctx.fill(); ctx.shadowBlur = 0;
+          });
+
+          sources.forEach((s, i) => {
+            const sy = srcY(i);
+            roundRect(ctx, srcX, sy - srcH/2, srcW, srcH, 4);
+            ctx.fillStyle = 'rgba(255,255,255,0.04)'; ctx.fill();
+            ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.lineWidth = 0.75; ctx.stroke();
+            ctx.beginPath(); ctx.arc(srcX + 10, sy, 3.5, 0, Math.PI*2);
+            ctx.fillStyle = s.color; ctx.fill();
+            ctx.font = '500 8.5px Fira Code, monospace'; ctx.fillStyle = TEXT_DIM;
+            ctx.fillText(s.label, srcX + 20, sy + 3);
+          });
+
+          roundRect(ctx, cX, cY, cW, cH, 8);
+          ctx.fillStyle = SIGNAL; ctx.fill();
+          roundRect(ctx, cX+1, cY+1, cW-2, cH/2-1, 8);
+          ctx.fillStyle = 'rgba(255,255,255,0.08)'; ctx.fill();
+          ctx.shadowColor = SIGNAL; ctx.shadowBlur = 18;
+          roundRect(ctx, cX, cY, cW, cH, 8);
+          ctx.strokeStyle = 'rgba(26,82,232,0.6)'; ctx.lineWidth = 1; ctx.stroke();
+          ctx.shadowBlur = 0;
+          ctx.font = '700 9px Outfit, sans-serif'; ctx.fillStyle = '#fff'; ctx.textAlign = 'center';
+          ctx.fillText('DATA', cX + cW/2, cY + cH/2 - 3);
+          ctx.font = '500 7.5px Fira Code, monospace'; ctx.fillStyle = 'rgba(255,255,255,0.6)';
+          ctx.fillText('CHASSIS', cX + cW/2, cY + cH/2 + 9);
+          ctx.textAlign = 'left';
+
+          const pulse = 12 + 6 * Math.abs(Math.sin(frame * 0.04));
+          ctx.beginPath();
+          ctx.arc(cX + cW/2, cY + cH/2, pulse + cW/2 * 0.72, 0, Math.PI*2);
+          ctx.strokeStyle = 'rgba(26,82,232,' + (0.08 - 0.06 * Math.abs(Math.sin(frame * 0.04))) + ')';
+          ctx.lineWidth = 1; ctx.stroke();
+
+          outputs.forEach((o, i) => {
+            const oy = outY(i);
+            roundRect(ctx, outX, oy - srcH/2, 76, srcH, 4);
+            ctx.fillStyle = 'rgba(255,255,255,0.04)'; ctx.fill();
+            ctx.strokeStyle = o.color === COPPER ? 'rgba(192,88,24,0.35)'
+                            : o.color === SIGNAL  ? 'rgba(26,82,232,0.35)'
+                            : 'rgba(255,255,255,0.1)';
+            ctx.lineWidth = 0.75; ctx.stroke();
+            ctx.beginPath(); ctx.arc(outX + 10, oy, 3.5, 0, Math.PI*2);
+            ctx.fillStyle = o.color; ctx.fill();
+            ctx.font = '500 8.5px Fira Code, monospace'; ctx.fillStyle = TEXT_BRIGHT;
+            ctx.fillText(o.label, outX + 20, oy + 3);
+          });
+
+          frame++;
+          requestAnimationFrame(render);
+        }
+        render();
+      }
+
+      const ro = new ResizeObserver(() => { drawChassis(); });
+      ro.observe(canvas.parentElement);
+
+      /* CARD 2: TYPEWRITER */
+      const msgs = [
+        'Power Query: 3 datasets refreshed.',
+        '✓ Monday report delivered automatically.',
+        '1,247 rows cleaned. 0 manual steps.',
+        'SharePoint sync: pipeline nominal.',
+        '4-hour task completed in 0 seconds.',
+        'Dataverse sync complete. No errors.',
+        '✓ Dashboard updated. Signal is clean.',
+      ];
+      let mIdx = 0, cIdx = 0;
+      const ttyEl = document.getElementById('ttyText');
+      const ttyFeed = document.getElementById('ttyFeed');
+      function typeTick() {
+        const msg = msgs[mIdx];
+        if (cIdx <= msg.length) {
+          ttyEl.textContent = msg.slice(0, cIdx); cIdx++;
+          setTimeout(typeTick, cIdx === 1 ? 500 : 40);
+        } else {
+          setTimeout(() => {
+            const done = document.createElement('div');
+            done.className = 'tty-line hist' + (msg.startsWith('✓') ? ' ok' : '');
+            done.textContent = msg;
+            const lines = ttyFeed.querySelectorAll('.tty-line.hist');
+            if (lines.length >= 3) lines[0].remove();
+            ttyFeed.insertBefore(done, ttyFeed.querySelector('.tty-line.cur'));
+            ttyEl.textContent = ''; cIdx = 0; mIdx = (mIdx + 1) % msgs.length;
+            setTimeout(typeTick, 380);
+          }, 1900);
+        }
+      }
+      typeTick();
+
+      /* CARD 3: SCHEDULER */
+      const cells = document.querySelectorAll('.sched-cell');
+      const saveBtn = document.getElementById('schedSave');
+      const statusEl = document.getElementById('schedStatus');
+      function resetSched() {
+        cells.forEach(c => { c.className = 'sched-cell'; });
+        saveBtn.classList.remove('fire');
+        statusEl.textContent = '— idle'; statusEl.classList.remove('live');
+      }
+      function runSched() {
+        resetSched();
+        let step = 0;
+        const wkd = [1,2,3,4,5];
+        function next() {
+          if (step < wkd.length) {
+            cells[wkd[step]].classList.add('press');
+            setTimeout(() => {
+              cells[wkd[step]].classList.remove('press');
+              cells[wkd[step]].classList.add('on');
+              step++; setTimeout(next, 280);
+            }, 140);
+          } else {
+            setTimeout(() => {
+              wkd.forEach(i => { cells[i].classList.remove('on'); cells[i].classList.add('hi'); });
+              saveBtn.classList.add('fire');
+              setTimeout(() => {
+                statusEl.textContent = '✓ M-F refresh on'; statusEl.classList.add('live');
+                setTimeout(runSched, 3000);
+              }, 180);
+            }, 300);
+          }
+        }
+        setTimeout(next, 800);
+      }
+      runSched();
+
+      /* PHILOSOPHY */
+      gsap.to('#philBg', {
+        backgroundPositionY: '35%', ease: 'none',
+        scrollTrigger: { trigger: '.philosophy', start: 'top bottom', end: 'bottom top', scrub: true }
+      });
+      const philStmt = document.getElementById('philStmt');
+      philStmt.innerHTML = philStmt.innerHTML.replace(/(<[^>]+>)|([^<\s]+)/g, (m, tag, word) => {
+        if (tag) return tag;
+        return '<span class="pw"><span class="pw-i">' + word + '</span></span> ';
+      });
+      gsap.fromTo('.pw-i',
+        { y: '105%', opacity: 0 },
+        { y: '0%', opacity: 1, duration: 0.72, stagger: 0.05, ease: 'power3.out',
+          scrollTrigger: { trigger: philStmt, start: 'top 78%', once: true } }
+      );
+
+      /* PROTOCOL CANVAS 1 */
+      const cv1 = document.getElementById('cv1');
+      const c1 = cv1.getContext('2d');
+      const nodes = [
+        { label: 'Excel',      angle: -0.9,  r: 95, color: '#1D6F42' },
+        { label: 'SharePoint', angle: -0.15, r: 90, color: '#038387' },
+        { label: 'CSV',        angle:  0.55, r: 88, color: '#5C6474' },
+        { label: 'API',        angle:  1.3,  r: 92, color: '#CC2936' },
+        { label: 'SQL',        angle: -1.6,  r: 86, color: '#E8860A' },
+      ];
+      let auditTick = 0;
+      (function drawAudit() {
+        c1.clearRect(0, 0, 280, 260);
+        const cx = 140, cy = 130;
+        nodes.forEach((n, i) => {
+          const angle = n.angle + auditTick * (i % 2 === 0 ? 0.004 : -0.004);
+          const nx = cx + Math.cos(angle) * n.r;
+          const ny = cy + Math.sin(angle) * n.r;
+          c1.beginPath(); c1.moveTo(cx, cy); c1.lineTo(nx, ny);
+          c1.strokeStyle = 'rgba(26,82,232,0.15)'; c1.lineWidth = 1; c1.stroke();
+          c1.beginPath(); c1.arc(nx, ny, 18, 0, Math.PI * 2);
+          c1.fillStyle = 'rgba(24,29,42,0.8)'; c1.fill();
+          c1.strokeStyle = n.color; c1.lineWidth = 1.5; c1.stroke();
+          c1.font = '500 7.5px Fira Code, monospace';
+          c1.fillStyle = 'rgba(255,255,255,0.55)'; c1.textAlign = 'center';
+          c1.fillText(n.label, nx, ny + 3);
+        });
+        c1.beginPath(); c1.arc(cx, cy, 26, 0, Math.PI * 2);
+        c1.fillStyle = '#1A52E8';
+        c1.shadowColor = '#1A52E8'; c1.shadowBlur = 14;
+        c1.fill(); c1.shadowBlur = 0;
+        c1.font = '700 8px Outfit, sans-serif'; c1.fillStyle = '#fff'; c1.textAlign = 'center';
+        c1.fillText('MAP', cx, cy - 2); c1.fillText('AUDIT', cx, cy + 9);
+        c1.textAlign = 'left';
+        auditTick++;
+        requestAnimationFrame(drawAudit);
+      })();
+
+      /* PROTOCOL SVG 2 — dot grid */
+      const dg = document.getElementById('dg');
+      for (let r = 0; r < 7; r++) for (let c = 0; c < 9; c++) {
+        const ci = document.createElementNS('http://www.w3.org/2000/svg','circle');
+        ci.setAttribute('cx', 14 + c * 28); ci.setAttribute('cy', 14 + r * 28);
+        ci.setAttribute('r','1.5'); ci.setAttribute('fill','rgba(24,29,42,0.2)');
+        dg.appendChild(ci);
+      }
+
+      /* PROTOCOL SVG 3 — EKG */
+      const ekg = document.getElementById('ekg');
+      const len = ekg.getTotalLength();
+      ekg.style.strokeDasharray = len; ekg.style.strokeDashoffset = len;
+      const st = document.createElement('style');
+      st.textContent = '@keyframes ekgRun{0%{stroke-dashoffset:'+len+';opacity:.1}15%{opacity:.9}65%{stroke-dashoffset:0;opacity:.9}85%{stroke-dashoffset:0;opacity:.75}100%{stroke-dashoffset:'+(-len)+';opacity:.08}}#ekg{animation:ekgRun 3.2s ease-in-out infinite}';
+      document.head.appendChild(st);
+
+      /* PROTOCOL STICKY STACK */
+      ['#pc1','#pc2','#pc3'].forEach((sel, i, arr) => {
+        if (i === arr.length - 1) return;
+        const el = document.querySelector(sel);
+        const next = document.querySelector(arr[i+1]);
+        ScrollTrigger.create({
+          trigger: el, start: 'top top+=72',
+          end: () => '+=' + next.offsetHeight,
+          pin: true, pinSpacing: false,
+          onUpdate(self) {
+            const p = self.progress;
+            gsap.set(el, { scale: 1-p*0.075, filter:'blur('+(p*10)+'px)', opacity:1-p*0.42 });
+          }
+        });
+      });
+
+      /* PRICING ENTRANCE */
+      ['#pr1','#pr2','#pr3'].forEach((sel, i) => {
+        gsap.to(document.querySelector(sel), {
+          opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', delay: i*0.1,
+          scrollTrigger: { trigger: sel, start: 'top 89%', once: true }
+        });
+      });
+
+    });
+  </script>
 </body>
 </html>
