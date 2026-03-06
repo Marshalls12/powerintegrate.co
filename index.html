@@ -14,22 +14,21 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
   <style>
-    /* ── TOKENS ── */
     :root {
-      --paper:   #EDEAE1;
-      --ink:     #181D2A;
-      --signal:  #1A52E8;
-      --copper:  #C05818;
-      --slate:   #5C6474;
-      --card:    #F5F2EA;
-      --dark:    #10141D;
-      --dark2:   #141824;
+      --paper:       #EDEAE1;
+      --ink:         #181D2A;
+      --signal:      #1A52E8;
+      --copper:      #C05818;
+      --slate:       #5C6474;
+      --card:        #F5F2EA;
+      --dark:        #10141D;
+      --dark2:       #141824;
       --signal-glow: rgba(26,82,232,0.28);
       --copper-glow: rgba(192,88,24,0.28);
-      --font-sans:  'Outfit', sans-serif;
-      --font-drama: 'Lora', serif;
-      --font-mono:  'Fira Code', monospace;
-      --r-pill: 100px;
+      --font-sans:   'Outfit', sans-serif;
+      --font-drama:  'Lora', serif;
+      --font-mono:   'Fira Code', monospace;
+      --r-pill:      100px;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -51,6 +50,7 @@
       background-repeat: repeat;
     }
 
+    /* ── NAVBAR ── */
     .navbar {
       position: fixed; top: 1.25rem; left: 50%;
       transform: translateX(-50%);
@@ -89,6 +89,7 @@
       .navbar { gap: 1rem; padding: 0.75rem 1.25rem; }
     }
 
+    /* ── HERO ── */
     .hero {
       position: relative;
       height: 100dvh; min-height: 660px;
@@ -111,13 +112,19 @@
       background-size: 48px 48px;
     }
     .hero-content { position: relative; z-index: 1; max-width: 900px; }
+
+    /* EDIT: eyebrow now copper */
     .hero-eyebrow {
       display: inline-flex; align-items: center; gap: 0.625rem;
       font-family: var(--font-mono); font-size: 0.625rem;
       letter-spacing: 0.22em; text-transform: uppercase;
-      color: var(--signal); margin-bottom: 2rem; opacity: 0;
+      color: var(--copper); margin-bottom: 2rem; opacity: 0;
     }
-    .hero-eyebrow::before, .hero-eyebrow::after { content: ''; display: block; width: 28px; height: 1px; background: var(--signal); opacity: 0.6; }
+    .hero-eyebrow::before, .hero-eyebrow::after {
+      content: ''; display: block; width: 28px; height: 1px;
+      background: var(--copper); opacity: 0.6;
+    }
+
     .hero-line-sans {
       display: block; font-weight: 800;
       font-size: clamp(2rem, 5vw, 4.75rem);
@@ -131,10 +138,12 @@
       color: #fff; line-height: 0.85; margin-top: -0.04em;
       opacity: 0; transform: translateY(50px);
     }
+    /* EDIT: "strategy." now copper */
     .hero-line-drama .signal {
-      color: var(--signal);
-      text-shadow: 0 0 60px rgba(26,82,232,0.4), 0 0 120px rgba(26,82,232,0.15);
+      color: var(--copper);
+      text-shadow: 0 0 60px rgba(192,88,24,0.4), 0 0 120px rgba(192,88,24,0.15);
     }
+
     .hero-sub {
       display: block; margin-top: 2.25rem;
       font-size: clamp(0.9rem, 1.3vw, 1rem); font-weight: 300;
@@ -176,8 +185,10 @@
     .hero-stat:last-child { border-right: none; }
     .hs-n { font-weight: 900; font-size: 1.75rem; letter-spacing: -0.05em; color: #fff; line-height: 1; margin-bottom: 0.2rem; }
     .hs-n span { color: var(--copper); }
+    .hs-n .copper { color: var(--copper); }
     .hs-l { font-family: var(--font-mono); font-size: 0.5625rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
 
+    /* ── SHARED ── */
     .section-pad { padding: 6.5rem 6vw; }
     .section-label {
       display: inline-flex; align-items: center; gap: 0.5rem;
@@ -189,6 +200,7 @@
     .section-h2 { font-weight: 800; font-size: clamp(2rem, 4vw, 3.25rem); letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 1rem; color: var(--ink); }
     .section-sub { font-size: 1rem; font-weight: 400; color: var(--slate); max-width: 480px; line-height: 1.75; }
 
+    /* ── FEATURES ── */
     .features { background: var(--paper); }
     .features-hd { margin-bottom: 3.5rem; }
     .features-grid {
@@ -222,6 +234,7 @@
 
     #chassisCanvas { width: 100%; flex: 1; display: block; border-radius: 1.25rem; background: var(--ink); }
 
+    /* ── TYPEWRITER ── */
     .tty-shell {
       background: var(--ink); border-radius: 1.125rem;
       padding: 1rem 1.125rem; flex: 1;
@@ -244,6 +257,7 @@
     .blink { display: inline-block; width: 5px; height: 11px; background: var(--copper); vertical-align: middle; margin-left: 2px; animation: blink 1s step-end infinite; }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
+    /* ── SCHEDULER ── */
     .sched-wrap { flex: 1; display: flex; flex-direction: column; gap: 0.75rem; }
     .sched-apps { display: flex; gap: 0.375rem; flex-wrap: wrap; }
     .sched-tag { font-family: var(--font-mono); font-size: 0.5rem; color: var(--signal); background: rgba(26,82,232,0.08); padding: 0.2rem 0.5rem; border-radius: 100px; letter-spacing: 0.07em; border: 1px solid rgba(26,82,232,0.18); }
@@ -264,6 +278,7 @@
     .sched-status { font-family: var(--font-mono); font-size: 0.5rem; color: rgba(24,29,42,0.3); letter-spacing: 0.08em; transition: color 0.3s ease; }
     .sched-status.live { color: var(--copper); }
 
+    /* ── PHILOSOPHY ── */
     .philosophy { position: relative; background: var(--dark); padding: 9rem 6vw; overflow: hidden; }
     .phil-bg { position: absolute; inset: 0; background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80'); background-size: cover; background-position: center; opacity: 0.04; }
     .phil-grid {
@@ -274,13 +289,34 @@
       background-size: 64px 64px;
     }
     .phil-inner { position: relative; z-index: 1; max-width: 1060px; }
-    .phil-foil { font-size: clamp(0.875rem, 1.2vw, 0.9375rem); font-weight: 400; color: rgba(255,255,255,0.25); line-height: 1.8; max-width: 600px; margin-bottom: 3rem; }
+    .phil-foil { font-size: clamp(0.875rem, 1.2vw, 0.9375rem); font-weight: 400; color: rgba(255,255,255,0.25); line-height: 1.8; max-width: 600px; margin-bottom: 2rem; }
     .phil-foil strong { color: rgba(255,255,255,0.42); font-weight: 500; }
+    /* EDIT: tagline style */
+    .phil-tagline {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--copper);
+      margin-bottom: 2.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .phil-tagline::before {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: var(--copper);
+      opacity: 0.6;
+    }
     .phil-statement { font-family: var(--font-drama); font-style: italic; font-weight: 700; font-size: clamp(2.75rem, 6.5vw, 6.5rem); color: rgba(255,255,255,0.88); line-height: 1.08; }
     .phil-statement .hl { color: var(--copper); }
     .pw { display: inline-block; overflow: hidden; vertical-align: bottom; }
     .pw-i { display: inline-block; }
 
+    /* ── PROTOCOL ── */
     .protocol { background: var(--paper); padding: 6.5rem 6vw 0; }
     .protocol-hd { margin-bottom: 3.5rem; }
     .proto-card {
@@ -307,6 +343,7 @@
       .proto-vis { height: 180px; }
     }
 
+    /* ── PRICING ── */
     .pricing { background: var(--paper); padding: 6.5rem 6vw; }
     .pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.125rem; margin-top: 3.5rem; align-items: start; }
     @media (max-width: 860px) { .pricing-grid { grid-template-columns: 1fr; max-width: 400px; } }
@@ -341,6 +378,7 @@
     .pcard-btn.accent { color: #fff; background: var(--copper); }
     .pcard-btn.accent:hover { box-shadow: 0 0 28px var(--copper-glow), 0 8px 24px rgba(0,0,0,0.2); }
 
+    /* ── FOOTER ── */
     footer { background: var(--dark2); border-radius: 3rem 3rem 0 0; padding: 5.5rem 6vw 3rem; margin-top: 5rem; }
     .foot-grid { display: grid; grid-template-columns: 2.25fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 4rem; }
     @media (max-width: 780px) { .foot-grid { grid-template-columns: 1fr 1fr; gap: 2rem; } }
@@ -387,10 +425,11 @@
       </div>
     </div>
     <div class="hero-stats" id="heroStats">
-      <div class="hero-stat"><div class="hs-n">4<span>hr</span></div><div class="hs-l">Reports automated</div></div>
+      <!-- EDIT: clarified stat label, copper M in M365 -->
+      <div class="hero-stat"><div class="hs-n">4<span>hr</span></div><div class="hs-l">Saved per report cycle</div></div>
       <div class="hero-stat"><div class="hs-n">0<span>x</span></div><div class="hs-l">Copy-paste per week</div></div>
       <div class="hero-stat"><div class="hs-n">1<span>.</span></div><div class="hs-l">Source of truth</div></div>
-      <div class="hero-stat"><div class="hs-n">M365</div><div class="hs-l">No new subscriptions</div></div>
+      <div class="hero-stat"><div class="hs-n"><span class="copper">M</span>365</div><div class="hs-l">No new subscriptions</div></div>
     </div>
   </section>
 
@@ -466,6 +505,8 @@
         subscriptions you didn't budget for, and delivering a dashboard that only they can maintain —
         leaving your team dependent and your data still siloed.
       </p>
+      <!-- EDIT: tagline added here -->
+      <div class="phil-tagline">Turn one refresh into infinite possibilities.</div>
       <div class="phil-statement" id="philStmt">
         We focus on making your <span class="hl">existing tools</span> do the work they were always meant to do.
       </div>
