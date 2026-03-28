@@ -577,6 +577,28 @@
       color: rgba(255,255,255,0.15); letter-spacing: 0.1em;
       text-transform: uppercase; margin-top: 1rem;
     }
+    .cta-divider {
+      display: flex; align-items: center; gap: 1rem;
+      margin: 1.75rem auto; max-width: 420px;
+    }
+    .cta-divider::before, .cta-divider::after {
+      content: ''; flex: 1; height: 1px;
+      background: rgba(255,255,255,0.08);
+    }
+    .cta-divider span {
+      font-family: var(--font-mono); font-size: 0.5625rem;
+      color: rgba(255,255,255,0.15); letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+    .cta-cal-link {
+      display: inline-block;
+      font-size: 0.875rem; font-weight: 500;
+      color: rgba(255,255,255,0.45);
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      padding-bottom: 2px;
+      transition: color 0.25s ease, border-color 0.25s ease;
+    }
+    .cta-cal-link:hover { color: var(--copper); border-color: var(--copper); }
 
     /* ── FOOTER ── */
     footer { background: var(--dark2); border-radius: 3rem 3rem 0 0; padding: 5.5rem 6vw 3rem; margin-top: 5rem; }
@@ -603,7 +625,7 @@
     <a href="#features" class="mobile-nav-link">Services</a>
     <a href="#protocol" class="mobile-nav-link">Process</a>
     <a href="#pricing" class="mobile-nav-link">Pricing</a>
-    <a href="#footer" class="mobile-nav-link">Contact</a>
+    <a href="#cta" class="mobile-nav-link">Contact</a>
     <a href="#cta" class="mobile-cta">Get a Free Audit</a>
   </div>
 
@@ -613,7 +635,7 @@
       <li><a href="#features">Services</a></li>
       <li><a href="#protocol">Process</a></li>
       <li><a href="#pricing">Pricing</a></li>
-      <li><a href="#footer">Contact</a></li>
+      <li><a href="#cta">Contact</a></li>
     </ul>
     <!-- REC 6: VARIED CTA -->
     <a href="#cta" class="nav-cta">Get a Free Audit</a>
@@ -817,7 +839,7 @@
           <li class="pcard-feat">Team walkthrough and documentation</li>
           <li class="pcard-feat">3 months of post-launch support</li>
         </ul>
-        <a href="#cta" class="pcard-btn accent">Book a Consultation</a>
+        <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="pcard-btn accent">Book a Consultation</a>
       </div>
       <div class="pcard" id="pr3">
         <div class="pcard-tier">Partnership</div>
@@ -829,7 +851,7 @@
           <li class="pcard-feat">Monthly model maintenance and iteration</li>
           <li class="pcard-feat">Priority support and SLA</li>
         </ul>
-        <a href="#cta" class="pcard-btn outline">Let's Talk</a>
+        <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="pcard-btn outline">Let's Talk</a>
       </div>
     </div>
   </section>
@@ -842,14 +864,24 @@
         <h2 class="cta-h2">Ready to stop rebuilding the same report?</h2>
         <p class="cta-sub">Drop your email and we will reach out within one business day to schedule a free audit of your reporting stack.</p>
       </div>
-      <form class="cta-form" id="ctaForm">
+      <!--
+        SETUP: Go to https://formspree.io (free, 50 submissions/month)
+        1. Create account  2. Create new form  3. Copy the form ID
+        4. Replace YOUR_FORM_ID below with your actual ID (e.g. "xwkgpqar")
+        Once set, every submission lands directly in sean@powerintegrate.co
+      -->
+      <form class="cta-form" id="ctaForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <input type="hidden" name="_subject" value="New Inquiry from powerintegrate.co" />
+        <input type="hidden" name="_next" value="https://powerintegrate.co/#cta" />
         <div class="cta-input-wrap">
-          <input type="email" id="ctaEmail" class="cta-input" placeholder="you@company.com" required autocomplete="email" />
-          <button type="submit" class="cta-submit">Send</button>
+          <input type="email" name="email" id="ctaEmail" class="cta-input" placeholder="you@company.com" required autocomplete="email" />
+          <button type="submit" class="cta-submit" id="ctaSubmit">Send</button>
         </div>
         <div class="cta-confirm" id="ctaConfirm"></div>
         <div class="cta-fine">No spam. No pitch deck. Just a conversation about your data.</div>
       </form>
+      <div class="cta-divider"><span>or</span></div>
+      <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" rel="noopener" class="cta-cal-link">Book a 30-minute discovery call directly</a>
     </div>
   </section>
 
@@ -1473,32 +1505,47 @@
         });
       });
 
-      /* EMAIL CAPTURE FORM */
+      /* EMAIL CAPTURE FORM (Formspree)
+         Setup: Replace YOUR_FORM_ID in the HTML form action with your Formspree ID.
+         Go to https://formspree.io -> Create form -> Copy ID.
+         The form works via standard HTML submit as fallback if JS fails.
+         JS intercepts for nicer UX (no page redirect). */
       const ctaForm = document.getElementById('ctaForm');
       const ctaEmail = document.getElementById('ctaEmail');
       const ctaConfirm = document.getElementById('ctaConfirm');
-      const ctaSubmit = ctaForm.querySelector('.cta-submit');
+      const ctaSubmit = document.getElementById('ctaSubmit');
 
       ctaForm.addEventListener('submit', function(e) {
         e.preventDefault();
         const email = ctaEmail.value.trim();
         if (!email) return;
 
-        const subject = encodeURIComponent('Power Integrate Inquiry');
-        const body = encodeURIComponent('New lead from powerintegrate.co\n\nEmail: ' + email + '\n\nThis person is interested in learning more about Power Integrate services.');
-        window.location.href = 'mailto:sean@powerintegrate.co?subject=' + subject + '&body=' + body;
-
-        ctaConfirm.textContent = '\u2713 Opening your email client...';
-        ctaConfirm.className = 'cta-confirm';
         ctaSubmit.disabled = true;
-        ctaSubmit.textContent = 'Sent';
+        ctaSubmit.textContent = 'Sending...';
 
-        setTimeout(() => {
-          ctaSubmit.disabled = false;
-          ctaSubmit.textContent = 'Send';
-          ctaConfirm.textContent = '';
-          ctaEmail.value = '';
-        }, 4000);
+        const formAction = ctaForm.getAttribute('action');
+        fetch(formAction, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ email: email, _subject: 'New Lead from powerintegrate.co' })
+        })
+        .then(function(r) {
+          if (r.ok) {
+            ctaConfirm.textContent = '\u2713 Sent. We will be in touch within 1 business day.';
+            ctaConfirm.className = 'cta-confirm';
+            ctaSubmit.textContent = 'Sent';
+            ctaEmail.value = '';
+          } else {
+            throw new Error('submit failed');
+          }
+        })
+        .catch(function() {
+          ctaConfirm.textContent = 'Something went wrong. Email sean@powerintegrate.co directly.';
+          ctaConfirm.className = 'cta-confirm error';
+        })
+        .finally(function() {
+          setTimeout(function() { ctaSubmit.disabled = false; ctaSubmit.textContent = 'Send'; ctaConfirm.textContent = ''; }, 5000);
+        });
       });
 
     });
