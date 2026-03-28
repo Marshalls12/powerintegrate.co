@@ -82,11 +82,39 @@
     .nav-cta:hover { transform: scale(1.04); box-shadow: 0 0 20px var(--copper-glow); }
     .nav-cta:hover::after { transform: translateX(0); }
     .nav-hamburger { display: none; background: none; border: none; cursor: pointer; padding: 0.375rem; flex-direction: column; gap: 5px; }
-    .nav-hamburger span { display: block; width: 20px; height: 1.5px; background: rgba(255,255,255,0.7); border-radius: 2px; }
+    .nav-hamburger span { display: block; width: 20px; height: 1.5px; background: rgba(255,255,255,0.7); border-radius: 2px; transition: transform 0.3s ease, opacity 0.3s ease; }
+
+    /* ── MOBILE MENU ── */
+    .mobile-menu {
+      display: none;
+      position: fixed; inset: 0; z-index: 499;
+      background: rgba(16,20,29,0.97);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+    .mobile-menu.open { opacity: 1; pointer-events: auto; }
+    .mobile-menu a {
+      font-size: 1.25rem; font-weight: 600; color: rgba(255,255,255,0.6);
+      transition: color 0.22s ease;
+    }
+    .mobile-menu a:hover { color: rgba(255,255,255,0.95); }
+    .mobile-menu .mobile-cta {
+      display: inline-block; font-size: 1rem; font-weight: 700;
+      color: #fff; background: var(--copper);
+      padding: 0.9rem 2rem; border-radius: var(--r-pill);
+      margin-top: 1rem;
+    }
+    .nav-hamburger.active span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav-hamburger.active span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.active span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
     @media (max-width: 780px) {
       .nav-links, .nav-cta { display: none; }
       .nav-hamburger { display: flex; }
       .navbar { gap: 1rem; padding: 0.75rem 1.25rem; }
+      .mobile-menu { display: flex; }
     }
 
     /* ── HERO ── */
@@ -113,7 +141,6 @@
     }
     .hero-content { position: relative; z-index: 1; max-width: 900px; }
 
-    /* EDIT: eyebrow now copper */
     .hero-eyebrow {
       display: inline-flex; align-items: center; gap: 0.625rem;
       font-family: var(--font-mono); font-size: 0.625rem;
@@ -134,11 +161,10 @@
     }
     .hero-line-drama {
       display: block; font-family: var(--font-drama); font-style: italic; font-weight: 700;
-      font-size: clamp(5.5rem, 14vw, 13rem);
-      color: #fff; line-height: 0.85; margin-top: -0.04em;
+      font-size: clamp(4.5rem, 12vw, 11rem);
+      color: #fff; line-height: 0.88; margin-top: -0.02em;
       opacity: 0; transform: translateY(50px);
     }
-    /* EDIT: "strategy." now copper */
     .hero-line-drama .signal {
       color: var(--copper);
       text-shadow: 0 0 60px rgba(192,88,24,0.4), 0 0 120px rgba(192,88,24,0.15);
@@ -185,7 +211,6 @@
     .hero-stat:last-child { border-right: none; }
     .hs-n { font-weight: 900; font-size: 1.75rem; letter-spacing: -0.05em; color: #fff; line-height: 1; margin-bottom: 0.2rem; }
     .hs-n span { color: var(--copper); }
-    .hs-n .copper { color: var(--copper); }
     .hs-l { font-family: var(--font-mono); font-size: 0.5625rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
 
     /* ── SHARED ── */
@@ -234,49 +259,64 @@
 
     #chassisCanvas { width: 100%; flex: 1; display: block; border-radius: 1.25rem; background: var(--ink); }
 
-    /* ── TYPEWRITER ── */
-    .tty-shell {
+    /* ── CARD 2: 24HR CLOCK ── */
+    .clock-shell {
       background: var(--ink); border-radius: 1.125rem;
-      padding: 1rem 1.125rem; flex: 1;
-      display: flex; flex-direction: column; overflow: hidden;
-    }
-    .tty-bar { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; flex-shrink: 0; }
-    .tty-dots { display: flex; gap: 5px; }
-    .tty-dots span { width: 8px; height: 8px; border-radius: 50%; }
-    .tty-dots span:nth-child(1) { background: #FF5F56; }
-    .tty-dots span:nth-child(2) { background: #FFBD2E; }
-    .tty-dots span:nth-child(3) { background: #27C93F; }
-    .live-chip { display: flex; align-items: center; gap: 4px; margin-left: auto; font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.25); }
-    .live-pip { width: 5px; height: 5px; border-radius: 50%; background: #3ecf8e; animation: pip 1.6s ease-in-out infinite; }
-    @keyframes pip { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.3;transform:scale(0.6)} }
-    .tty-feed { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 0.25rem; overflow: hidden; }
-    .tty-line { font-family: var(--font-mono); font-size: 0.625rem; line-height: 1.5; color: rgba(255,255,255,0.22); }
-    .tty-line.hist { color: rgba(255,255,255,0.3); }
-    .tty-line.cur { color: rgba(255,255,255,0.85); }
-    .tty-line.ok { color: #3ecf8e; }
-    .blink { display: inline-block; width: 5px; height: 11px; background: var(--copper); vertical-align: middle; margin-left: 2px; animation: blink 1s step-end infinite; }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-
-    /* ── SCHEDULER ── */
-    .sched-wrap { flex: 1; display: flex; flex-direction: column; gap: 0.75rem; }
-    .sched-apps { display: flex; gap: 0.375rem; flex-wrap: wrap; }
-    .sched-tag { font-family: var(--font-mono); font-size: 0.5rem; color: var(--signal); background: rgba(26,82,232,0.08); padding: 0.2rem 0.5rem; border-radius: 100px; letter-spacing: 0.07em; border: 1px solid rgba(26,82,232,0.18); }
-    .sched-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 0.3rem; }
-    .sched-cell {
-      aspect-ratio: 1; border-radius: 0.375rem; background: rgba(24,29,42,0.05);
-      border: 1px solid rgba(24,29,42,0.08);
+      padding: 1.25rem; flex: 1;
       display: flex; align-items: center; justify-content: center;
-      font-family: var(--font-mono); font-size: 0.5rem; color: rgba(24,29,42,0.3); font-weight: 500;
-      transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.12s ease, box-shadow 0.25s ease;
+      position: relative; overflow: hidden;
     }
-    .sched-cell.press { transform: scale(0.88); }
-    .sched-cell.on { background: var(--signal); border-color: var(--signal); color: #fff; box-shadow: 0 0 10px var(--signal-glow); }
-    .sched-cell.hi { background: rgba(26,82,232,0.1); border-color: rgba(26,82,232,0.3); color: var(--signal); }
-    .sched-row2 { display: flex; align-items: center; justify-content: space-between; }
-    .sched-save { font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 600; color: var(--ink); background: rgba(24,29,42,0.07); border: 1px solid rgba(24,29,42,0.12); padding: 0.4rem 0.875rem; border-radius: 0.5rem; cursor: default; transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.12s ease, color 0.3s ease; }
-    .sched-save.fire { background: var(--copper); border-color: var(--copper); color: #fff; transform: scale(0.94); box-shadow: 0 0 14px var(--copper-glow); }
-    .sched-status { font-family: var(--font-mono); font-size: 0.5rem; color: rgba(24,29,42,0.3); letter-spacing: 0.08em; transition: color 0.3s ease; }
-    .sched-status.live { color: var(--copper); }
+    #clockCanvas { width: 100%; height: 100%; display: block; }
+
+    /* ── CARD 3: STACK UNLOCK ── */
+    .stack-wrap {
+      flex: 1; display: flex; flex-direction: column; gap: 0.5rem;
+      position: relative;
+    }
+    .stack-row {
+      display: flex; align-items: center; gap: 0.625rem;
+      padding: 0.625rem 0.75rem;
+      border-radius: 0.625rem;
+      background: rgba(24,29,42,0.04);
+      border: 1px solid rgba(24,29,42,0.07);
+      opacity: 0; transform: translateX(-8px);
+      transition: opacity 0.5s ease, transform 0.5s ease, background 0.4s ease, border-color 0.4s ease;
+    }
+    .stack-row.active {
+      opacity: 1; transform: translateX(0);
+      background: rgba(26,82,232,0.06);
+      border-color: rgba(26,82,232,0.18);
+    }
+    .stack-row.visible { opacity: 1; transform: translateX(0); }
+    .stack-icon {
+      width: 28px; height: 28px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.5625rem; color: #fff;
+      flex-shrink: 0; letter-spacing: -0.02em;
+    }
+    .stack-icon.pbi { background: #F2C811; color: var(--ink); }
+    .stack-icon.pa { background: #0066FF; }
+    .stack-icon.sp { background: #038387; }
+    .stack-icon.dv { background: #742774; }
+    .stack-info { flex: 1; min-width: 0; }
+    .stack-name { font-weight: 600; font-size: 0.75rem; color: var(--ink); line-height: 1.2; }
+    .stack-sub { font-family: var(--font-mono); font-size: 0.5rem; color: var(--slate); letter-spacing: 0.08em; margin-top: 0.1rem; }
+    .stack-badge {
+      font-family: var(--font-mono); font-size: 0.5rem; font-weight: 600;
+      color: #3ecf8e; background: rgba(62,207,142,0.1);
+      border: 1px solid rgba(62,207,142,0.2);
+      padding: 0.15rem 0.4rem; border-radius: 100px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      opacity: 0; transition: opacity 0.4s ease 0.2s;
+    }
+    .stack-row.active .stack-badge { opacity: 1; }
+    .stack-total {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 0.5rem; margin-top: 0.25rem;
+      border-top: 1px solid rgba(24,29,42,0.08);
+    }
+    .stack-total-label { font-family: var(--font-mono); font-size: 0.5rem; color: var(--slate); letter-spacing: 0.14em; text-transform: uppercase; }
+    .stack-total-val { font-weight: 900; font-size: 1.25rem; color: var(--copper); letter-spacing: -0.04em; }
 
     /* ── PHILOSOPHY ── */
     .philosophy { position: relative; background: var(--dark); padding: 9rem 6vw; overflow: hidden; }
@@ -289,58 +329,158 @@
       background-size: 64px 64px;
     }
     .phil-inner { position: relative; z-index: 1; max-width: 1060px; }
-    .phil-foil { font-size: clamp(0.875rem, 1.2vw, 0.9375rem); font-weight: 400; color: rgba(255,255,255,0.25); line-height: 1.8; max-width: 600px; margin-bottom: 2rem; }
+    .phil-foil { font-size: clamp(0.875rem, 1.2vw, 0.9375rem); font-weight: 400; color: rgba(255,255,255,0.25); line-height: 1.8; max-width: 600px; margin-bottom: 2.5rem; }
     .phil-foil strong { color: rgba(255,255,255,0.42); font-weight: 500; }
-    /* EDIT: tagline style */
-    .phil-tagline {
-      font-family: var(--font-mono);
-      font-size: 0.6875rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--copper);
-      margin-bottom: 2.25rem;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-    .phil-tagline::before {
-      content: '';
-      display: block;
-      width: 24px;
-      height: 1px;
-      background: var(--copper);
-      opacity: 0.6;
-    }
     .phil-statement { font-family: var(--font-drama); font-style: italic; font-weight: 700; font-size: clamp(2.75rem, 6.5vw, 6.5rem); color: rgba(255,255,255,0.88); line-height: 1.08; }
     .phil-statement .hl { color: var(--copper); }
     .pw { display: inline-block; overflow: hidden; vertical-align: bottom; }
     .pw-i { display: inline-block; }
 
-    /* ── PROTOCOL ── */
-    .protocol { background: var(--paper); padding: 6.5rem 6vw 0; }
+    /* ── PROTOCOL (CONSOLIDATED) ── */
+    .protocol { background: var(--paper); padding: 6.5rem 6vw; }
     .protocol-hd { margin-bottom: 3.5rem; }
-    .proto-card {
+    .proto-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    @media (max-width: 900px) { .proto-layout { grid-template-columns: 1fr; } }
+
+    /* stepper */
+    .proto-stepper { display: flex; flex-direction: column; gap: 0; position: relative; }
+    .step-item {
+      display: flex; gap: 1.25rem;
+      padding: 1.5rem 0;
+      position: relative;
+      opacity: 0.35;
+      transition: opacity 0.5s ease;
+    }
+    .step-item.active { opacity: 1; }
+    .step-item:not(:last-child)::after {
+      content: ''; position: absolute;
+      left: 15px; top: calc(1.5rem + 32px); bottom: 0;
+      width: 1px; background: rgba(24,29,42,0.1);
+    }
+    .step-item.active::after { background: var(--copper); opacity: 0.4; }
+    .step-marker {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(24,29,42,0.06);
+      border: 1.5px solid rgba(24,29,42,0.12);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.4s ease, border-color 0.4s ease;
+    }
+    .step-item.active .step-marker {
+      background: var(--copper); border-color: var(--copper);
+    }
+    .step-num {
+      font-family: var(--font-mono); font-size: 0.5625rem;
+      font-weight: 600; color: rgba(24,29,42,0.3);
+      letter-spacing: 0.05em;
+      transition: color 0.4s ease;
+    }
+    .step-item.active .step-num { color: #fff; }
+    .step-title {
+      font-weight: 800; font-size: 1.125rem;
+      color: var(--ink); letter-spacing: -0.02em;
+      margin-bottom: 0.375rem;
+    }
+    .step-desc {
+      font-size: 0.8125rem; font-weight: 400;
+      color: var(--slate); line-height: 1.65;
+      max-width: 320px;
+    }
+
+    /* right panels */
+    .proto-panels { display: flex; flex-direction: column; gap: 1rem; }
+    .proto-term {
+      background: var(--ink); border-radius: 1rem;
+      display: flex; flex-direction: column;
+      overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+      height: 220px;
+    }
+    .build-bar {
+      display: flex; align-items: center; gap: 0.625rem;
+      padding: 0.625rem 0.875rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      flex-shrink: 0;
+    }
+    .build-dots { display: flex; gap: 5px; }
+    .build-dots span { width: 7px; height: 7px; border-radius: 50%; }
+    .build-dots span:nth-child(1) { background: #FF5F56; }
+    .build-dots span:nth-child(2) { background: #FFBD2E; }
+    .build-dots span:nth-child(3) { background: #27C93F; }
+    .build-title { font-family: var(--font-mono); font-size: 0.5rem; color: rgba(255,255,255,0.2); letter-spacing: 0.1em; margin-left: auto; }
+    .build-feed {
+      flex: 1; padding: 0.75rem 0.875rem;
+      overflow: hidden; display: flex;
+      flex-direction: column; justify-content: flex-end; gap: 0.2rem;
+    }
+    .build-line {
+      font-family: var(--font-mono); font-size: 0.5625rem;
+      line-height: 1.6; color: rgba(255,255,255,0.3);
+      white-space: nowrap; overflow: hidden;
+      opacity: 0; transform: translateY(4px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .build-line.show { opacity: 1; transform: translateY(0); }
+    .build-line.ok { color: #3ecf8e; }
+    .build-line.warn { color: #FFBD2E; }
+    .build-line.cmd { color: rgba(255,255,255,0.55); }
+    .build-line .prompt { color: var(--copper); }
+    .build-line .phase { color: var(--signal); font-weight: 600; }
+
+    /* KPI dashboard */
+    .proto-dash {
       background: var(--card);
       border: 1px solid rgba(24,29,42,0.09);
-      border-radius: 2rem;
-      min-height: 68vh;
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 3rem; align-items: center;
-      padding: 4.5rem 5rem;
-      margin-bottom: 1.25rem; overflow: hidden;
-      will-change: transform, opacity, filter;
-      box-shadow: 0 2px 16px rgba(0,0,0,0.05), 0 8px 40px rgba(0,0,0,0.04);
+      border-radius: 1rem;
+      padding: 1.25rem;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.05);
     }
-    .proto-card.p1 { border-left: 3px solid var(--signal); }
-    .proto-card.p2 { border-left: 3px solid var(--copper); }
-    .proto-card.p3 { border-left: 3px solid var(--ink); }
-    .proto-text .step-n { font-family: var(--font-mono); font-size: 0.5875rem; letter-spacing: 0.22em; color: var(--slate); text-transform: uppercase; margin-bottom: 2rem; }
-    .proto-text .pt-title { font-weight: 800; font-size: clamp(1.625rem, 2.8vw, 2.5rem); color: var(--ink); letter-spacing: -0.035em; line-height: 1.18; margin-bottom: 1rem; }
-    .proto-text .pt-desc { font-size: 0.9375rem; font-weight: 400; color: var(--slate); line-height: 1.75; max-width: 380px; }
-    .proto-vis { display: flex; align-items: center; justify-content: center; height: 260px; }
-    @media (max-width: 780px) {
-      .proto-card { grid-template-columns: 1fr; padding: 2.5rem 2rem; gap: 2rem; min-height: auto; }
-      .proto-vis { height: 180px; }
+    .dash-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1rem; }
+    .kpi-card {
+      text-align: center; padding: 0.875rem 0.5rem;
+      border-radius: 0.75rem;
+      background: rgba(24,29,42,0.03);
+      border: 1px solid rgba(24,29,42,0.06);
+    }
+    .kpi-val {
+      font-weight: 900; font-size: 1.5rem;
+      color: var(--ink); letter-spacing: -0.04em;
+      line-height: 1;
+      transition: color 0.4s ease;
+    }
+    .kpi-val.live { color: var(--copper); }
+    .kpi-label {
+      font-family: var(--font-mono); font-size: 0.4375rem;
+      color: var(--slate); letter-spacing: 0.14em;
+      text-transform: uppercase; margin-top: 0.375rem;
+    }
+    .kpi-status {
+      width: 6px; height: 6px; border-radius: 50%;
+      margin: 0.5rem auto 0;
+      background: rgba(24,29,42,0.08);
+      transition: background 0.4s ease, box-shadow 0.4s ease;
+    }
+    .kpi-status.on {
+      background: #3ecf8e;
+      box-shadow: 0 0 6px rgba(62,207,142,0.5);
+    }
+    .dash-spark {
+      position: relative;
+      border-radius: 0.5rem;
+      background: rgba(24,29,42,0.03);
+      border: 1px solid rgba(24,29,42,0.06);
+      padding: 0.75rem;
+      overflow: hidden;
+    }
+    #sparkCanvas { width: 100%; height: 50px; display: block; }
+    .spark-label {
+      font-family: var(--font-mono); font-size: 0.4375rem;
+      color: var(--slate); letter-spacing: 0.12em;
+      text-transform: uppercase; margin-top: 0.375rem;
     }
 
     /* ── PRICING ── */
@@ -356,31 +496,91 @@
     .pcard.feat {
       background: var(--ink); border: none;
       transform: scale(1.04) translateY(24px);
-      box-shadow: 0 24px 64px rgba(24,29,42,0.25), 0 0 0 2px var(--signal);
+      box-shadow: 0 24px 64px rgba(24,29,42,0.25), 0 0 0 2px var(--copper);
     }
-    .pcard-tier { font-family: var(--font-mono); font-size: 0.5875rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--signal); margin-bottom: 0.875rem; }
-    .pcard-price { font-weight: 900; font-size: 2.75rem; letter-spacing: -0.05em; color: var(--ink); line-height: 1; margin-bottom: 0.25rem; }
-    .pcard.feat .pcard-price { color: #fff; }
-    .pcard-price sub { font-size: 0.875rem; font-weight: 400; opacity: 0.35; letter-spacing: 0; vertical-align: baseline; }
+    .pcard-tier { font-family: var(--font-mono); font-size: 0.5875rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--copper); margin-bottom: 0.625rem; }
+    .pcard-headline { font-weight: 800; font-size: 1.375rem; letter-spacing: -0.03em; color: var(--ink); line-height: 1.2; margin-bottom: 0.75rem; }
+    .pcard.feat .pcard-headline { color: #fff; }
     .pcard-tagline { font-size: 0.8125rem; font-weight: 400; color: var(--slate); line-height: 1.6; margin-bottom: 1.625rem; padding-bottom: 1.625rem; border-bottom: 1px solid rgba(24,29,42,0.08); }
     .pcard.feat .pcard-tagline { color: rgba(255,255,255,0.45); border-color: rgba(255,255,255,0.08); }
     .pcard-feats { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem; }
     .pcard-feat { font-size: 0.875rem; color: var(--slate); display: flex; align-items: flex-start; gap: 0.625rem; line-height: 1.45; }
     .pcard.feat .pcard-feat { color: rgba(255,255,255,0.55); }
-    .pcard-feat::before { content: ''; width: 14px; height: 14px; border-radius: 50%; background: rgba(26,82,232,0.1); border: 1px solid rgba(26,82,232,0.25); flex-shrink: 0; margin-top: 2px; }
+    .pcard-feat::before { content: ''; width: 14px; height: 14px; border-radius: 50%; background: rgba(192,88,24,0.1); border: 1px solid rgba(192,88,24,0.25); flex-shrink: 0; margin-top: 2px; }
     .pcard.feat .pcard-feat::before { background: rgba(192,88,24,0.2); border-color: rgba(192,88,24,0.4); }
     .pcard-btn { display: block; text-align: center; font-family: var(--font-sans); font-weight: 700; font-size: 0.875rem; padding: 0.9rem; border-radius: 0.9rem; border: none; cursor: pointer; position: relative; overflow: hidden; transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.3s ease; }
     .pcard-btn::after { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.14); transform: translateX(-101%); transition: transform 0.3s ease; }
     .pcard-btn:hover { transform: scale(1.025); }
     .pcard-btn:hover::after { transform: translateX(0); }
     .pcard-btn.outline { color: var(--ink); background: transparent; border: 1.5px solid rgba(24,29,42,0.18); }
-    .pcard-btn.outline:hover { border-color: var(--signal); color: var(--signal); }
+    .pcard-btn.outline:hover { border-color: var(--copper); color: var(--copper); }
     .pcard-btn.accent { color: #fff; background: var(--copper); }
     .pcard-btn.accent:hover { box-shadow: 0 0 28px var(--copper-glow), 0 8px 24px rgba(0,0,0,0.2); }
 
+    /* ── CTA SECTION ── */
+    .cta-section {
+      background: var(--dark);
+      padding: 6rem 6vw;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .cta-inner { max-width: 560px; margin: 0 auto; }
+    .cta-h2 {
+      font-weight: 800; font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+      letter-spacing: -0.04em; line-height: 1.12;
+      color: #fff; margin-bottom: 0.875rem;
+    }
+    .cta-sub {
+      font-size: 0.9375rem; font-weight: 400;
+      color: rgba(255,255,255,0.35); line-height: 1.7;
+      margin-bottom: 2.25rem;
+    }
+    .cta-form { max-width: 420px; margin: 0 auto; }
+    .cta-input-wrap {
+      display: flex; gap: 0;
+      border-radius: var(--r-pill);
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      overflow: hidden;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .cta-input-wrap:focus-within {
+      border-color: var(--copper);
+      box-shadow: 0 0 20px var(--copper-glow);
+    }
+    .cta-input {
+      flex: 1; padding: 0.875rem 1.25rem;
+      background: transparent; border: none; outline: none;
+      font-family: var(--font-sans); font-size: 0.875rem;
+      color: #fff; font-weight: 400;
+    }
+    .cta-input::placeholder { color: rgba(255,255,255,0.2); }
+    .cta-submit {
+      padding: 0.875rem 1.5rem;
+      background: var(--copper); border: none;
+      color: #fff; font-family: var(--font-sans);
+      font-weight: 700; font-size: 0.8125rem;
+      cursor: pointer; border-radius: 0 var(--r-pill) var(--r-pill) 0;
+      transition: background 0.25s ease, transform 0.2s ease;
+      white-space: nowrap;
+    }
+    .cta-submit:hover { background: #d4631f; transform: scale(1.02); }
+    .cta-submit:disabled { opacity: 0.5; cursor: default; transform: none; }
+    .cta-confirm {
+      font-family: var(--font-mono); font-size: 0.625rem;
+      color: #3ecf8e; letter-spacing: 0.1em;
+      margin-top: 0.75rem; min-height: 1.2em;
+    }
+    .cta-confirm.error { color: #CC2936; }
+    .cta-fine {
+      font-family: var(--font-mono); font-size: 0.5rem;
+      color: rgba(255,255,255,0.15); letter-spacing: 0.1em;
+      text-transform: uppercase; margin-top: 1rem;
+    }
+
     /* ── FOOTER ── */
     footer { background: var(--dark2); border-radius: 3rem 3rem 0 0; padding: 5.5rem 6vw 3rem; margin-top: 5rem; }
-    .foot-grid { display: grid; grid-template-columns: 2.25fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 4rem; }
+    .foot-grid { display: grid; grid-template-columns: 2.25fr 1fr 1fr; gap: 3rem; margin-bottom: 4rem; }
     @media (max-width: 780px) { .foot-grid { grid-template-columns: 1fr 1fr; gap: 2rem; } }
     .foot-brand-name { font-weight: 800; font-size: 1.0625rem; letter-spacing: -0.025em; color: #fff; margin-bottom: 0.75rem; }
     .foot-brand-tag { font-size: 0.875rem; font-weight: 400; color: rgba(255,255,255,0.28); line-height: 1.7; max-width: 260px; }
@@ -390,8 +590,6 @@
     .foot-col a:hover { color: rgba(255,255,255,0.82); transform: translateY(-1px); }
     .foot-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.06); flex-wrap: wrap; gap: 1rem; }
     .foot-legal { font-family: var(--font-mono); font-size: 0.5625rem; color: rgba(255,255,255,0.16); letter-spacing: 0.07em; }
-    .foot-status { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.5625rem; color: rgba(255,255,255,0.24); letter-spacing: 0.12em; text-transform: uppercase; }
-    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #3ecf8e; box-shadow: 0 0 7px rgba(62,207,142,0.55); animation: pip 2s ease-in-out infinite; }
 
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
@@ -399,6 +597,15 @@
   </style>
 </head>
 <body>
+
+  <!-- REC 10: MOBILE MENU OVERLAY -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#features" class="mobile-nav-link">Services</a>
+    <a href="#protocol" class="mobile-nav-link">Process</a>
+    <a href="#pricing" class="mobile-nav-link">Pricing</a>
+    <a href="#footer" class="mobile-nav-link">Contact</a>
+    <a href="#cta" class="mobile-cta">Get a Free Audit</a>
+  </div>
 
   <nav class="navbar" id="navbar">
     <span class="nav-logo">Power Integrate</span>
@@ -408,43 +615,47 @@
       <li><a href="#pricing">Pricing</a></li>
       <li><a href="#footer">Contact</a></li>
     </ul>
-    <a href="#footer" class="nav-cta">Book a Consultation</a>
-    <button class="nav-hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+    <!-- REC 6: VARIED CTA -->
+    <a href="#cta" class="nav-cta">Get a Free Audit</a>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
   </nav>
 
   <section class="hero" id="hero">
     <div class="hero-grid"></div>
     <div class="hero-content">
       <span class="hero-eyebrow">Power BI &nbsp; Power Automate &nbsp; Microsoft 365</span>
-      <span class="hero-line-sans">Structure is the</span>
-      <span class="hero-line-drama"><span class="signal">strategy.</span></span>
-      <span class="hero-sub">We turn spreadsheet chaos into automated dashboards — using the Microsoft tools your team already owns and pays for.</span>
+      <!-- REC 1: PAIN-FIRST HERO HEADLINE -->
+      <span class="hero-line-sans">Your reports should</span>
+      <span class="hero-line-drama"><span class="signal">run themselves.</span></span>
+      <span class="hero-sub">We turn spreadsheet chaos into automated dashboards, using the Microsoft tools your team already owns and pays for.</span>
+      <!-- REC 6: VARIED CTAs -->
       <div class="hero-actions">
-        <a href="#footer" class="btn-primary">Book a Consultation</a>
+        <a href="#cta" class="btn-primary">Get a Free Audit</a>
         <a href="#features" class="btn-ghost">See How It Works</a>
       </div>
     </div>
+    <!-- REC 2: ALL FOUR STATS ARE NOW REAL METRICS -->
     <div class="hero-stats" id="heroStats">
-      <!-- EDIT: clarified stat label, copper M in M365 -->
-      <div class="hero-stat"><div class="hs-n">4<span>hr</span></div><div class="hs-l">Saved per report cycle</div></div>
       <div class="hero-stat"><div class="hs-n">0<span>x</span></div><div class="hs-l">Copy-paste per week</div></div>
-      <div class="hero-stat"><div class="hs-n">1<span>.</span></div><div class="hs-l">Source of truth</div></div>
-      <div class="hero-stat"><div class="hs-n"><span class="copper">M</span>365</div><div class="hs-l">No new subscriptions</div></div>
+      <div class="hero-stat"><div class="hs-n">100<span>%</span></div><div class="hs-l">Automated refresh</div></div>
+      <div class="hero-stat"><div class="hs-n"><span>$</span>0</div><div class="hs-l">New software costs</div></div>
     </div>
   </section>
 
+  <!-- REC 3: REFRAMED SECTION HEADING + CARD CONTENT -->
   <section class="features section-pad" id="features">
     <div class="features-hd">
       <span class="section-label">What We Build</span>
-      <h2 class="section-h2">Three problems.<br>One engagement.</h2>
-      <p class="section-sub">Every Power Integrate project addresses the same root causes keeping your team buried in spreadsheets.</p>
+      <h2 class="section-h2">What goes into<br>every engagement.</h2>
+      <p class="section-sub">Every Power Integrate project delivers the same three things: a unified data layer, hands-free automation, and zero new subscriptions.</p>
     </div>
     <div class="features-grid">
 
+      <!-- REC 4: DATA CHASSIS PRIMARY EXPLANATION LIVES HERE -->
       <div class="fcard" id="fcard1">
-        <span class="fcard-label">Core Architecture</span>
+        <span class="fcard-label">Core Deliverable</span>
         <div class="fcard-title">The Data Chassis</div>
-        <div class="fcard-desc">We consolidate your scattered data into a single structured layer. Every source feeds one spine. Every report reads from it. Everyone sees the same numbers.</div>
+        <div class="fcard-desc">Your spreadsheets, databases, and SharePoint lists all feed into one structured layer. Every report reads from it. Everyone on your team sees the same numbers, every time.</div>
         <div class="fcard-body">
           <canvas id="chassisCanvas"></canvas>
         </div>
@@ -453,41 +664,43 @@
       <div class="fcard" id="fcard2">
         <span class="fcard-label">Automation</span>
         <div class="fcard-title">Runs While You Sleep</div>
-        <div class="fcard-desc">Reports that took 4 hours every Monday now refresh daily — automatically.</div>
+        <div class="fcard-desc">The report that took 4 hours every Monday now refreshes itself daily, automatically, before your team even opens it.</div>
         <div class="fcard-body">
-          <div class="tty-shell">
-            <div class="tty-bar">
-              <div class="tty-dots"><span></span><span></span><span></span></div>
-              <div class="live-chip"><span class="live-pip"></span>Live Feed</div>
-            </div>
-            <div class="tty-feed" id="ttyFeed">
-              <div class="tty-line hist">SharePoint sync initialized</div>
-              <div class="tty-line hist ok">✓ Power Query refresh complete</div>
-              <div class="tty-line cur"><span id="ttyText"></span><span class="blink"></span></div>
-            </div>
+          <div class="clock-shell">
+            <canvas id="clockCanvas"></canvas>
           </div>
         </div>
       </div>
 
       <div class="fcard" id="fcard3">
-        <span class="fcard-label">Microsoft 365</span>
-        <div class="fcard-title">No New Subscriptions</div>
-        <div class="fcard-desc">Power BI, Automate, SharePoint — it's already in your plan. We unlock it.</div>
+        <span class="fcard-label">Your Existing Stack</span>
+        <div class="fcard-title">$0 in New Software</div>
+        <div class="fcard-desc">Power BI, Automate, SharePoint. It is already in your Microsoft 365 plan. We just unlock it.</div>
         <div class="fcard-body">
-          <div class="sched-wrap">
-            <div class="sched-apps">
-              <span class="sched-tag">Power BI</span>
-              <span class="sched-tag">Automate</span>
-              <span class="sched-tag">SharePoint</span>
-              <span class="sched-tag">Dataverse</span>
+          <div class="stack-wrap" id="stackWrap">
+            <div class="stack-row" data-idx="0">
+              <div class="stack-icon pbi">PBI</div>
+              <div class="stack-info"><div class="stack-name">Power BI</div><div class="stack-sub">Dashboards + Reports</div></div>
+              <div class="stack-badge">Included</div>
             </div>
-            <div class="sched-grid" id="schedGrid">
-              <div class="sched-cell">S</div><div class="sched-cell">M</div><div class="sched-cell">T</div>
-              <div class="sched-cell">W</div><div class="sched-cell">T</div><div class="sched-cell">F</div><div class="sched-cell">S</div>
+            <div class="stack-row" data-idx="1">
+              <div class="stack-icon pa">PA</div>
+              <div class="stack-info"><div class="stack-name">Power Automate</div><div class="stack-sub">Scheduled Flows</div></div>
+              <div class="stack-badge">Included</div>
             </div>
-            <div class="sched-row2">
-              <button class="sched-save" id="schedSave">Schedule Refresh</button>
-              <span class="sched-status" id="schedStatus">— idle</span>
+            <div class="stack-row" data-idx="2">
+              <div class="stack-icon sp">SP</div>
+              <div class="stack-info"><div class="stack-name">SharePoint</div><div class="stack-sub">Data Storage Layer</div></div>
+              <div class="stack-badge">Included</div>
+            </div>
+            <div class="stack-row" data-idx="3">
+              <div class="stack-icon dv">DV</div>
+              <div class="stack-info"><div class="stack-name">Dataverse</div><div class="stack-sub">Enterprise Data Model</div></div>
+              <div class="stack-badge">Included</div>
+            </div>
+            <div class="stack-total">
+              <span class="stack-total-label">Added cost to your plan</span>
+              <span class="stack-total-val">$0</span>
             </div>
           </div>
         </div>
@@ -496,71 +709,82 @@
     </div>
   </section>
 
+  <!-- REC 5: REWRITTEN PHILOSOPHY SECTION -->
   <section class="philosophy" id="philosophy">
     <div class="phil-bg" id="philBg"></div>
     <div class="phil-grid"></div>
     <div class="phil-inner">
       <p class="phil-foil">
-        Most analytics firms focus on: <strong>building you a brand-new platform</strong>, locking you into
-        subscriptions you didn't budget for, and delivering a dashboard that only they can maintain —
-        leaving your team dependent and your data still siloed.
+        Most teams solve their reporting problem by: <strong>hiring someone who's good at Excel</strong>,
+        copy-pasting numbers into a slide deck every week, and hoping the formulas don't break
+        when someone accidentally deletes a row.
       </p>
-      <!-- EDIT: tagline added here -->
-      <div class="phil-tagline">Turn one refresh into infinite possibilities.</div>
       <div class="phil-statement" id="philStmt">
-        We focus on making your <span class="hl">existing tools</span> do the work they were always meant to do.
+        We make your <span class="hl">existing tools</span> do the work they were always meant to do.
       </div>
     </div>
   </section>
 
+  <!-- CONSOLIDATED PROTOCOL SECTION -->
   <section class="protocol" id="protocol">
     <div class="protocol-hd">
       <span class="section-label">The Engagement</span>
       <h2 class="section-h2">Three steps.<br>Permanent results.</h2>
-      <p class="section-sub">Every project follows the same proven sequence — audit, build, automate. In that order. Every time.</p>
+      <p class="section-sub">Every project follows the same proven sequence. Audit, build, automate. In that order. Every time.</p>
     </div>
-    <div id="protoWrap">
-      <div class="proto-card p1" id="pc1">
-        <div class="proto-text">
-          <div class="step-n">Step 01 — Audit</div>
-          <div class="pt-title">We map where your data lives and why it's broken.</div>
-          <div class="pt-desc">A structured discovery session surfaces all your data sources, manual bottlenecks, and reporting gaps. You walk away with a clear architecture map before we write a single query.</div>
+    <div class="proto-layout">
+      <!-- LEFT: STEPPER -->
+      <div class="proto-stepper">
+        <div class="step-item active" id="step1">
+          <div class="step-marker"><span class="step-num">01</span></div>
+          <div class="step-content">
+            <div class="step-title">Audit</div>
+            <div class="step-desc">We map every data source, manual bottleneck, and reporting gap. You get a clear architecture map before we write a single query.</div>
+          </div>
         </div>
-        <div class="proto-vis"><canvas id="cv1" width="280" height="260"></canvas></div>
-      </div>
-      <div class="proto-card p2" id="pc2">
-        <div class="proto-text">
-          <div class="step-n">Step 02 — Build</div>
-          <div class="pt-title">The Data Chassis goes in. Reports come out.</div>
-          <div class="pt-desc">We build your semantic model, Power Query pipelines, and Power BI dashboards — structured for your team to own, not just use. Every measure documented. Every source named.</div>
+        <div class="step-item" id="step2">
+          <div class="step-marker"><span class="step-num">02</span></div>
+          <div class="step-content">
+            <div class="step-title">Build</div>
+            <div class="step-desc">Your Data Chassis goes in. Semantic model, Power Query pipelines, and dashboards, all structured so your team can own them.</div>
+          </div>
         </div>
-        <div class="proto-vis">
-          <svg id="sv2" width="260" height="220" viewBox="0 0 260 220">
-            <g id="dg"></g>
-            <line x1="-260" y1="0" x2="0" y2="0" stroke="url(#lg2)" stroke-width="1.5">
-              <animateTransform attributeName="transform" type="translate" from="-260 110" to="520 110" dur="2.6s" repeatCount="indefinite"/>
-            </line>
-            <defs>
-              <linearGradient id="lg2" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="transparent"/>
-                <stop offset="50%" stop-color="#1A52E8" stop-opacity="0.9"/>
-                <stop offset="100%" stop-color="transparent"/>
-              </linearGradient>
-            </defs>
-          </svg>
+        <div class="step-item" id="step3">
+          <div class="step-marker"><span class="step-num">03</span></div>
+          <div class="step-content">
+            <div class="step-title">Automate</div>
+            <div class="step-desc">Automated flows trigger on schedule. Sources refresh. The dashboard updates before anyone touches it. Nothing breaks.</div>
+          </div>
         </div>
       </div>
-      <div class="proto-card p3" id="pc3">
-        <div class="proto-text">
-          <div class="step-n">Step 03 — Automate</div>
-          <div class="pt-title">The Monday report runs itself. Every day.</div>
-          <div class="pt-desc">Power Automate flows trigger on schedule or on event. Sources refresh. The dashboard updates. Your team opens it and it's already done — no one touched it, nothing broke.</div>
+      <!-- RIGHT: TERMINAL + KPI DASH -->
+      <div class="proto-panels">
+        <div class="proto-term" id="protoTerm">
+          <div class="build-bar"><div class="build-dots"><span></span><span></span><span></span></div><span class="build-title">engagement.log</span></div>
+          <div class="build-feed" id="buildFeed"></div>
         </div>
-        <div class="proto-vis">
-          <svg id="sv3" width="280" height="110" viewBox="0 0 280 110">
-            <path id="ekg" d="M0,55 L35,55 L48,18 L58,92 L68,35 L78,75 L88,55 L124,55 L137,18 L147,92 L157,35 L167,75 L177,55 L213,55 L226,18 L236,92 L246,35 L256,75 L266,55 L280,55"
-              fill="none" stroke="#C05818" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+        <div class="proto-dash" id="protoDash">
+          <div class="dash-row">
+            <div class="kpi-card" id="kpi1">
+              <div class="kpi-val" data-target="5">0</div>
+              <div class="kpi-label">Sources Connected</div>
+              <div class="kpi-status"></div>
+            </div>
+            <div class="kpi-card" id="kpi2">
+              <div class="kpi-val" data-target="4">0</div>
+              <div class="kpi-label">Hours Saved / Week</div>
+              <div class="kpi-status"></div>
+            </div>
+            <div class="kpi-card" id="kpi3">
+              <div class="kpi-val" data-target="0">0</div>
+              <div class="kpi-label">Manual Steps</div>
+              <div class="kpi-status"></div>
+            </div>
+          </div>
+          <div class="dash-spark" id="dashSpark">
+            <canvas id="sparkCanvas" width="400" height="60"></canvas>
+            <div class="spark-label">Data Freshness (7d)</div>
+          </div>
         </div>
       </div>
     </div>
@@ -571,42 +795,61 @@
     <h2 class="section-h2">Scoped to where<br>you actually are.</h2>
     <div class="pricing-grid">
       <div class="pcard" id="pr1">
-        <div class="pcard-tier">Essential</div>
-        <div class="pcard-price">$1,500<sub> /project</sub></div>
-        <div class="pcard-tagline">One dashboard, one source, one team. The fastest path to your first automated report.</div>
+        <div class="pcard-tier">Foundation</div>
+        <div class="pcard-headline">Audit + Build</div>
+        <div class="pcard-tagline">A tailored data audit, ETL pipeline, and your first automated reports and dashboards. The fastest path from spreadsheet chaos to a single source of truth.</div>
         <ul class="pcard-feats">
-          <li class="pcard-feat">1 Power BI dashboard</li>
-          <li class="pcard-feat">Power Query data pipeline</li>
-          <li class="pcard-feat">SharePoint data source setup</li>
-          <li class="pcard-feat">2-week delivery window</li>
+          <li class="pcard-feat">Full data source audit and architecture map</li>
+          <li class="pcard-feat">Automated ETL pipeline</li>
+          <li class="pcard-feat">Automated reporting and dashboards</li>
+          <li class="pcard-feat">Data Chassis foundation layer</li>
         </ul>
-        <a href="#footer" class="pcard-btn outline">Book a Consultation</a>
+        <a href="#cta" class="pcard-btn outline">Get Started</a>
       </div>
       <div class="pcard feat" id="pr2">
         <div class="pcard-tier">Performance</div>
-        <div class="pcard-price">$4,500<sub> /project</sub></div>
-        <div class="pcard-tagline">Full Data Chassis build with automated refresh, multi-source integration, and team training.</div>
+        <div class="pcard-headline">Full Automation + 3 Mo. Support</div>
+        <div class="pcard-tagline">A scheduled, automated reporting system with robust dashboards, team training, and three months of dedicated support to ensure everything runs.</div>
         <ul class="pcard-feats">
-          <li class="pcard-feat">Full semantic model (star schema)</li>
-          <li class="pcard-feat">Up to 5 dashboards</li>
-          <li class="pcard-feat">Power Automate scheduled flows</li>
-          <li class="pcard-feat">SharePoint or Dataverse architecture</li>
+          <li class="pcard-feat">Everything in Foundation</li>
+          <li class="pcard-feat">Scheduled automated refresh flows</li>
+          <li class="pcard-feat">Multi-source integration</li>
           <li class="pcard-feat">Team walkthrough and documentation</li>
+          <li class="pcard-feat">3 months of post-launch support</li>
         </ul>
-        <a href="#footer" class="pcard-btn accent">Book a Consultation</a>
+        <a href="#cta" class="pcard-btn accent">Book a Consultation</a>
       </div>
       <div class="pcard" id="pr3">
-        <div class="pcard-tier">Enterprise</div>
-        <div class="pcard-price">Custom<sub> /retainer</sub></div>
-        <div class="pcard-tagline">Ongoing BI partnership for teams with complex environments and evolving reporting needs.</div>
+        <div class="pcard-tier">Partnership</div>
+        <div class="pcard-headline">Ongoing Retainer</div>
+        <div class="pcard-tagline">Everything in Performance, plus ongoing consulting, monthly model maintenance, and priority support as your reporting needs evolve.</div>
         <ul class="pcard-feats">
-          <li class="pcard-feat">Unlimited dashboards</li>
-          <li class="pcard-feat">Azure SQL and Dataverse integration</li>
-          <li class="pcard-feat">Monthly model maintenance</li>
-          <li class="pcard-feat">Priority support and iterations</li>
+          <li class="pcard-feat">Everything in Performance</li>
+          <li class="pcard-feat">Ongoing consulting retainer</li>
+          <li class="pcard-feat">Monthly model maintenance and iteration</li>
+          <li class="pcard-feat">Priority support and SLA</li>
         </ul>
-        <a href="#footer" class="pcard-btn outline">Book a Consultation</a>
+        <a href="#cta" class="pcard-btn outline">Let's Talk</a>
       </div>
+    </div>
+  </section>
+
+  <!-- EMAIL CAPTURE CTA -->
+  <section class="cta-section" id="cta">
+    <div class="cta-inner">
+      <div class="cta-text">
+        <span class="section-label" style="color:var(--copper);">Get Started</span>
+        <h2 class="cta-h2">Ready to stop rebuilding the same report?</h2>
+        <p class="cta-sub">Drop your email and we will reach out within one business day to schedule a free audit of your reporting stack.</p>
+      </div>
+      <form class="cta-form" id="ctaForm">
+        <div class="cta-input-wrap">
+          <input type="email" id="ctaEmail" class="cta-input" placeholder="you@company.com" required autocomplete="email" />
+          <button type="submit" class="cta-submit">Send</button>
+        </div>
+        <div class="cta-confirm" id="ctaConfirm"></div>
+        <div class="cta-fine">No spam. No pitch deck. Just a conversation about your data.</div>
+      </form>
     </div>
   </section>
 
@@ -614,38 +857,25 @@
     <div class="foot-grid">
       <div>
         <div class="foot-brand-name">Power Integrate</div>
-        <div class="foot-brand-tag">We turn spreadsheet chaos into automated dashboards — using the Microsoft tools your team already owns.</div>
+        <div class="foot-brand-tag">We turn spreadsheet chaos into automated dashboards, using the Microsoft tools your team already owns.</div>
       </div>
       <div class="foot-col">
         <div class="foot-col-label">Services</div>
         <ul>
-          <li><a href="#">Power BI Build</a></li>
-          <li><a href="#">Data Chassis</a></li>
-          <li><a href="#">Power Automate</a></li>
-          <li><a href="#">SharePoint Setup</a></li>
-        </ul>
-      </div>
-      <div class="foot-col">
-        <div class="foot-col-label">Company</div>
-        <ul>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Process</a></li>
-          <li><a href="#">Case Studies</a></li>
-          <li><a href="#">Blog</a></li>
+          <li><a href="#features">Power BI Dashboards</a></li>
+          <li><a href="#features">Data Chassis Architecture</a></li>
+          <li><a href="#features">Automated Flows</a></li>
         </ul>
       </div>
       <div class="foot-col">
         <div class="foot-col-label">Contact</div>
         <ul>
-          <li><a href="#">Book a Consultation</a></li>
-          <li><a href="mailto:hello@powerintegrate.com">hello@powerintegrate.com</a></li>
-          <li><a href="#">Nashville, TN</a></li>
+          <li><a href="mailto:sean@powerintegrate.co">sean@powerintegrate.co</a></li>
         </ul>
       </div>
     </div>
     <div class="foot-bottom">
-      <span class="foot-legal">© 2025 Power Integrate LLC · All rights reserved</span>
-      <div class="foot-status"><span class="status-dot"></span><span>All systems operational</span></div>
+      <span class="foot-legal">&copy; 2026 Power Integrate LLC &middot; All rights reserved</span>
     </div>
   </footer>
 
@@ -653,6 +883,22 @@
     gsap.registerPlugin(ScrollTrigger);
 
     document.addEventListener('DOMContentLoaded', () => {
+
+      /* REC 10: MOBILE MENU TOGGLE */
+      const hamburger = document.getElementById('navHamburger');
+      const mobileMenu = document.getElementById('mobileMenu');
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        mobileMenu.classList.toggle('open');
+        document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+      });
+      document.querySelectorAll('.mobile-nav-link, .mobile-cta').forEach(link => {
+        link.addEventListener('click', () => {
+          hamburger.classList.remove('active');
+          mobileMenu.classList.remove('open');
+          document.body.style.overflow = '';
+        });
+      });
 
       /* NAVBAR */
       const navbar = document.getElementById('navbar');
@@ -680,221 +926,334 @@
 
       /* DATA CHASSIS CANVAS */
       const canvas = document.getElementById('chassisCanvas');
-      function drawChassis() {
-        const W = canvas.offsetWidth, H = canvas.offsetHeight;
-        canvas.width = W * window.devicePixelRatio;
-        canvas.height = H * window.devicePixelRatio;
-        const ctx = canvas.getContext('2d');
-        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      const chassisCtx = canvas.getContext('2d');
+      const SIGNAL = '#1A52E8', COPPER = '#C05818';
+      const TEXT_DIM = 'rgba(255,255,255,0.38)', TEXT_BRIGHT = 'rgba(255,255,255,0.75)';
+      const chassisSources = [
+        { label: 'OneDrive',     color: '#0078D4' },
+        { label: 'Cloud Server', color: '#038387' },
+        { label: 'API',          color: '#CC2936' },
+        { label: 'Database',     color: '#E8860A' },
+        { label: 'Flat Files',   color: '#5C6474' },
+      ];
+      const chassisOutputs = [
+        { label: 'Live Reports',  color: SIGNAL },
+        { label: 'Dashboards',    color: COPPER },
+        { label: 'Automation',    color: '#3ecf8e' },
+        { label: 'Alerts',        color: '#FFBD2E' },
+      ];
+      const chassisPackets = [];
+      chassisSources.forEach((_, i) => chassisPackets.push({ t: i * 0.18 + 0.05, srcIdx: i, isOutput: false, color: SIGNAL }));
+      chassisOutputs.forEach((o, i) => chassisPackets.push({ t: i * 0.22 + 0.12, srcIdx: i, isOutput: true,  color: o.color }));
 
-        const SIGNAL = '#1A52E8', COPPER = '#C05818';
-        const TEXT_DIM = 'rgba(255,255,255,0.38)', TEXT_BRIGHT = 'rgba(255,255,255,0.75)';
-        const srcX = 16, srcW = 74, srcH = 22;
+      let chassisW = 0, chassisH = 0, chassisFrame = 0;
+
+      function chassisRoundRect(ctx, x, y, w, h, r) {
+        ctx.beginPath();
+        ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y);
+        ctx.arcTo(x + w, y, x + w, y + r, r); ctx.lineTo(x + w, y + h - r);
+        ctx.arcTo(x + w, y + h, x + w - r, y + h, r); ctx.lineTo(x + r, y + h);
+        ctx.arcTo(x, y + h, x, y + h - r, r); ctx.lineTo(x, y + r);
+        ctx.arcTo(x, y, x + r, y, r); ctx.closePath();
+      }
+
+      function resizeChassis() {
+        chassisW = canvas.offsetWidth;
+        chassisH = canvas.offsetHeight;
+        canvas.width = chassisW * window.devicePixelRatio;
+        canvas.height = chassisH * window.devicePixelRatio;
+      }
+
+      function renderChassis() {
+        const W = chassisW, H = chassisH;
+        if (W === 0 || H === 0) { requestAnimationFrame(renderChassis); return; }
+        const ctx = chassisCtx;
+        ctx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
+        ctx.clearRect(0, 0, W, H);
+
+        const srcX = 12, srcW = 86, srcH = 22;
         const cX = W * 0.42, cW = W * 0.22, cH = 48, cY = H / 2 - cH / 2;
-        const outX = W - 16 - 76;
-
-        const sources = [
-          { label: 'Excel',      color: '#1D6F42' },
-          { label: 'SharePoint', color: '#038387' },
-          { label: 'CSV',        color: '#5C6474' },
-          { label: 'SQL Server', color: '#CC2936' },
-        ];
-        const outputs = [
-          { label: 'Power BI',  color: SIGNAL },
-          { label: 'Reports',   color: '#5C6474' },
-          { label: 'Automate',  color: COPPER },
-        ];
-
-        const srcSpacing = (H - 32) / sources.length;
-        const outSpacing = (H - 32) / outputs.length;
+        const outBoxW = 88;
+        const outX = W - 12 - outBoxW;
+        const srcSpacing = (H - 32) / chassisSources.length;
+        const outSpacing = (H - 32) / chassisOutputs.length;
         function srcY(i) { return 16 + i * srcSpacing + srcSpacing / 2; }
         function outY(i) { return 16 + i * outSpacing + outSpacing / 2; }
 
-        const packets = [];
-        sources.forEach((_, i) => packets.push({ t: i * 0.22 + 0.05, srcIdx: i, isOutput: false, color: SIGNAL }));
-        outputs.forEach((_, i) => packets.push({ t: i * 0.30 + 0.12, srcIdx: i, isOutput: true,  color: COPPER }));
+        ctx.strokeStyle = 'rgba(26,82,232,0.06)'; ctx.lineWidth = 0.5;
+        for (let x = 0; x < W; x += 24) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+        for (let y = 0; y < H; y += 24) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
 
-        function roundRect(ctx, x, y, w, h, r) {
-          ctx.beginPath();
-          ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y);
-          ctx.arcTo(x + w, y, x + w, y + r, r); ctx.lineTo(x + w, y + h - r);
-          ctx.arcTo(x + w, y + h, x + w - r, y + h, r); ctx.lineTo(x + r, y + h);
-          ctx.arcTo(x, y + h, x, y + h - r, r); ctx.lineTo(x, y + r);
-          ctx.arcTo(x, y, x + r, y, r); ctx.closePath();
-        }
+        chassisSources.forEach((s, i) => {
+          const sy = srcY(i), ex = cX, ey = cY + cH / 2;
+          const cp1x = srcX + srcW + (ex - srcX - srcW) * 0.55, cp1y = sy;
+          const cp2x = ex - (ex - srcX - srcW) * 0.25, cp2y = ey;
+          ctx.beginPath(); ctx.moveTo(srcX + srcW, sy);
+          ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, ex, ey);
+          ctx.strokeStyle = 'rgba(255,255,255,0.07)'; ctx.lineWidth = 1; ctx.stroke();
+        });
 
-        let frame = 0;
-        function render() {
-          ctx.clearRect(0, 0, W, H);
+        chassisOutputs.forEach((o, i) => {
+          const oy = outY(i), sx = cX + cW, sy2 = cY + cH / 2;
+          const cp1x = sx + (outX - sx) * 0.28, cp1y = sy2;
+          const cp2x = outX - (outX - sx) * 0.28, cp2y = oy;
+          ctx.beginPath(); ctx.moveTo(sx, sy2);
+          ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, outX, oy);
+          ctx.strokeStyle = 'rgba(255,255,255,0.07)'; ctx.lineWidth = 1; ctx.stroke();
+        });
 
-          ctx.strokeStyle = 'rgba(26,82,232,0.06)'; ctx.lineWidth = 0.5;
-          for (let x = 0; x < W; x += 24) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
-          for (let y = 0; y < H; y += 24) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
-
-          sources.forEach((s, i) => {
-            const sy = srcY(i), ex = cX, ey = cY + cH / 2;
+        chassisPackets.forEach(p => {
+          p.t += p.isOutput ? 0.0042 : 0.0048;
+          if (p.t > 1) p.t = 0;
+          let px, py;
+          if (!p.isOutput) {
+            const sy = srcY(p.srcIdx), ex = cX, ey = cY + cH / 2;
             const cp1x = srcX + srcW + (ex - srcX - srcW) * 0.55, cp1y = sy;
             const cp2x = ex - (ex - srcX - srcW) * 0.25, cp2y = ey;
-            ctx.beginPath(); ctx.moveTo(srcX + srcW, sy);
-            ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, ex, ey);
-            ctx.strokeStyle = 'rgba(255,255,255,0.07)'; ctx.lineWidth = 1; ctx.stroke();
-          });
-
-          outputs.forEach((o, i) => {
-            const oy = outY(i), sx = cX + cW, sy2 = cY + cH / 2;
+            const t = p.t, mt = 1 - t;
+            px = mt*mt*mt*(srcX+srcW) + 3*mt*mt*t*cp1x + 3*mt*t*t*cp2x + t*t*t*ex;
+            py = mt*mt*mt*sy          + 3*mt*mt*t*cp1y + 3*mt*t*t*cp2y + t*t*t*ey;
+          } else {
+            const oy = outY(p.srcIdx), sx = cX + cW, sy2 = cY + cH / 2;
             const cp1x = sx + (outX - sx) * 0.28, cp1y = sy2;
             const cp2x = outX - (outX - sx) * 0.28, cp2y = oy;
-            ctx.beginPath(); ctx.moveTo(sx, sy2);
-            ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, outX, oy);
-            ctx.strokeStyle = 'rgba(255,255,255,0.07)'; ctx.lineWidth = 1; ctx.stroke();
-          });
+            const t = p.t, mt = 1 - t;
+            px = mt*mt*mt*sx  + 3*mt*mt*t*cp1x + 3*mt*t*t*cp2x + t*t*t*outX;
+            py = mt*mt*mt*sy2 + 3*mt*mt*t*cp1y + 3*mt*t*t*cp2y + t*t*t*oy;
+          }
+          ctx.beginPath(); ctx.arc(px, py, 2.5, 0, Math.PI * 2);
+          ctx.fillStyle = p.color; ctx.shadowColor = p.color; ctx.shadowBlur = 8;
+          ctx.fill(); ctx.shadowBlur = 0;
+        });
 
-          packets.forEach(p => {
-            p.t += p.isOutput ? 0.0042 : 0.0048;
-            if (p.t > 1) p.t = 0;
-            let px, py;
-            if (!p.isOutput) {
-              const sy = srcY(p.srcIdx), ex = cX, ey = cY + cH / 2;
-              const cp1x = srcX + srcW + (ex - srcX - srcW) * 0.55, cp1y = sy;
-              const cp2x = ex - (ex - srcX - srcW) * 0.25, cp2y = ey;
-              const t = p.t, mt = 1 - t;
-              px = mt*mt*mt*(srcX+srcW) + 3*mt*mt*t*cp1x + 3*mt*t*t*cp2x + t*t*t*ex;
-              py = mt*mt*mt*sy          + 3*mt*mt*t*cp1y + 3*mt*t*t*cp2y + t*t*t*ey;
-            } else {
-              const oy = outY(p.srcIdx), sx = cX + cW, sy2 = cY + cH / 2;
-              const cp1x = sx + (outX - sx) * 0.28, cp1y = sy2;
-              const cp2x = outX - (outX - sx) * 0.28, cp2y = oy;
-              const t = p.t, mt = 1 - t;
-              px = mt*mt*mt*sx  + 3*mt*mt*t*cp1x + 3*mt*t*t*cp2x + t*t*t*outX;
-              py = mt*mt*mt*sy2 + 3*mt*mt*t*cp1y + 3*mt*t*t*cp2y + t*t*t*oy;
-            }
-            ctx.beginPath(); ctx.arc(px, py, 2.5, 0, Math.PI * 2);
-            ctx.fillStyle = p.color; ctx.shadowColor = p.color; ctx.shadowBlur = 8;
-            ctx.fill(); ctx.shadowBlur = 0;
-          });
+        chassisSources.forEach((s, i) => {
+          const sy = srcY(i);
+          chassisRoundRect(ctx, srcX, sy - srcH/2, srcW, srcH, 4);
+          ctx.fillStyle = 'rgba(255,255,255,0.04)'; ctx.fill();
+          ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.lineWidth = 0.75; ctx.stroke();
+          ctx.beginPath(); ctx.arc(srcX + 10, sy, 3.5, 0, Math.PI*2);
+          ctx.fillStyle = s.color; ctx.fill();
+          ctx.font = '500 8.5px Fira Code, monospace'; ctx.fillStyle = TEXT_DIM;
+          ctx.fillText(s.label, srcX + 20, sy + 3);
+        });
 
-          sources.forEach((s, i) => {
-            const sy = srcY(i);
-            roundRect(ctx, srcX, sy - srcH/2, srcW, srcH, 4);
-            ctx.fillStyle = 'rgba(255,255,255,0.04)'; ctx.fill();
-            ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.lineWidth = 0.75; ctx.stroke();
-            ctx.beginPath(); ctx.arc(srcX + 10, sy, 3.5, 0, Math.PI*2);
-            ctx.fillStyle = s.color; ctx.fill();
-            ctx.font = '500 8.5px Fira Code, monospace'; ctx.fillStyle = TEXT_DIM;
-            ctx.fillText(s.label, srcX + 20, sy + 3);
-          });
+        chassisRoundRect(ctx, cX, cY, cW, cH, 8);
+        ctx.fillStyle = SIGNAL; ctx.fill();
+        chassisRoundRect(ctx, cX+1, cY+1, cW-2, cH/2-1, 8);
+        ctx.fillStyle = 'rgba(255,255,255,0.08)'; ctx.fill();
+        ctx.shadowColor = SIGNAL; ctx.shadowBlur = 18;
+        chassisRoundRect(ctx, cX, cY, cW, cH, 8);
+        ctx.strokeStyle = 'rgba(26,82,232,0.6)'; ctx.lineWidth = 1; ctx.stroke();
+        ctx.shadowBlur = 0;
+        ctx.font = '700 9px Outfit, sans-serif'; ctx.fillStyle = '#fff'; ctx.textAlign = 'center';
+        ctx.fillText('DATA', cX + cW/2, cY + cH/2 - 3);
+        ctx.font = '500 7.5px Fira Code, monospace'; ctx.fillStyle = 'rgba(255,255,255,0.6)';
+        ctx.fillText('CHASSIS', cX + cW/2, cY + cH/2 + 9);
+        ctx.textAlign = 'left';
 
-          roundRect(ctx, cX, cY, cW, cH, 8);
-          ctx.fillStyle = SIGNAL; ctx.fill();
-          roundRect(ctx, cX+1, cY+1, cW-2, cH/2-1, 8);
-          ctx.fillStyle = 'rgba(255,255,255,0.08)'; ctx.fill();
-          ctx.shadowColor = SIGNAL; ctx.shadowBlur = 18;
-          roundRect(ctx, cX, cY, cW, cH, 8);
-          ctx.strokeStyle = 'rgba(26,82,232,0.6)'; ctx.lineWidth = 1; ctx.stroke();
-          ctx.shadowBlur = 0;
-          ctx.font = '700 9px Outfit, sans-serif'; ctx.fillStyle = '#fff'; ctx.textAlign = 'center';
-          ctx.fillText('DATA', cX + cW/2, cY + cH/2 - 3);
-          ctx.font = '500 7.5px Fira Code, monospace'; ctx.fillStyle = 'rgba(255,255,255,0.6)';
-          ctx.fillText('CHASSIS', cX + cW/2, cY + cH/2 + 9);
-          ctx.textAlign = 'left';
+        const pulse = 12 + 6 * Math.abs(Math.sin(chassisFrame * 0.04));
+        ctx.beginPath();
+        ctx.arc(cX + cW/2, cY + cH/2, pulse + cW/2 * 0.72, 0, Math.PI*2);
+        ctx.strokeStyle = 'rgba(26,82,232,' + (0.08 - 0.06 * Math.abs(Math.sin(chassisFrame * 0.04))) + ')';
+        ctx.lineWidth = 1; ctx.stroke();
 
-          const pulse = 12 + 6 * Math.abs(Math.sin(frame * 0.04));
-          ctx.beginPath();
-          ctx.arc(cX + cW/2, cY + cH/2, pulse + cW/2 * 0.72, 0, Math.PI*2);
-          ctx.strokeStyle = 'rgba(26,82,232,' + (0.08 - 0.06 * Math.abs(Math.sin(frame * 0.04))) + ')';
-          ctx.lineWidth = 1; ctx.stroke();
+        chassisOutputs.forEach((o, i) => {
+          const oy = outY(i);
+          chassisRoundRect(ctx, outX, oy - srcH/2, outBoxW, srcH, 4);
+          ctx.fillStyle = 'rgba(255,255,255,0.04)'; ctx.fill();
+          ctx.strokeStyle = o.color; ctx.globalAlpha = 0.35;
+          ctx.lineWidth = 0.75; ctx.stroke();
+          ctx.globalAlpha = 1;
+          ctx.beginPath(); ctx.arc(outX + 10, oy, 3.5, 0, Math.PI*2);
+          ctx.fillStyle = o.color; ctx.fill();
+          ctx.font = '500 8px Fira Code, monospace'; ctx.fillStyle = TEXT_BRIGHT;
+          ctx.fillText(o.label, outX + 20, oy + 3);
+        });
 
-          outputs.forEach((o, i) => {
-            const oy = outY(i);
-            roundRect(ctx, outX, oy - srcH/2, 76, srcH, 4);
-            ctx.fillStyle = 'rgba(255,255,255,0.04)'; ctx.fill();
-            ctx.strokeStyle = o.color === COPPER ? 'rgba(192,88,24,0.35)'
-                            : o.color === SIGNAL  ? 'rgba(26,82,232,0.35)'
-                            : 'rgba(255,255,255,0.1)';
-            ctx.lineWidth = 0.75; ctx.stroke();
-            ctx.beginPath(); ctx.arc(outX + 10, oy, 3.5, 0, Math.PI*2);
-            ctx.fillStyle = o.color; ctx.fill();
-            ctx.font = '500 8.5px Fira Code, monospace'; ctx.fillStyle = TEXT_BRIGHT;
-            ctx.fillText(o.label, outX + 20, oy + 3);
-          });
-
-          frame++;
-          requestAnimationFrame(render);
-        }
-        render();
+        chassisFrame++;
+        requestAnimationFrame(renderChassis);
       }
 
-      const ro = new ResizeObserver(() => { drawChassis(); });
+      /* Initial size + start single render loop */
+      resizeChassis();
+      requestAnimationFrame(renderChassis);
+
+      /* Debounced resize: only update dimensions, do not respawn loop */
+      let chassisResizeId = 0;
+      const ro = new ResizeObserver(() => {
+        cancelAnimationFrame(chassisResizeId);
+        chassisResizeId = requestAnimationFrame(() => { resizeChassis(); });
+      });
       ro.observe(canvas.parentElement);
 
-      /* CARD 2: TYPEWRITER */
-      const msgs = [
-        'Power Query: 3 datasets refreshed.',
-        '✓ Monday report delivered automatically.',
-        '1,247 rows cleaned. 0 manual steps.',
-        'SharePoint sync: pipeline nominal.',
-        '4-hour task completed in 0 seconds.',
-        'Dataverse sync complete. No errors.',
-        '✓ Dashboard updated. Signal is clean.',
-      ];
-      let mIdx = 0, cIdx = 0;
-      const ttyEl = document.getElementById('ttyText');
-      const ttyFeed = document.getElementById('ttyFeed');
-      function typeTick() {
-        const msg = msgs[mIdx];
-        if (cIdx <= msg.length) {
-          ttyEl.textContent = msg.slice(0, cIdx); cIdx++;
-          setTimeout(typeTick, cIdx === 1 ? 500 : 40);
-        } else {
-          setTimeout(() => {
-            const done = document.createElement('div');
-            done.className = 'tty-line hist' + (msg.startsWith('✓') ? ' ok' : '');
-            done.textContent = msg;
-            const lines = ttyFeed.querySelectorAll('.tty-line.hist');
-            if (lines.length >= 3) lines[0].remove();
-            ttyFeed.insertBefore(done, ttyFeed.querySelector('.tty-line.cur'));
-            ttyEl.textContent = ''; cIdx = 0; mIdx = (mIdx + 1) % msgs.length;
-            setTimeout(typeTick, 380);
-          }, 1900);
-        }
-      }
-      typeTick();
+      /* CARD 2: 24HR CLOCK */
+      const clockCanvas = document.getElementById('clockCanvas');
+      const clockCtx = clockCanvas.getContext('2d');
+      let clockW = 0, clockH = 0, clockFrame = 0;
 
-      /* CARD 3: SCHEDULER */
-      const cells = document.querySelectorAll('.sched-cell');
-      const saveBtn = document.getElementById('schedSave');
-      const statusEl = document.getElementById('schedStatus');
-      function resetSched() {
-        cells.forEach(c => { c.className = 'sched-cell'; });
-        saveBtn.classList.remove('fire');
-        statusEl.textContent = '— idle'; statusEl.classList.remove('live');
+      const clockEvents = [
+        { hour: 6,  label: 'Data Refresh',     color: '#1A52E8' },
+        { hour: 6.1,label: 'Pipeline Run',     color: '#1A52E8' },
+        { hour: 9,  label: 'Dashboard Update', color: '#C05818' },
+        { hour: 12, label: 'Midday Sync',      color: '#3ecf8e' },
+        { hour: 17, label: 'EOD Report',       color: '#C05818' },
+        { hour: 22, label: 'Nightly Backup',   color: '#FFBD2E' },
+      ];
+
+      function resizeClock() {
+        clockW = clockCanvas.offsetWidth;
+        clockH = clockCanvas.offsetHeight;
+        clockCanvas.width = clockW * window.devicePixelRatio;
+        clockCanvas.height = clockH * window.devicePixelRatio;
       }
-      function runSched() {
-        resetSched();
-        let step = 0;
-        const wkd = [1,2,3,4,5];
-        function next() {
-          if (step < wkd.length) {
-            cells[wkd[step]].classList.add('press');
-            setTimeout(() => {
-              cells[wkd[step]].classList.remove('press');
-              cells[wkd[step]].classList.add('on');
-              step++; setTimeout(next, 280);
-            }, 140);
-          } else {
-            setTimeout(() => {
-              wkd.forEach(i => { cells[i].classList.remove('on'); cells[i].classList.add('hi'); });
-              saveBtn.classList.add('fire');
-              setTimeout(() => {
-                statusEl.textContent = '✓ M-F refresh on'; statusEl.classList.add('live');
-                setTimeout(runSched, 3000);
-              }, 180);
-            }, 300);
+
+      function renderClock() {
+        const W = clockW, H = clockH;
+        if (W === 0 || H === 0) { requestAnimationFrame(renderClock); return; }
+        const ctx = clockCtx;
+        ctx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
+        ctx.clearRect(0, 0, W, H);
+
+        const cx = W / 2, cy = H / 2;
+        const r = Math.min(W, H) * 0.38;
+
+        /* outer ring */
+        ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(255,255,255,0.06)'; ctx.lineWidth = 1.5; ctx.stroke();
+
+        /* inner ring */
+        ctx.beginPath(); ctx.arc(cx, cy, r * 0.85, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(255,255,255,0.03)'; ctx.lineWidth = 0.75; ctx.stroke();
+
+        /* hour markers */
+        for (let h = 0; h < 24; h++) {
+          const a = (h / 24) * Math.PI * 2 - Math.PI / 2;
+          const isMajor = h % 6 === 0;
+          const inner = isMajor ? r * 0.88 : r * 0.92;
+          const outer = r;
+          ctx.beginPath();
+          ctx.moveTo(cx + Math.cos(a) * inner, cy + Math.sin(a) * inner);
+          ctx.lineTo(cx + Math.cos(a) * outer, cy + Math.sin(a) * outer);
+          ctx.strokeStyle = isMajor ? 'rgba(255,255,255,0.25)' : 'rgba(255,255,255,0.08)';
+          ctx.lineWidth = isMajor ? 1.5 : 0.75; ctx.stroke();
+
+          if (isMajor) {
+            const tx = cx + Math.cos(a) * (r + 12);
+            const ty = cy + Math.sin(a) * (r + 12);
+            ctx.font = '500 7px Fira Code, monospace';
+            ctx.fillStyle = 'rgba(255,255,255,0.25)';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText(h.toString().padStart(2, '0'), tx, ty);
           }
         }
-        setTimeout(next, 800);
+
+        /* sweeping hand */
+        const sweepAngle = (clockFrame * 0.008) % (Math.PI * 2) - Math.PI / 2;
+        ctx.beginPath(); ctx.moveTo(cx, cy);
+        ctx.lineTo(cx + Math.cos(sweepAngle) * r * 0.78, cy + Math.sin(sweepAngle) * r * 0.78);
+        ctx.strokeStyle = 'rgba(192,88,24,0.5)'; ctx.lineWidth = 1; ctx.stroke();
+
+        /* sweep glow arc */
+        if (ctx.createConicGradient) {
+          const trailLen = 0.15;
+          const grad = ctx.createConicGradient(sweepAngle - trailLen, cx, cy);
+          grad.addColorStop(0, 'transparent');
+          grad.addColorStop(trailLen / (Math.PI * 2), 'rgba(192,88,24,0.12)');
+          grad.addColorStop(trailLen / (Math.PI * 2) + 0.001, 'transparent');
+          ctx.beginPath(); ctx.arc(cx, cy, r * 0.82, 0, Math.PI * 2);
+          ctx.arc(cx, cy, r * 0.5, 0, Math.PI * 2, true);
+          ctx.fillStyle = grad; ctx.fill();
+        }
+
+        /* event markers */
+        const currentHour24 = ((sweepAngle + Math.PI / 2) / (Math.PI * 2)) * 24;
+        clockEvents.forEach(ev => {
+          const a = (ev.hour / 24) * Math.PI * 2 - Math.PI / 2;
+          const ex = cx + Math.cos(a) * r * 0.85;
+          const ey = cy + Math.sin(a) * r * 0.85;
+
+          const dist = Math.abs(currentHour24 - ev.hour);
+          const isActive = dist < 0.8 || dist > 23.2;
+          const pulseR = isActive ? 5 + 2 * Math.sin(clockFrame * 0.12) : 3.5;
+
+          if (isActive) {
+            ctx.beginPath(); ctx.arc(ex, ey, pulseR + 6, 0, Math.PI * 2);
+            ctx.fillStyle = ev.color; ctx.globalAlpha = 0.15; ctx.fill();
+            ctx.globalAlpha = 1;
+            /* glow ring */
+            ctx.beginPath(); ctx.arc(ex, ey, pulseR + 4, 0, Math.PI * 2);
+            ctx.strokeStyle = ev.color; ctx.globalAlpha = 0.2; ctx.lineWidth = 1; ctx.stroke();
+            ctx.globalAlpha = 1;
+          }
+
+          ctx.beginPath(); ctx.arc(ex, ey, pulseR, 0, Math.PI * 2);
+          ctx.fillStyle = ev.color;
+          if (isActive) { ctx.shadowColor = ev.color; ctx.shadowBlur = 12; }
+          ctx.fill();
+          ctx.shadowBlur = 0;
+
+          if (isActive) {
+            ctx.font = '500 6.5px Fira Code, monospace';
+            ctx.fillStyle = 'rgba(255,255,255,0.7)';
+            ctx.textAlign = 'center';
+            ctx.fillText(ev.label, ex, ey - pulseR - 6);
+          }
+        });
+
+        /* center text */
+        ctx.font = '700 9px Outfit, sans-serif'; ctx.fillStyle = '#fff';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText('24/7', cx, cy - 4);
+        ctx.font = '500 6px Fira Code, monospace';
+        ctx.fillStyle = 'rgba(255,255,255,0.35)';
+        ctx.fillText('AUTOMATED', cx, cy + 7);
+
+        clockFrame++;
+        requestAnimationFrame(renderClock);
       }
-      runSched();
+
+      resizeClock();
+      requestAnimationFrame(renderClock);
+      let clockResizeId = 0;
+      const clockRo = new ResizeObserver(() => {
+        cancelAnimationFrame(clockResizeId);
+        clockResizeId = requestAnimationFrame(() => { resizeClock(); });
+      });
+      clockRo.observe(clockCanvas.parentElement);
+
+      /* CARD 3: STACK UNLOCK */
+      const stackRows = document.querySelectorAll('.stack-row');
+      let stackRunning = false;
+
+      function runStackAnim() {
+        if (stackRunning) return;
+        stackRunning = true;
+        stackRows.forEach(r => { r.classList.remove('active', 'visible'); });
+
+        stackRows.forEach((row, i) => {
+          setTimeout(() => {
+            row.classList.add('active');
+            setTimeout(() => {
+              row.classList.remove('active');
+              row.classList.add('visible');
+              if (i === stackRows.length - 1) {
+                setTimeout(() => {
+                  stackRunning = false;
+                  setTimeout(runStackAnim, 3000);
+                }, 2000);
+              }
+            }, 800);
+          }, i * 500);
+        });
+      }
+
+      /* Trigger stack animation on scroll */
+      ScrollTrigger.create({
+        trigger: '#fcard3',
+        start: 'top 80%',
+        once: true,
+        onEnter: () => { runStackAnim(); }
+      });
 
       /* PHILOSOPHY */
       gsap.to('#philBg', {
@@ -912,83 +1271,234 @@
           scrollTrigger: { trigger: philStmt, start: 'top 78%', once: true } }
       );
 
-      /* PROTOCOL CANVAS 1 */
-      const cv1 = document.getElementById('cv1');
-      const c1 = cv1.getContext('2d');
-      const nodes = [
-        { label: 'Excel',      angle: -0.9,  r: 95, color: '#1D6F42' },
-        { label: 'SharePoint', angle: -0.15, r: 90, color: '#038387' },
-        { label: 'CSV',        angle:  0.55, r: 88, color: '#5C6474' },
-        { label: 'API',        angle:  1.3,  r: 92, color: '#CC2936' },
-        { label: 'SQL',        angle: -1.6,  r: 86, color: '#E8860A' },
-      ];
-      let auditTick = 0;
-      (function drawAudit() {
-        c1.clearRect(0, 0, 280, 260);
-        const cx = 140, cy = 130;
-        nodes.forEach((n, i) => {
-          const angle = n.angle + auditTick * (i % 2 === 0 ? 0.004 : -0.004);
-          const nx = cx + Math.cos(angle) * n.r;
-          const ny = cy + Math.sin(angle) * n.r;
-          c1.beginPath(); c1.moveTo(cx, cy); c1.lineTo(nx, ny);
-          c1.strokeStyle = 'rgba(26,82,232,0.15)'; c1.lineWidth = 1; c1.stroke();
-          c1.beginPath(); c1.arc(nx, ny, 18, 0, Math.PI * 2);
-          c1.fillStyle = 'rgba(24,29,42,0.8)'; c1.fill();
-          c1.strokeStyle = n.color; c1.lineWidth = 1.5; c1.stroke();
-          c1.font = '500 7.5px Fira Code, monospace';
-          c1.fillStyle = 'rgba(255,255,255,0.55)'; c1.textAlign = 'center';
-          c1.fillText(n.label, nx, ny + 3);
-        });
-        c1.beginPath(); c1.arc(cx, cy, 26, 0, Math.PI * 2);
-        c1.fillStyle = '#1A52E8';
-        c1.shadowColor = '#1A52E8'; c1.shadowBlur = 14;
-        c1.fill(); c1.shadowBlur = 0;
-        c1.font = '700 8px Outfit, sans-serif'; c1.fillStyle = '#fff'; c1.textAlign = 'center';
-        c1.fillText('MAP', cx, cy - 2); c1.fillText('AUDIT', cx, cy + 9);
-        c1.textAlign = 'left';
-        auditTick++;
-        requestAnimationFrame(drawAudit);
-      })();
+      /* CONSOLIDATED PROTOCOL: STEPPER + TERMINAL + KPI DASH */
+      const buildFeed = document.getElementById('buildFeed');
+      const steps = [document.getElementById('step1'), document.getElementById('step2'), document.getElementById('step3')];
+      const kpiCards = [document.getElementById('kpi1'), document.getElementById('kpi2'), document.getElementById('kpi3')];
 
-      /* PROTOCOL SVG 2 — dot grid */
-      const dg = document.getElementById('dg');
-      for (let r = 0; r < 7; r++) for (let c = 0; c < 9; c++) {
-        const ci = document.createElementNS('http://www.w3.org/2000/svg','circle');
-        ci.setAttribute('cx', 14 + c * 28); ci.setAttribute('cy', 14 + r * 28);
-        ci.setAttribute('r','1.5'); ci.setAttribute('fill','rgba(24,29,42,0.2)');
-        dg.appendChild(ci);
+      /* terminal lines grouped by phase */
+      const phases = [
+        {
+          step: 0, /* audit */
+          lines: [
+            { text: '\u2501\u2501 PHASE 1: AUDIT', cls: 'cmd', phase: true },
+            { text: '$ audit init --scan-sources', cls: 'cmd' },
+            { text: '  Scanning data environment...', cls: '' },
+            { text: '\u2713 5 data sources identified', cls: 'ok' },
+            { text: '\u26A0 2 manual bottlenecks found', cls: 'warn' },
+            { text: '\u2713 Architecture map generated', cls: 'ok' },
+          ]
+        },
+        {
+          step: 1, /* build */
+          lines: [
+            { text: '\u2501\u2501 PHASE 2: BUILD', cls: 'cmd', phase: true },
+            { text: '$ chassis build --model star-schema', cls: 'cmd' },
+            { text: '  Creating semantic model...', cls: '' },
+            { text: '\u2713 Fact tables + dimensions mapped', cls: 'ok' },
+            { text: '$ pq build --pipelines all', cls: 'cmd' },
+            { text: '\u2713 Power Query pipelines deployed', cls: 'ok' },
+            { text: '\u2713 DAX measures documented', cls: 'ok' },
+            { text: '\u2713 Dashboards deployed', cls: 'ok' },
+          ]
+        },
+        {
+          step: 2, /* automate */
+          lines: [
+            { text: '\u2501\u2501 PHASE 3: AUTOMATE', cls: 'cmd', phase: true },
+            { text: '$ flow schedule --trigger daily:0600', cls: 'cmd' },
+            { text: '  Configuring refresh schedule...', cls: '' },
+            { text: '\u2713 Automated refresh active', cls: 'ok' },
+            { text: '\u2713 Error monitoring enabled', cls: 'ok' },
+            { text: '\u2713 All systems operational', cls: 'ok' },
+            { text: '', cls: '' },
+            { text: '\u2713 ENGAGEMENT COMPLETE. 0 errors.', cls: 'ok' },
+          ]
+        },
+      ];
+
+      let phaseIdx = 0, lineIdx = 0, protoRunning = false;
+
+      function setActiveStep(idx) {
+        steps.forEach((s, i) => s.classList.toggle('active', i === idx));
       }
 
-      /* PROTOCOL SVG 3 — EKG */
-      const ekg = document.getElementById('ekg');
-      const len = ekg.getTotalLength();
-      ekg.style.strokeDasharray = len; ekg.style.strokeDashoffset = len;
-      const st = document.createElement('style');
-      st.textContent = '@keyframes ekgRun{0%{stroke-dashoffset:'+len+';opacity:.1}15%{opacity:.9}65%{stroke-dashoffset:0;opacity:.9}85%{stroke-dashoffset:0;opacity:.75}100%{stroke-dashoffset:'+(-len)+';opacity:.08}}#ekg{animation:ekgRun 3.2s ease-in-out infinite}';
-      document.head.appendChild(st);
+      function addProtoLine() {
+        if (phaseIdx >= phases.length) {
+          /* trigger KPI animation then reset */
+          animateKPIs();
+          setTimeout(() => {
+            buildFeed.innerHTML = '';
+            phaseIdx = 0; lineIdx = 0;
+            protoRunning = false;
+            resetKPIs();
+            setTimeout(startProto, 2500);
+          }, 5000);
+          return;
+        }
+        const phase = phases[phaseIdx];
+        if (lineIdx === 0) setActiveStep(phase.step);
 
-      /* PROTOCOL STICKY STACK */
-      ['#pc1','#pc2','#pc3'].forEach((sel, i, arr) => {
-        if (i === arr.length - 1) return;
-        const el = document.querySelector(sel);
-        const next = document.querySelector(arr[i+1]);
-        ScrollTrigger.create({
-          trigger: el, start: 'top top+=72',
-          end: () => '+=' + next.offsetHeight,
-          pin: true, pinSpacing: false,
-          onUpdate(self) {
-            const p = self.progress;
-            gsap.set(el, { scale: 1-p*0.075, filter:'blur('+(p*10)+'px)', opacity:1-p*0.42 });
-          }
+        if (lineIdx >= phase.lines.length) {
+          phaseIdx++; lineIdx = 0;
+          setTimeout(addProtoLine, 600);
+          return;
+        }
+
+        const ln = phase.lines[lineIdx];
+        const el = document.createElement('div');
+        el.className = 'build-line ' + ln.cls;
+        if (ln.phase) {
+          el.innerHTML = '<span class="phase">' + ln.text + '</span>';
+        } else if (ln.cls === 'cmd') {
+          el.innerHTML = '<span class="prompt">' + ln.text.slice(0, 2) + '</span>' + ln.text.slice(2);
+        } else {
+          el.textContent = ln.text;
+        }
+        buildFeed.appendChild(el);
+        const allLines = buildFeed.querySelectorAll('.build-line');
+        if (allLines.length > 12) allLines[0].remove();
+        requestAnimationFrame(() => { el.classList.add('show'); });
+        lineIdx++;
+
+        /* trigger per-step KPI updates */
+        if (phaseIdx === 0 && lineIdx === phase.lines.length) {
+          updateKPI(0, 5);
+        } else if (phaseIdx === 1 && lineIdx === phase.lines.length) {
+          updateKPI(1, 4);
+        } else if (phaseIdx === 2 && lineIdx === phase.lines.length) {
+          updateKPI(2, 0);
+        }
+
+        const delay = ln.phase ? 500 : ln.cls === 'cmd' ? 600 : ln.cls === 'ok' ? 300 : ln.text === '' ? 400 : 200;
+        setTimeout(addProtoLine, delay);
+      }
+
+      function startProto() {
+        if (protoRunning) return;
+        protoRunning = true;
+        setActiveStep(0);
+        addProtoLine();
+      }
+
+      /* KPI helpers */
+      function updateKPI(idx, val) {
+        const card = kpiCards[idx];
+        const valEl = card.querySelector('.kpi-val');
+        const statusEl = card.querySelector('.kpi-status');
+        valEl.textContent = val;
+        valEl.classList.add('live');
+        statusEl.classList.add('on');
+      }
+
+      function resetKPIs() {
+        kpiCards.forEach(card => {
+          const valEl = card.querySelector('.kpi-val');
+          const statusEl = card.querySelector('.kpi-status');
+          valEl.textContent = '0';
+          valEl.classList.remove('live');
+          statusEl.classList.remove('on');
         });
+      }
+
+      function animateKPIs() {
+        /* all KPIs light up */
+        kpiCards.forEach(card => {
+          card.querySelector('.kpi-val').classList.add('live');
+          card.querySelector('.kpi-status').classList.add('on');
+        });
+        /* trigger sparkline */
+        drawSparkline(true);
+      }
+
+      /* Sparkline */
+      const sparkCanvas = document.getElementById('sparkCanvas');
+      const sparkCtx = sparkCanvas.getContext('2d');
+      function drawSparkline(animate) {
+        const W = sparkCanvas.offsetWidth;
+        const H = 50;
+        sparkCanvas.width = W * window.devicePixelRatio;
+        sparkCanvas.height = H * window.devicePixelRatio;
+        sparkCtx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
+        sparkCtx.clearRect(0, 0, W, H);
+
+        const points = [0.3, 0.5, 0.4, 0.7, 0.6, 0.85, 0.9, 0.88, 0.92, 0.95, 0.93, 0.97, 0.98];
+        const gap = W / (points.length - 1);
+        const pad = 6;
+
+        if (!animate) return;
+
+        /* gradient fill */
+        const grad = sparkCtx.createLinearGradient(0, 0, 0, H);
+        grad.addColorStop(0, 'rgba(192,88,24,0.15)');
+        grad.addColorStop(1, 'rgba(192,88,24,0)');
+        sparkCtx.beginPath();
+        sparkCtx.moveTo(0, H);
+        points.forEach((p, i) => {
+          sparkCtx.lineTo(i * gap, H - pad - p * (H - pad * 2));
+        });
+        sparkCtx.lineTo(W, H);
+        sparkCtx.closePath();
+        sparkCtx.fillStyle = grad; sparkCtx.fill();
+
+        /* line */
+        sparkCtx.beginPath();
+        points.forEach((p, i) => {
+          const x = i * gap, y = H - pad - p * (H - pad * 2);
+          i === 0 ? sparkCtx.moveTo(x, y) : sparkCtx.lineTo(x, y);
+        });
+        sparkCtx.strokeStyle = '#C05818'; sparkCtx.lineWidth = 1.5;
+        sparkCtx.lineJoin = 'round'; sparkCtx.stroke();
+
+        /* end dot */
+        const lastX = (points.length - 1) * gap;
+        const lastY = H - pad - points[points.length - 1] * (H - pad * 2);
+        sparkCtx.beginPath(); sparkCtx.arc(lastX, lastY, 3, 0, Math.PI * 2);
+        sparkCtx.fillStyle = '#C05818'; sparkCtx.shadowColor = '#C05818'; sparkCtx.shadowBlur = 8;
+        sparkCtx.fill(); sparkCtx.shadowBlur = 0;
+      }
+      drawSparkline(false);
+
+      ScrollTrigger.create({
+        trigger: '#protocol', start: 'top 60%', once: true,
+        onEnter: () => { startProto(); }
       });
 
       /* PRICING ENTRANCE */
       ['#pr1','#pr2','#pr3'].forEach((sel, i) => {
-        gsap.to(document.querySelector(sel), {
-          opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', delay: i*0.1,
-          scrollTrigger: { trigger: sel, start: 'top 89%', once: true }
+        gsap.to(sel, {
+          opacity: 1, y: 0, scale: sel === '#pr2' ? 1.04 : 1,
+          duration: 0.8, ease: 'power3.out', delay: i * 0.12,
+          scrollTrigger: { trigger: sel, start: 'top 88%', once: true }
         });
+      });
+
+      /* EMAIL CAPTURE FORM */
+      const ctaForm = document.getElementById('ctaForm');
+      const ctaEmail = document.getElementById('ctaEmail');
+      const ctaConfirm = document.getElementById('ctaConfirm');
+      const ctaSubmit = ctaForm.querySelector('.cta-submit');
+
+      ctaForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = ctaEmail.value.trim();
+        if (!email) return;
+
+        const subject = encodeURIComponent('Power Integrate Inquiry');
+        const body = encodeURIComponent('New lead from powerintegrate.co\n\nEmail: ' + email + '\n\nThis person is interested in learning more about Power Integrate services.');
+        window.location.href = 'mailto:sean@powerintegrate.co?subject=' + subject + '&body=' + body;
+
+        ctaConfirm.textContent = '\u2713 Opening your email client...';
+        ctaConfirm.className = 'cta-confirm';
+        ctaSubmit.disabled = true;
+        ctaSubmit.textContent = 'Sent';
+
+        setTimeout(() => {
+          ctaSubmit.disabled = false;
+          ctaSubmit.textContent = 'Send';
+          ctaConfirm.textContent = '';
+          ctaEmail.value = '';
+        }, 4000);
       });
 
     });
