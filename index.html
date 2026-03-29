@@ -865,14 +865,16 @@
         <p class="cta-sub">Drop your email and we will reach out within one business day to schedule a free audit of your reporting stack.</p>
       </div>
       <!--
-        SETUP: Go to https://formspree.io (free, 50 submissions/month)
-        1. Create account  2. Create new form  3. Copy the form ID
-        4. Replace YOUR_FORM_ID below with your actual ID (e.g. "xwkgpqar")
-        Once set, every submission lands directly in sean@powerintegrate.co
+        FormSubmit: zero signup required. First submission triggers a
+        confirmation email to sean@powerintegrate.co. Click confirm once,
+        then all future submissions go straight to your inbox.
       -->
-      <form class="cta-form" id="ctaForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-        <input type="hidden" name="_subject" value="New Inquiry from powerintegrate.co" />
+      <form class="cta-form" id="ctaForm" action="https://formsubmit.co/sean@powerintegrate.co" method="POST">
+        <input type="hidden" name="_subject" value="New Lead from powerintegrate.co" />
+        <input type="hidden" name="_captcha" value="false" />
         <input type="hidden" name="_next" value="https://powerintegrate.co/#cta" />
+        <input type="hidden" name="_template" value="box" />
+        <input type="text" name="_honey" style="display:none" />
         <div class="cta-input-wrap">
           <input type="email" name="email" id="ctaEmail" class="cta-input" placeholder="you@company.com" required autocomplete="email" />
           <button type="submit" class="cta-submit" id="ctaSubmit">Send</button>
@@ -1505,11 +1507,9 @@
         });
       });
 
-      /* EMAIL CAPTURE FORM (Formspree)
-         Setup: Replace YOUR_FORM_ID in the HTML form action with your Formspree ID.
-         Go to https://formspree.io -> Create form -> Copy ID.
-         The form works via standard HTML submit as fallback if JS fails.
-         JS intercepts for nicer UX (no page redirect). */
+      /* EMAIL CAPTURE FORM (FormSubmit - zero config)
+         First submission triggers a confirmation email to sean@powerintegrate.co.
+         Click confirm once. All future submissions go to inbox automatically. */
       const ctaForm = document.getElementById('ctaForm');
       const ctaEmail = document.getElementById('ctaEmail');
       const ctaConfirm = document.getElementById('ctaConfirm');
@@ -1523,15 +1523,19 @@
         ctaSubmit.disabled = true;
         ctaSubmit.textContent = 'Sending...';
 
-        const formAction = ctaForm.getAttribute('action');
-        fetch(formAction, {
+        fetch('https://formsubmit.co/ajax/sean@powerintegrate.co', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({ email: email, _subject: 'New Lead from powerintegrate.co' })
+          body: JSON.stringify({
+            email: email,
+            _subject: 'New Lead from powerintegrate.co',
+            _template: 'box'
+          })
         })
-        .then(function(r) {
-          if (r.ok) {
-            ctaConfirm.textContent = '\u2713 Sent. We will be in touch within 1 business day.';
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.success) {
+            ctaConfirm.textContent = '\u2713 Sent! We will be in touch within 1 business day.';
             ctaConfirm.className = 'cta-confirm';
             ctaSubmit.textContent = 'Sent';
             ctaEmail.value = '';
@@ -1544,7 +1548,11 @@
           ctaConfirm.className = 'cta-confirm error';
         })
         .finally(function() {
-          setTimeout(function() { ctaSubmit.disabled = false; ctaSubmit.textContent = 'Send'; ctaConfirm.textContent = ''; }, 5000);
+          setTimeout(function() {
+            ctaSubmit.disabled = false;
+            ctaSubmit.textContent = 'Send';
+            ctaConfirm.textContent = '';
+          }, 5000);
         });
       });
 
