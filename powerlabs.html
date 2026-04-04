@@ -375,6 +375,13 @@
     .conv-output .tbl { color: var(--green); }
     .conv-output .str { color: #FFBD2E; }
     .conv-output .num { color: var(--signal); }
+    .conv-output .kw-m { color: #0078D4; font-weight: 600; }
+    .conv-output .tbl-m { color: var(--green); }
+    .conv-output .fn-m { color: var(--copper); font-weight: 600; }
+    .conv-output .comment-m { color: var(--slate); font-style: italic; }
+
+    .conv-panel-label.sql { color: #CC2936; }
+    .conv-panel-label.mcode { color: #0078D4; }
 
     .conv-copy {
       display: inline-flex; align-items: center; gap: 0.375rem;
@@ -495,6 +502,10 @@
       <div class="tool-index-icon" style="background:var(--copper);">fx</div>
       <div><div class="tool-index-name">Excel to DAX Converter</div><div class="tool-index-sub">Formula Translator</div></div>
     </a>
+    <a class="tool-index-card" onclick="openTool('pqm')">
+      <div class="tool-index-icon" style="background:var(--signal);">M</div>
+      <div><div class="tool-index-name">SQL to Power Query (M)</div><div class="tool-index-sub">Query Translator</div></div>
+    </a>
     <a class="tool-index-card" onclick="openTool('refi')">
       <div class="tool-index-icon refi">R</div>
       <div><div class="tool-index-name">Cash-Out Refi Calculator</div><div class="tool-index-sub">DTI + Approval Analysis</div></div>
@@ -551,7 +562,53 @@
     </div>
   </div>
 
-  <!-- ═══ TOOL 2: CASH-OUT REFI ═══ -->
+  <!-- ═══ TOOL 2: SQL TO POWER QUERY (M) ═══ -->
+  <div class="tool-section" id="pqm">
+    <div class="tool-header" onclick="toggleTool('pqm')">
+      <div class="tool-header-left">
+        <div class="tool-icon" style="background:var(--signal);">M</div>
+        <h2 class="tool-name">SQL to Power Query (M)</h2>
+      </div>
+      <span class="tool-badge">Query Translator</span>
+      <div class="tool-chevron"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+    </div>
+    <div class="tool-body">
+      <div class="tool-body-inner">
+        <div class="conv-layout">
+          <div class="conv-panel">
+            <div class="conv-panel-label sql">SQL Query</div>
+            <textarea class="conv-textarea" id="sqlInput" placeholder="Enter a SQL query...&#10;&#10;Examples:&#10;SELECT Name, SUM(Sales) FROM Orders WHERE Region = 'East' GROUP BY Name&#10;SELECT * FROM Customers WHERE Status IN ('Active','VIP')&#10;SELECT TOP 10 * FROM Products ORDER BY Price DESC" style="border-color:rgba(204,41,54,0.2);"></textarea>
+          </div>
+          <div class="conv-panel dark">
+            <div class="conv-panel-label mcode">Power Query (M)</div>
+            <div class="conv-output" id="mOutput"><span class="placeholder">M code will appear here...</span></div>
+            <button class="conv-copy" id="mCopy" onclick="copyM()">Copy</button>
+            <div class="conv-notes" id="mNotes" style="display:none;"></div>
+          </div>
+          <div class="ref-table-wrap">
+            <div class="ref-panel">
+              <div class="ref-header">
+                <div class="panel-title" style="margin-bottom:0;">SQL to M Reference</div>
+                <button class="ref-toggle" id="mRefToggle" onclick="toggleMRef()"><span>Show All</span> <span class="ref-toggle-arrow">&#9660;</span></button>
+              </div>
+              <input type="text" class="ref-search" id="mRefSearch" placeholder="Search SQL functions...">
+              <div class="ref-result-count" id="mRefCount"></div>
+              <div class="ref-table-body" id="mRefTableBody">
+                <div class="lot-table-wrap">
+                  <table class="ref-table" id="mRefTable">
+                    <thead><tr><th>SQL<span class="ref-expand-hint">(click to expand)</span></th><th>Power Query (M)</th><th>Notes</th></tr></thead>
+                    <tbody id="mRefBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TOOL 3: CASH-OUT REFI ═══ -->
   <div class="tool-section" id="refi">
     <div class="tool-header" onclick="toggleTool('refi')">
       <div class="tool-header-left">
@@ -625,7 +682,7 @@
     </div>
   </div>
 
-  <!-- ═══ TOOL 3: DCA CALCULATOR ═══ -->
+  <!-- ═══ TOOL 4: DCA CALCULATOR ═══ -->
   <div class="tool-section" id="dca">
     <div class="tool-header" onclick="toggleTool('dca')">
       <div class="tool-header-left">
@@ -1325,6 +1382,317 @@
     }
 
     document.getElementById('excelInput').addEventListener('input', convertAndRender);
+
+    // ─────────────────────────────────────────
+    // SQL TO POWER QUERY (M) CONVERTER
+    // ─────────────────────────────────────────
+
+    const mMap = [
+      { sql: 'SELECT',        m: 'Table.SelectColumns ( Source, {"Col1","Col2"} )', note: 'SELECT specific columns maps to Table.SelectColumns. SELECT * keeps all columns.', syntax: 'SELECT col1, col2 FROM table_name' },
+      { sql: 'SELECT *',      m: 'Source  (no transformation needed)', note: 'Selecting all columns is the default in M. Just reference the source step.', syntax: 'SELECT * FROM table_name' },
+      { sql: 'WHERE',         m: 'Table.SelectRows ( Source, each [Col] = "value" )', note: 'WHERE conditions become Table.SelectRows with an "each" predicate function.', syntax: 'SELECT * FROM t WHERE col = value' },
+      { sql: 'AND / OR',      m: 'each [Col1] = "a" and [Col2] > 10', note: 'Use lowercase "and" / "or" in M predicates inside Table.SelectRows.', syntax: 'WHERE col1 = "a" AND col2 > 10' },
+      { sql: 'IN',            m: 'List.Contains ( {"val1","val2"}, [Col] )', note: 'SQL IN clause becomes List.Contains with a list of values.', syntax: 'WHERE col IN ("val1", "val2", "val3")' },
+      { sql: 'BETWEEN',       m: 'each [Col] >= start and [Col] <= end', note: 'No BETWEEN in M. Use explicit >= and <= comparisons.', syntax: 'WHERE col BETWEEN 10 AND 20' },
+      { sql: 'LIKE',          m: 'Text.Contains ( [Col], "text" )', note: 'Use Text.Contains, Text.StartsWith, or Text.EndsWith depending on wildcard position.', syntax: 'WHERE col LIKE "%text%"' },
+      { sql: 'IS NULL',       m: 'each [Col] = null', note: 'M uses = null directly. For IS NOT NULL use <> null.', syntax: 'WHERE col IS NULL' },
+      { sql: 'ORDER BY',      m: 'Table.Sort ( Source, {{"Col", Order.Ascending}} )', note: 'Use Order.Ascending or Order.Descending. Multiple sort columns go in the list.', syntax: 'SELECT * FROM t ORDER BY col ASC' },
+      { sql: 'ORDER BY DESC', m: 'Table.Sort ( Source, {{"Col", Order.Descending}} )', note: 'DESC becomes Order.Descending in the sort specification.', syntax: 'ORDER BY col DESC' },
+      { sql: 'GROUP BY',      m: 'Table.Group ( Source, {"GroupCol"}, {{"Sum", each List.Sum([ValCol]), type number}} )', note: 'Table.Group takes the grouping columns and a list of aggregation specs.', syntax: 'SELECT col, SUM(val) FROM t GROUP BY col' },
+      { sql: 'HAVING',        m: 'Table.SelectRows after Table.Group', note: 'Apply Table.SelectRows to the grouped result. M has no separate HAVING keyword.', syntax: 'GROUP BY col HAVING SUM(val) > 100' },
+      { sql: 'JOIN / INNER JOIN', m: 'Table.NestedJoin ( Table1, "Key1", Table2, "Key2", "Joined", JoinKind.Inner )', note: 'Table.NestedJoin creates a nested column. Follow with Table.ExpandTableColumn to flatten.', syntax: 'SELECT * FROM t1 INNER JOIN t2 ON t1.key = t2.key' },
+      { sql: 'LEFT JOIN',     m: 'Table.NestedJoin ( ..., JoinKind.LeftOuter )', note: 'Same as INNER JOIN but use JoinKind.LeftOuter. Then expand the nested column.', syntax: 'SELECT * FROM t1 LEFT JOIN t2 ON t1.key = t2.key' },
+      { sql: 'RIGHT JOIN',    m: 'Table.NestedJoin ( ..., JoinKind.RightOuter )', note: 'Use JoinKind.RightOuter for right joins.', syntax: 'SELECT * FROM t1 RIGHT JOIN t2 ON ...' },
+      { sql: 'FULL OUTER JOIN', m: 'Table.NestedJoin ( ..., JoinKind.FullOuter )', note: 'Use JoinKind.FullOuter for full outer joins.', syntax: 'SELECT * FROM t1 FULL OUTER JOIN t2 ON ...' },
+      { sql: 'CROSS JOIN',    m: 'Table.NestedJoin ( ..., JoinKind.Cross )', note: 'Cartesian product. Use sparingly on large tables.', syntax: 'SELECT * FROM t1 CROSS JOIN t2' },
+      { sql: 'UNION',         m: 'Table.Combine ( {Table1, Table2} )', note: 'Table.Combine appends tables vertically. Equivalent to UNION ALL.', syntax: 'SELECT * FROM t1 UNION ALL SELECT * FROM t2' },
+      { sql: 'UNION (distinct)', m: 'Table.Distinct ( Table.Combine ( {Table1, Table2} ) )', note: 'Wrap Table.Combine with Table.Distinct for UNION (without ALL).', syntax: 'SELECT * FROM t1 UNION SELECT * FROM t2' },
+      { sql: 'DISTINCT',      m: 'Table.Distinct ( Source )', note: 'Removes duplicate rows. Can also use Table.Distinct(Source, {"Col"}) for specific columns.', syntax: 'SELECT DISTINCT col FROM table_name' },
+      { sql: 'TOP N',         m: 'Table.FirstN ( Source, N )', note: 'Returns the first N rows. Sort first if you need TOP N by a specific order.', syntax: 'SELECT TOP 10 * FROM table_name' },
+      { sql: 'LIMIT / OFFSET', m: 'Table.FirstN / Table.Skip', note: 'LIMIT N = Table.FirstN(Source, N). OFFSET M = Table.Skip(Source, M).', syntax: 'SELECT * FROM t LIMIT 10 OFFSET 20' },
+      { sql: 'COUNT(*)',      m: 'Table.RowCount ( Source )', note: 'Returns the total number of rows as a scalar value.', syntax: 'SELECT COUNT(*) FROM table_name' },
+      { sql: 'COUNT(col)',    m: 'List.NonNullCount ( Source[Col] )', note: 'Counts non-null values in a column. Use inside Table.Group for grouped counts.', syntax: 'SELECT COUNT(col) FROM table_name' },
+      { sql: 'SUM',           m: 'List.Sum ( Source[Col] )', note: 'Sums a column. Use inside Table.Group for grouped sums.', syntax: 'SELECT SUM(col) FROM table_name' },
+      { sql: 'AVG',           m: 'List.Average ( Source[Col] )', note: 'Averages a column. Use inside Table.Group for grouped averages.', syntax: 'SELECT AVG(col) FROM table_name' },
+      { sql: 'MIN / MAX',     m: 'List.Min ( Source[Col] ) / List.Max ( Source[Col] )', note: 'Returns min or max value from a column.', syntax: 'SELECT MIN(col), MAX(col) FROM t' },
+      { sql: 'CASE WHEN',     m: 'if [Col] = "x" then "A" else if [Col] = "y" then "B" else "C"', note: 'CASE WHEN maps to if...then...else if...then...else chains in M.', syntax: 'CASE WHEN col = "x" THEN "A" WHEN col = "y" THEN "B" ELSE "C" END' },
+      { sql: 'COALESCE',      m: 'if [Col1] <> null then [Col1] else [Col2]', note: 'No COALESCE in M. Use if...then...else to check nulls in order.', syntax: 'COALESCE(col1, col2, col3)' },
+      { sql: 'CAST / CONVERT', m: 'Table.TransformColumnTypes ( Source, {{"Col", type text}} )', note: 'Type conversions use Table.TransformColumnTypes. Types: type text, Int64.Type, type number, type date, etc.', syntax: 'CAST(col AS VARCHAR(50))' },
+      { sql: 'CONCAT',        m: '[Col1] & " " & [Col2]', note: 'Use the & operator for string concatenation. Also Text.Combine for lists.', syntax: 'CONCAT(col1, " ", col2)' },
+      { sql: 'SUBSTRING',     m: 'Text.Range ( [Col], start, length )', note: 'M uses 0-based indexing for start position (SQL uses 1-based).', syntax: 'SUBSTRING(col, start, length)' },
+      { sql: 'LEFT / RIGHT',  m: 'Text.Start ( [Col], n ) / Text.End ( [Col], n )', note: 'Text.Start = LEFT, Text.End = RIGHT.', syntax: 'LEFT(col, 5)' },
+      { sql: 'UPPER / LOWER', m: 'Text.Upper ( [Col] ) / Text.Lower ( [Col] )', note: 'Direct equivalents.', syntax: 'UPPER(col)' },
+      { sql: 'TRIM',          m: 'Text.Trim ( [Col] )', note: 'Trims both sides. Also Text.TrimStart and Text.TrimEnd available.', syntax: 'TRIM(col)' },
+      { sql: 'REPLACE',       m: 'Text.Replace ( [Col], "old", "new" )', note: 'Direct equivalent.', syntax: 'REPLACE(col, "old", "new")' },
+      { sql: 'LEN / LENGTH',  m: 'Text.Length ( [Col] )', note: 'Direct equivalent.', syntax: 'LEN(col)' },
+      { sql: 'CHARINDEX / POSITION', m: 'Text.PositionOf ( [Col], "search" )', note: 'Returns 0-based position (SQL is 1-based). Returns -1 if not found.', syntax: 'CHARINDEX("search", col)' },
+      { sql: 'GETDATE / NOW', m: 'DateTime.LocalNow()', note: 'Returns current local datetime.', syntax: 'SELECT GETDATE()' },
+      { sql: 'DATEADD',       m: 'Date.AddDays / Date.AddMonths / Date.AddYears', note: 'Separate functions per interval. Also Date.AddWeeks, Date.AddQuarters.', syntax: 'DATEADD(day, 7, date_col)' },
+      { sql: 'DATEDIFF',      m: 'Duration.Days ( [EndDate] - [StartDate] )', note: 'Subtract dates to get a Duration, then extract days, hours, etc.', syntax: 'DATEDIFF(day, start_date, end_date)' },
+      { sql: 'YEAR/MONTH/DAY', m: 'Date.Year / Date.Month / Date.Day', note: 'Direct equivalents.', syntax: 'YEAR(date_col)' },
+      { sql: 'ISNULL / IFNULL', m: 'if [Col] = null then default else [Col]', note: 'No ISNULL function in M. Use if...then...else null check.', syntax: 'ISNULL(col, default_value)' },
+      { sql: 'ADD COLUMN',    m: 'Table.AddColumn ( Source, "NewCol", each [Col1] + [Col2] )', note: 'Adds a computed column using an "each" expression.', syntax: 'ALTER TABLE t ADD col AS (col1 + col2)' },
+      { sql: 'RENAME COLUMN', m: 'Table.RenameColumns ( Source, {{"OldName","NewName"}} )', note: 'Renames one or more columns. Pass a list of rename pairs.', syntax: 'EXEC sp_rename "old_name", "new_name"' },
+      { sql: 'DROP COLUMN',   m: 'Table.RemoveColumns ( Source, {"Col1","Col2"} )', note: 'Removes specified columns from the table.', syntax: 'ALTER TABLE t DROP COLUMN col' },
+      { sql: 'PIVOT',         m: 'Table.Pivot ( Source, List.Distinct(Source[PivotCol]), "PivotCol", "ValueCol" )', note: 'Pivots rows into columns. Specify the pivot column and value column.', syntax: 'PIVOT (SELECT ... FOR col IN (...))' },
+      { sql: 'UNPIVOT',       m: 'Table.UnpivotOtherColumns ( Source, {"KeepCol"}, "Attribute", "Value" )', note: 'Unpivots all columns except the specified ones into attribute/value pairs.', syntax: 'UNPIVOT (col1, col2 FOR attr IN (...))' },
+    ];
+
+    // Populate M reference table
+    const mRefBody = document.getElementById('mRefBody');
+    mMap.forEach(r => {
+      const tr = document.createElement('tr');
+      const syntaxHTML = r.syntax
+        ? '<div class="ref-syntax" data-fn="' + r.sql + '"><div class="syn-label">SQL Syntax</div><code>' + r.syntax + '</code></div>'
+        : '';
+      tr.innerHTML =
+        '<td><span class="ref-fn-name">' + r.sql + '</span>' + syntaxHTML + '</td>' +
+        '<td>' + r.m + '</td>' +
+        '<td>' + r.note + '</td>';
+      mRefBody.appendChild(tr);
+    });
+
+    // Expandable SQL syntax on click
+    mRefBody.addEventListener('click', function(e) {
+      const fnName = e.target.closest('.ref-fn-name');
+      if (!fnName) return;
+      const td = fnName.closest('td');
+      const syntax = td.querySelector('.ref-syntax');
+      if (syntax) syntax.classList.toggle('open');
+    });
+
+    // M reference toggle
+    let mRefOpen = false;
+    function toggleMRef() {
+      mRefOpen = !mRefOpen;
+      const body = document.getElementById('mRefTableBody');
+      const btn = document.getElementById('mRefToggle');
+      const search = document.getElementById('mRefSearch');
+      if (mRefOpen) {
+        body.classList.add('open');
+        btn.classList.add('open');
+        btn.querySelector('span').textContent = 'Collapse';
+        if (!search.value.trim()) {
+          mRefBody.querySelectorAll('tr').forEach(tr => tr.classList.remove('hidden'));
+          document.getElementById('mRefCount').style.display = 'none';
+        }
+      } else {
+        body.classList.remove('open');
+        body.classList.remove('searching');
+        btn.classList.remove('open');
+        btn.querySelector('span').textContent = 'Show All';
+        document.getElementById('mRefCount').style.display = 'none';
+        search.value = '';
+        mRefBody.querySelectorAll('tr').forEach(tr => tr.classList.remove('hidden'));
+      }
+    }
+
+    // M reference search
+    document.getElementById('mRefSearch').addEventListener('input', function() {
+      const q = this.value.toLowerCase().trim();
+      const body = document.getElementById('mRefTableBody');
+      const countEl = document.getElementById('mRefCount');
+      if (q) {
+        body.classList.add('searching');
+        let count = 0;
+        mRefBody.querySelectorAll('tr').forEach(tr => {
+          const match = tr.textContent.toLowerCase().includes(q);
+          tr.classList.toggle('hidden', !match);
+          if (match) count++;
+        });
+        countEl.textContent = count + ' match' + (count !== 1 ? 'es' : '') + ' found';
+        countEl.style.display = 'block';
+      } else {
+        if (!mRefOpen) body.classList.remove('searching');
+        mRefBody.querySelectorAll('tr').forEach(tr => tr.classList.remove('hidden'));
+        countEl.style.display = 'none';
+      }
+    });
+
+    // SQL-to-M converter logic
+    function convertSQL(sql) {
+      let input = sql.trim();
+      if (!input) return { m: '', notes: [] };
+
+      let mCode = '';
+      const notes = [];
+      const upper = input.toUpperCase();
+
+      // Detect query type
+      const isSelect = /^\s*SELECT\b/i.test(input);
+
+      if (isSelect) {
+        let steps = [];
+        let stepNum = 1;
+
+        // Extract table name
+        const fromMatch = input.match(/FROM\s+(\[?\w+\]?\.?\[?\w+\]?)/i);
+        const tableName = fromMatch ? fromMatch[1].replace(/[\[\]]/g, '') : 'YourTable';
+        steps.push('Source = YourDatabase{[Schema="dbo",Item="' + tableName + '"]}[Data]');
+
+        // SELECT columns
+        const selectMatch = input.match(/SELECT\s+(.*?)\s+FROM/is);
+        if (selectMatch) {
+          const cols = selectMatch[1].trim();
+          if (cols !== '*' && !/\bCOUNT\b|\bSUM\b|\bAVG\b|\bMIN\b|\bMAX\b/i.test(cols)) {
+            const colList = cols.split(',').map(c => '"' + c.trim().replace(/[\[\]]/g, '').split(/\s+AS\s+/i)[0].trim() + '"').join(', ');
+            steps.push('SelectCols = Table.SelectColumns ( Step' + stepNum + ', {' + colList + '} )');
+            stepNum++;
+          }
+        }
+
+        // WHERE clause
+        const whereMatch = input.match(/WHERE\s+(.*?)(?=GROUP|ORDER|HAVING|LIMIT|$)/is);
+        if (whereMatch) {
+          let cond = whereMatch[1].trim();
+          // Convert conditions to M syntax
+          cond = cond.replace(/(\w+)\s*=\s*'([^']+)'/g, '[' + '$1] = "$2"');
+          cond = cond.replace(/(\w+)\s*=\s*(\d+)/g, '[$1] = $2');
+          cond = cond.replace(/(\w+)\s+IN\s*\(([^)]+)\)/gi, function(m, col, vals) {
+            const vlist = vals.split(',').map(v => v.trim().replace(/'/g, '"')).join(', ');
+            return 'List.Contains ( {' + vlist + '}, [' + col + '] )';
+          });
+          cond = cond.replace(/(\w+)\s+LIKE\s+'%([^%]+)%'/gi, 'Text.Contains ( [$1], "$2" )');
+          cond = cond.replace(/(\w+)\s+IS\s+NULL/gi, '[$1] = null');
+          cond = cond.replace(/(\w+)\s+IS\s+NOT\s+NULL/gi, '[$1] <> null');
+          cond = cond.replace(/\bAND\b/gi, 'and');
+          cond = cond.replace(/\bOR\b/gi, 'or');
+          steps.push('FilterRows = Table.SelectRows ( Step' + stepNum + ', each ' + cond + ' )');
+          stepNum++;
+          notes.push('WHERE becomes <span class="hl">Table.SelectRows</span> with an "each" predicate.');
+        }
+
+        // GROUP BY
+        const groupMatch = input.match(/GROUP\s+BY\s+(.*?)(?=HAVING|ORDER|LIMIT|$)/is);
+        if (groupMatch) {
+          const groupCols = groupMatch[1].split(',').map(c => '"' + c.trim().replace(/[\[\]]/g, '') + '"').join(', ');
+          // Detect aggregations
+          const aggs = [];
+          const aggPatterns = input.match(/(COUNT|SUM|AVG|MIN|MAX)\s*\(\s*(\*|\w+)\s*\)/gi) || [];
+          aggPatterns.forEach(a => {
+            const parts = a.match(/(COUNT|SUM|AVG|MIN|MAX)\s*\(\s*(\*|\w+)\s*\)/i);
+            if (parts) {
+              const fn = parts[1].toUpperCase();
+              const col = parts[2];
+              const mFn = fn === 'COUNT' && col === '*' ? 'Table.RowCount' : 'List.' + fn.charAt(0) + fn.slice(1).toLowerCase();
+              const mCol = fn === 'COUNT' && col === '*' ? '_' : col;
+              if (fn === 'COUNT' && col === '*') {
+                aggs.push('{"Count", each Table.RowCount(_), Int64.Type}');
+              } else {
+                aggs.push('{"' + fn + '_' + col + '", each List.' + fn.charAt(0) + fn.slice(1).toLowerCase() + '(_[' + col + ']), type number}');
+              }
+            }
+          });
+          const aggStr = aggs.length > 0 ? aggs.join(', ') : '{"Count", each Table.RowCount(_), Int64.Type}';
+          steps.push('GroupRows = Table.Group ( Step' + stepNum + ', {' + groupCols + '}, {' + aggStr + '} )');
+          stepNum++;
+          notes.push('GROUP BY becomes <span class="hl">Table.Group</span> with aggregation specs.');
+        }
+
+        // ORDER BY
+        const orderMatch = input.match(/ORDER\s+BY\s+(.*?)(?=LIMIT|OFFSET|$)/is);
+        if (orderMatch) {
+          const sortParts = orderMatch[1].split(',').map(p => {
+            const parts = p.trim().split(/\s+/);
+            const col = parts[0].replace(/[\[\]]/g, '');
+            const dir = parts[1] && parts[1].toUpperCase() === 'DESC' ? 'Order.Descending' : 'Order.Ascending';
+            return '{"' + col + '", ' + dir + '}';
+          });
+          steps.push('SortRows = Table.Sort ( Step' + stepNum + ', {' + sortParts.join(', ') + '} )');
+          stepNum++;
+          notes.push('ORDER BY becomes <span class="hl">Table.Sort</span>.');
+        }
+
+        // TOP N or LIMIT
+        const topMatch = input.match(/SELECT\s+TOP\s+(\d+)/i);
+        const limitMatch = input.match(/LIMIT\s+(\d+)/i);
+        const n = topMatch ? topMatch[1] : (limitMatch ? limitMatch[1] : null);
+        if (n) {
+          steps.push('TopN = Table.FirstN ( Step' + stepNum + ', ' + n + ' )');
+          stepNum++;
+          notes.push('TOP / LIMIT becomes <span class="hl">Table.FirstN</span>.');
+        }
+
+        // Build M code
+        mCode = 'let\n';
+        steps.forEach((s, i) => {
+          const stepName = s.split(' = ')[0];
+          const stepExpr = s.split(' = ').slice(1).join(' = ');
+          // Replace StepN references with actual previous step names
+          let expr = stepExpr;
+          for (let j = i; j >= 1; j--) {
+            expr = expr.replace('Step' + j, steps[j - 1].split(' = ')[0]);
+          }
+          if (i === 0) {
+            mCode += '    ' + stepName + ' = ' + expr;
+          } else {
+            mCode += ',\n    ' + stepName + ' = ' + expr;
+          }
+        });
+        const lastStep = steps[steps.length - 1].split(' = ')[0];
+        mCode += '\nin\n    ' + lastStep;
+
+      } else {
+        // Non-SELECT queries
+        if (/^\s*INSERT/i.test(input)) {
+          mCode = '// INSERT maps to Table.InsertRows\nTable.InsertRows ( Source, 0, { [Col1 = "val1", Col2 = "val2"] } )';
+          notes.push('INSERT becomes <span class="hl">Table.InsertRows</span>. M is typically read-only; writes go through other channels.');
+        } else if (/^\s*UPDATE/i.test(input)) {
+          mCode = '// UPDATE maps to Table.ReplaceValue\nTable.ReplaceValue ( Source, "old", "new", Replacer.ReplaceText, {"Col"} )';
+          notes.push('UPDATE becomes <span class="hl">Table.ReplaceValue</span>. For conditional updates, use Table.TransformRows.');
+        } else if (/^\s*DELETE/i.test(input)) {
+          mCode = '// DELETE maps to Table.SelectRows (inverted condition)\nTable.SelectRows ( Source, each [Col] <> "value_to_delete" )';
+          notes.push('DELETE becomes <span class="hl">Table.SelectRows</span> with an inverted filter (keep everything except).');
+        } else {
+          mCode = '// Paste a SELECT, INSERT, UPDATE, or DELETE query';
+          notes.push('Enter a SQL query to see the Power Query (M) equivalent.');
+        }
+      }
+
+      return { m: mCode, notes: notes };
+    }
+
+    function highlightM(text) {
+      return text
+        .replace(/\b(let|in|each|if|then|else|and|or|not|true|false|null|type|as|try|otherwise|error)\b/g, '<span class="kw-m">$1</span>')
+        .replace(/\b(Table\.\w+|List\.\w+|Text\.\w+|Date\.\w+|DateTime\.\w+|Duration\.\w+|Number\.\w+|Int64\.Type|Order\.\w+|JoinKind\.\w+|Replacer\.\w+)\b/g, '<span class="fn-m">$1</span>')
+        .replace(/"([^"]*)"/g, '<span class="str">"$1"</span>')
+        .replace(/(\/\/[^\n]*)/g, '<span class="comment-m">$1</span>');
+    }
+
+    function convertSQLAndRender() {
+      const input = document.getElementById('sqlInput').value;
+      const output = document.getElementById('mOutput');
+      const notesEl = document.getElementById('mNotes');
+
+      if (!input.trim()) {
+        output.innerHTML = '<span class="placeholder">M code will appear here...</span>';
+        notesEl.style.display = 'none';
+        return;
+      }
+
+      const result = convertSQL(input);
+      output.innerHTML = highlightM(result.m);
+
+      if (result.notes.length > 0) {
+        notesEl.style.display = 'block';
+        notesEl.innerHTML = result.notes.map(n => '<div class="conv-note">' + n + '</div>').join('');
+      } else {
+        notesEl.style.display = 'none';
+      }
+    }
+
+    function copyM() {
+      const output = document.getElementById('mOutput');
+      navigator.clipboard.writeText(output.textContent).then(() => {
+        const btn = document.getElementById('mCopy');
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+
+    document.getElementById('sqlInput').addEventListener('input', convertSQLAndRender);
   </script>
 </body>
 </html>
