@@ -1094,7 +1094,7 @@
             <div class="scope-checks" id="scopeAddons">
               <label class="scope-check" onclick="toggleCheck(this)"><input type="checkbox" value="Hands-On Training">Hands-On Training</label>
               <label class="scope-check" onclick="toggleCheck(this)"><input type="checkbox" value="Custom Reporting Alerts">Custom Reporting Alerts</label>
-              <label class="scope-check selected" onclick="toggleCheck(this)"><input type="checkbox" value="Documentation" checked>Documentation</label>
+              <label class="scope-check selected" onclick="toggleCheck(this)"><input type="checkbox" value="Custom Documentation" checked>Custom Documentation</label>
             </div>
           </div>
           <div class="scope-field">
@@ -1132,7 +1132,7 @@
           <span class="scope-est-value" id="estDashCost">$1,200</span>
         </div>
         <div class="scope-est-row" id="estDocRow">
-          <span class="scope-est-label">Documentation</span>
+          <span class="scope-est-label">Custom Documentation</span>
           <span class="scope-est-value" id="estDocCost">$200</span>
         </div>
         <div class="scope-est-row" id="estAddonsRow" style="display:none;">
@@ -1953,7 +1953,7 @@
         document.getElementById('estDashCost').textContent = fmtPrice(dashCost);
 
         // 3. Documentation (economy of scale: 2hrs base, +0.5hr per additional dashboard after first)
-        var hasDoc = addons.indexOf('Documentation') !== -1;
+        var hasDoc = addons.indexOf('Custom Documentation') !== -1;
         var docRow = document.getElementById('estDocRow');
         var docCost = 0;
         if (hasDoc) {
@@ -1969,7 +1969,7 @@
         var addonsCost = 0;
         var addonNames = [];
         addons.forEach(function(a) {
-          if (a !== 'Documentation' && ADDON_HOURS[a]) {
+          if (a !== 'Custom Documentation' && ADDON_HOURS[a]) {
             addonsCost += ADDON_HOURS[a] * RATE;
             addonNames.push(a);
           }
