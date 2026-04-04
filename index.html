@@ -517,6 +517,36 @@
     .pcard-btn.accent { color: #fff; background: var(--copper); }
     .pcard-btn.accent:hover { box-shadow: 0 0 28px var(--copper-glow), 0 8px 24px rgba(0,0,0,0.2); }
 
+    /* ── FOUNDER BIO ── */
+    .founder {
+      padding: 5rem 6vw; display: flex; align-items: center; gap: 3.5rem;
+    }
+    @media (max-width: 780px) { .founder { flex-direction: column; text-align: center; gap: 2rem; padding: 3.5rem 6vw; } }
+    .founder-photo {
+      width: 160px; height: 160px; border-radius: 50%; flex-shrink: 0;
+      background: var(--card); border: 3px solid rgba(192,88,24,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-drama); font-size: 3rem; font-weight: 600; color: var(--copper);
+      overflow: hidden;
+    }
+    .founder-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .founder-eyebrow {
+      font-family: var(--font-mono); font-size: 0.5625rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--copper); margin-bottom: 0.625rem;
+    }
+    .founder-name { font-weight: 800; font-size: 1.375rem; color: var(--ink); letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+    .founder-text { font-size: 0.9375rem; color: var(--slate); line-height: 1.75; max-width: 520px; }
+    .founder-creds {
+      display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem;
+    }
+    @media (max-width: 780px) { .founder-creds { justify-content: center; } }
+    .founder-cred {
+      font-family: var(--font-mono); font-size: 0.5rem; font-weight: 600;
+      color: var(--slate); background: rgba(24,29,42,0.04);
+      border: 1px solid rgba(24,29,42,0.08); padding: 0.25rem 0.625rem;
+      border-radius: 100px; letter-spacing: 0.08em;
+    }
+
     /* ── SCOPE MODAL ── */
     .scope-overlay {
       display: none; position: fixed; inset: 0; z-index: 600;
@@ -703,7 +733,7 @@
 
     /* ── FOOTER ── */
     footer { background: var(--dark2); border-radius: 3rem 3rem 0 0; padding: 5.5rem 6vw 3rem; margin-top: 5rem; }
-    .foot-grid { display: grid; grid-template-columns: 2.25fr 1fr 1fr; gap: 3rem; margin-bottom: 4rem; }
+    .foot-grid { display: grid; grid-template-columns: 2.25fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 4rem; }
     @media (max-width: 780px) { .foot-grid { grid-template-columns: 1fr 1fr; gap: 2rem; } }
     .foot-brand-name { font-weight: 800; font-size: 1.0625rem; letter-spacing: -0.025em; color: #fff; margin-bottom: 0.75rem; }
     .foot-brand-tag { font-size: 0.875rem; font-weight: 400; color: rgba(255,255,255,0.28); line-height: 1.7; max-width: 260px; }
@@ -746,11 +776,11 @@
   <section class="hero" id="hero">
     <div class="hero-grid"></div>
     <div class="hero-content">
-      <span class="hero-eyebrow">Power BI &nbsp; Power Automate &nbsp; Microsoft 365</span>
+      <span class="hero-eyebrow">Automated Reporting Solutions</span>
       <!-- REC 1: PAIN-FIRST HERO HEADLINE -->
       <span class="hero-line-sans">Your reports should</span>
       <span class="hero-line-drama"><span class="signal">run themselves.</span></span>
-      <span class="hero-sub">We turn spreadsheet chaos into automated dashboards, using the Microsoft tools your team already owns and pays for.</span>
+      <span class="hero-sub">Custom Power BI dashboards, automated data pipelines, and a structured reporting layer your team can own. Built entirely on Microsoft 365. No new software. No new subscriptions.</span>
       <!-- REC 6: VARIED CTAs -->
       <div class="hero-actions">
         <a href="#cta" class="btn-primary">Get a Free Audit</a>
@@ -854,6 +884,7 @@
       <span class="section-label">The Engagement</span>
       <h2 class="section-h2">Three steps.<br>Permanent results.</h2>
       <p class="section-sub">Every project follows the same proven sequence. Audit, build, automate. In that order. Every time.</p>
+      <p class="section-sub" style="margin-top:0.75rem;font-size:0.8125rem;color:var(--copper);font-weight:500;">Zero downtime: we build alongside your existing workflow. Your team keeps using their current tools until the new system is fully tested and ready.</p>
     </div>
     <div class="proto-layout">
       <!-- LEFT: STEPPER -->
@@ -921,6 +952,7 @@
         <div class="pcard-tier">Build</div>
         <div class="pcard-headline">Dashboards + Semantic Model</div>
         <div class="pcard-tagline">Custom Power BI dashboards and a structured semantic model built on your existing data. Clean reporting your team can trust and maintain from day one.</div>
+        <div style="font-family:var(--font-mono);font-size:0.625rem;color:var(--copper);margin-bottom:1.25rem;letter-spacing:0.04em;">Typical engagement: $1,800 - $4,500</div>
         <ul class="pcard-feats">
           <li class="pcard-feat">Data source audit and architecture map</li>
           <li class="pcard-feat">Semantic model design (star schema)</li>
@@ -937,6 +969,7 @@
         <div class="pcard-tier">Data Chassis</div>
         <div class="pcard-headline">Full Data Layer + Reporting</div>
         <div class="pcard-tagline">The complete Data Chassis build. A unified data layer with automated ETL pipelines, scheduled refresh flows, and robust reporting across all your sources.</div>
+        <div style="font-family:var(--font-mono);font-size:0.625rem;color:rgba(255,255,255,0.45);margin-bottom:1.25rem;letter-spacing:0.04em;">Typical engagement: $4,500 - $9,000+</div>
         <ul class="pcard-feats">
           <li class="pcard-feat">Everything in Build</li>
           <li class="pcard-feat">Automated ETL pipelines across all sources</li>
@@ -950,6 +983,7 @@
         <div class="pcard-tier">Consulting</div>
         <div class="pcard-headline">Retainer + Ad Hoc</div>
         <div class="pcard-tagline">Ongoing consulting for teams that need flexible, on-demand support. Model maintenance, new dashboard builds, troubleshooting, and strategic guidance as your needs evolve.</div>
+        <div style="font-family:var(--font-mono);font-size:0.625rem;color:var(--copper);margin-bottom:1.25rem;letter-spacing:0.04em;">Starting at $800/mo</div>
         <ul class="pcard-feats">
           <li class="pcard-feat">Monthly consulting retainer</li>
           <li class="pcard-feat">Ad hoc dashboard and report builds</li>
@@ -957,6 +991,29 @@
           <li class="pcard-feat">Priority support and direct access</li>
         </ul>
         <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="pcard-btn outline">Let's Talk</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOUNDER BIO -->
+  <section class="founder" id="about">
+    <div class="founder-photo">
+      <!-- Replace this with: <img src="sean-headshot.jpg" alt="Sean Marshall"> -->
+      SM
+    </div>
+    <div>
+      <div class="founder-eyebrow">Who Built This</div>
+      <div class="founder-name">Sean Marshall</div>
+      <p class="founder-text">I spent 6 years building reporting systems in healthcare, financial services, and operations analytics. I watched teams burn hours every week rebuilding the same spreadsheets, fixing the same broken formulas, and emailing the same CSVs. Power Integrate exists to fix that permanently, using the Microsoft tools most companies already own and never fully use.</p>
+      <div class="founder-creds">
+        <span class="founder-cred">Power BI Certified</span>
+        <span class="founder-cred">6+ Years Analytics</span>
+        <span class="founder-cred">Power BI</span>
+        <span class="founder-cred">Power Automate</span>
+        <span class="founder-cred">Power Query</span>
+        <span class="founder-cred">DAX</span>
+        <span class="founder-cred">SharePoint</span>
+        <span class="founder-cred">Python</span>
       </div>
     </div>
   </section>
@@ -1114,7 +1171,7 @@
       <div class="cta-text">
         <span class="section-label" style="color:var(--copper);">Get Started</span>
         <h2 class="cta-h2">Ready to stop rebuilding the same report?</h2>
-        <p class="cta-sub">Drop your email and we will reach out within one business day to schedule a free audit of your reporting stack.</p>
+        <p class="cta-sub">Drop your email and we will map out your current bottlenecks and send you a 1-page architecture plan. Yours to keep, whether we work together or not.</p>
       </div>
       <!--
         FormSubmit: zero signup required. First submission triggers a
@@ -1136,6 +1193,7 @@
       </form>
       <div class="cta-divider"><span>or</span></div>
       <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" rel="noopener" class="cta-cal-link">Book a 30-minute discovery call directly</a>
+      <div style="font-family:var(--font-mono);font-size:0.5rem;color:var(--slate);opacity:0.45;margin-top:0.5rem;text-align:center;letter-spacing:0.03em;">30 minutes. No pitch. No pressure. You walk away with a clear picture of what automation would look like for your setup.</div>
     </div>
   </section>
 
@@ -1143,20 +1201,28 @@
     <div class="foot-grid">
       <div>
         <div class="foot-brand-name">Power Integrate</div>
-        <div class="foot-brand-tag">We turn spreadsheet chaos into automated dashboards, using the Microsoft tools your team already owns.</div>
+        <div class="foot-brand-tag">Custom dashboards, automated data pipelines, and structured reporting. Built entirely on Microsoft 365.</div>
       </div>
       <div class="foot-col">
         <div class="foot-col-label">Services</div>
         <ul>
-          <li><a href="#features">Power BI Dashboards</a></li>
-          <li><a href="#features">Data Chassis Architecture</a></li>
-          <li><a href="#features">Automated Flows</a></li>
+          <li><a href="#pricing">Dashboards + Semantic Model</a></li>
+          <li><a href="#pricing">Data Chassis</a></li>
+          <li><a href="#pricing">Consulting</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <div class="foot-col-label">Resources</div>
+        <ul>
+          <li><a href="powerlabs.html">PowerLabs</a></li>
+          <li><a href="powerspark.html">PowerSpark</a></li>
         </ul>
       </div>
       <div class="foot-col">
         <div class="foot-col-label">Contact</div>
         <ul>
           <li><a href="mailto:sean@powerintegrate.co">sean@powerintegrate.co</a></li>
+          <li><a href="https://calendly.com/sean-powerintegrate/30min" target="_blank">Book a Call</a></li>
         </ul>
       </div>
     </div>
