@@ -98,19 +98,56 @@
     .page-title { font-weight: 800; font-size: clamp(2rem, 4vw, 3rem); color: #fff; letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 0.75rem; }
     .page-sub { font-size: 1rem; font-weight: 400; color: rgba(255,255,255,0.3); line-height: 1.75; max-width: 500px; }
 
-    /* ── TOOL HEADER ── */
-    .tool-header {
-      padding: 3rem 6vw 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    /* ── TOOL SECTIONS (collapsible) ── */
+    .tool-section {
+      margin: 0 6vw; border: 1px solid rgba(24,29,42,0.09);
+      border-radius: 1.5rem; overflow: hidden; margin-top: 1.5rem;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+      background: #fff;
     }
-    .tool-name { font-weight: 800; font-size: 1.5rem; color: var(--ink); letter-spacing: -0.03em; }
+    .tool-header {
+      padding: 1.25rem 1.75rem; display: flex; align-items: center; gap: 1rem;
+      cursor: pointer; user-select: none;
+      transition: background 0.25s ease;
+      position: relative;
+    }
+    .tool-header:hover { background: rgba(24,29,42,0.02); }
+    .tool-header-left { display: flex; align-items: center; gap: 0.875rem; flex: 1; min-width: 0; }
+    .tool-icon {
+      width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 700; color: #fff; flex-shrink: 0;
+    }
+    .tool-name { font-weight: 800; font-size: 1.125rem; color: var(--ink); letter-spacing: -0.02em; }
     .tool-badge {
       font-family: var(--font-mono); font-size: 0.5rem; font-weight: 600; color: var(--copper);
       background: rgba(192,88,24,0.08); border: 1px solid rgba(192,88,24,0.2);
-      padding: 0.25rem 0.75rem; border-radius: 100px; letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.2rem 0.625rem; border-radius: 100px; letter-spacing: 0.1em; text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .tool-chevron {
+      width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      background: rgba(24,29,42,0.04); flex-shrink: 0;
+      transition: transform 0.35s ease, background 0.25s ease;
+    }
+    .tool-chevron svg { width: 12px; height: 12px; stroke: var(--slate); stroke-width: 2; fill: none; }
+    .tool-section.open .tool-chevron { transform: rotate(180deg); background: rgba(192,88,24,0.08); }
+    .tool-section.open .tool-chevron svg { stroke: var(--copper); }
+
+    .tool-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .tool-section.open .tool-body { max-height: 6000px; }
+    .tool-body-inner { padding: 0 1.75rem 2rem; }
+
+    @media (max-width: 780px) {
+      .tool-section { margin: 0 4vw; margin-top: 1rem; }
+      .tool-header { padding: 1rem 1.25rem; }
+      .tool-body-inner { padding: 0 1.25rem 1.5rem; }
+      .tool-badge { display: none; }
     }
 
     /* ── CALCULATOR ── */
-    .calc-wrap { padding: 0 6vw 4rem; }
     .calc-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 1.5rem; align-items: start; }
     @media (max-width: 960px) { .calc-grid { grid-template-columns: 1fr; } }
 
@@ -254,7 +291,7 @@
     .tool-index-sub { font-family: var(--font-mono); font-size: 0.5rem; color: var(--slate); letter-spacing: 0.08em; margin-top: 0.1rem; }
 
     /* ── DCA CALCULATOR ── */
-    .tool-divider { height: 1px; background: rgba(24,29,42,0.08); margin: 3rem 6vw 0; }
+    .tool-divider { display: none; }
 
     .lot-table-wrap { overflow-x: auto; }
     .lot-table {
@@ -401,9 +438,21 @@
     }
     .ref-table td { padding: 0.5rem; border-bottom: 1px solid rgba(24,29,42,0.06); vertical-align: top; }
     .ref-table td:first-child { font-family: var(--font-mono); color: #1D6F42; font-weight: 500; }
+    .ref-fn-name { cursor: pointer; border-bottom: 1px dashed rgba(29,111,66,0.3); padding-bottom: 1px; transition: color 0.2s ease; }
+    .ref-fn-name:hover { color: var(--copper); border-color: var(--copper); }
     .ref-table td:nth-child(2) { font-family: var(--font-mono); color: var(--copper); font-weight: 500; }
     .ref-table td:last-child { color: var(--slate); }
     .ref-table tr.hidden { display: none; }
+    .ref-syntax {
+      display: none; margin-top: 0.5rem; padding: 0.5rem 0.75rem;
+      background: rgba(29,111,66,0.06); border: 1px solid rgba(29,111,66,0.12);
+      border-radius: 0.375rem; font-size: 0.6875rem; color: var(--ink);
+      font-family: var(--font-mono); line-height: 1.6;
+    }
+    .ref-syntax.open { display: block; }
+    .ref-syntax .syn-label { font-size: 0.5rem; color: var(--slate); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.25rem; font-weight: 600; }
+    .ref-syntax code { color: #1D6F42; }
+    .ref-expand-hint { font-size: 0.5rem; color: var(--slate); opacity: 0.5; margin-left: 0.25rem; }
 
     /* ── FOOTER ── */
     footer { background: var(--dark2); border-radius: 3rem 3rem 0 0; padding: 4rem 6vw 2.5rem; margin-top: 3rem; }
@@ -442,60 +491,59 @@
   </header>
 
   <div class="tool-index">
-    <a href="#dax" class="tool-index-card">
+    <a class="tool-index-card" onclick="openTool('dax')">
       <div class="tool-index-icon" style="background:var(--copper);">fx</div>
       <div><div class="tool-index-name">Excel to DAX Converter</div><div class="tool-index-sub">Formula Translator</div></div>
     </a>
-    <a href="#refi" class="tool-index-card">
+    <a class="tool-index-card" onclick="openTool('refi')">
       <div class="tool-index-icon refi">R</div>
       <div><div class="tool-index-name">Cash-Out Refi Calculator</div><div class="tool-index-sub">DTI + Approval Analysis</div></div>
     </a>
-    <a href="#dca" class="tool-index-card">
+    <a class="tool-index-card" onclick="openTool('dca')">
       <div class="tool-index-icon dca">$</div>
       <div><div class="tool-index-name">Cost Basis / DCA Calculator</div><div class="tool-index-sub">Stock + Crypto Lots</div></div>
     </a>
   </div>
 
-  <div id="dax"></div>
-  <div class="tool-header">
-    <h2 class="tool-name">Excel to DAX Converter</h2>
-    <span class="tool-badge">Formula Translator</span>
-  </div>
-
-  <div class="calc-wrap">
-    <div class="conv-layout">
-
-      <!-- INPUT: Excel formula -->
-      <div class="conv-panel">
-        <div class="conv-panel-label excel">Excel Formula</div>
-        <textarea class="conv-textarea" id="excelInput" placeholder="Enter an Excel formula...&#10;&#10;Examples:&#10;=SUMIFS(Sales, Region, &quot;East&quot;)&#10;=VLOOKUP(A2, Data!A:C, 3, FALSE)&#10;=IF(AND(A1>10, B1<5), &quot;Yes&quot;, &quot;No&quot;)"></textarea>
+  <!-- ═══ TOOL 1: EXCEL TO DAX ═══ -->
+  <div class="tool-section open" id="dax">
+    <div class="tool-header" onclick="toggleTool('dax')">
+      <div class="tool-header-left">
+        <div class="tool-icon" style="background:var(--copper);">fx</div>
+        <h2 class="tool-name">Excel to DAX Converter</h2>
       </div>
-
-      <!-- OUTPUT: DAX equivalent -->
-      <div class="conv-panel dark">
-        <div class="conv-panel-label dax">DAX Equivalent</div>
-        <div class="conv-output" id="daxOutput"><span class="placeholder">DAX formula will appear here...</span></div>
-        <button class="conv-copy" id="daxCopy" onclick="copyDAX()">Copy</button>
-        <div class="conv-notes" id="convNotes" style="display:none;"></div>
-      </div>
-
-      <!-- Reference table -->
-      <div class="ref-table-wrap">
-        <div class="ref-panel">
-          <div class="ref-header">
-            <div class="panel-title" style="margin-bottom:0;">Quick Reference</div>
-            <button class="ref-toggle" id="refToggle" onclick="toggleRef()"><span>Show All</span> <span class="ref-toggle-arrow">&#9660;</span></button>
+      <span class="tool-badge">Formula Translator</span>
+      <div class="tool-chevron"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+    </div>
+    <div class="tool-body">
+      <div class="tool-body-inner">
+        <div class="conv-layout">
+          <div class="conv-panel">
+            <div class="conv-panel-label excel">Excel Formula</div>
+            <textarea class="conv-textarea" id="excelInput" placeholder="Enter an Excel formula...&#10;&#10;Examples:&#10;=SUMIFS(Sales, Region, &quot;East&quot;)&#10;=VLOOKUP(A2, Data!A:C, 3, FALSE)&#10;=IF(AND(A1>10, B1<5), &quot;Yes&quot;, &quot;No&quot;)"></textarea>
           </div>
-          <input type="text" class="ref-search" id="refSearch" placeholder="Search functions...">
-          <div class="ref-result-count" id="refCount"></div>
-          <div class="ref-table-body" id="refTableBody">
-            <div class="lot-table-wrap">
-              <table class="ref-table" id="refTable">
-                <thead>
-                  <tr><th>Excel</th><th>DAX</th><th>Notes</th></tr>
-                </thead>
-                <tbody id="refBody"></tbody>
-              </table>
+          <div class="conv-panel dark">
+            <div class="conv-panel-label dax">DAX Equivalent</div>
+            <div class="conv-output" id="daxOutput"><span class="placeholder">DAX formula will appear here...</span></div>
+            <button class="conv-copy" id="daxCopy" onclick="copyDAX()">Copy</button>
+            <div class="conv-notes" id="convNotes" style="display:none;"></div>
+          </div>
+          <div class="ref-table-wrap">
+            <div class="ref-panel">
+              <div class="ref-header">
+                <div class="panel-title" style="margin-bottom:0;">Quick Reference</div>
+                <button class="ref-toggle" id="refToggle" onclick="toggleRef()"><span>Show All</span> <span class="ref-toggle-arrow">&#9660;</span></button>
+              </div>
+              <input type="text" class="ref-search" id="refSearch" placeholder="Search functions...">
+              <div class="ref-result-count" id="refCount"></div>
+              <div class="ref-table-body" id="refTableBody">
+                <div class="lot-table-wrap">
+                  <table class="ref-table" id="refTable">
+                    <thead><tr><th>Excel<span class="ref-expand-hint">(click to expand)</span></th><th>DAX</th><th>Notes</th></tr></thead>
+                    <tbody id="refBody"></tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -503,249 +551,118 @@
     </div>
   </div>
 
-  <div class="tool-divider"></div>
-  <div id="refi"></div>
-  <div class="tool-header">
-    <h2 class="tool-name">Cash-Out Refinance Calculator</h2>
-    <span class="tool-badge">DTI + Approval Analysis</span>
-  </div>
-
-  <div class="calc-wrap">
-    <div class="calc-grid">
-
-      <!-- ── INPUTS ── -->
-      <div class="calc-inputs">
-        <div class="input-panel">
-          <div class="panel-title"><div class="panel-icon home">H</div> Property + Loan</div>
-          <div class="field">
-            <label class="field-label">Current Home Value</label>
-            <input type="number" class="field-input" id="currentHomeValue" value="500000">
-          </div>
-          <div class="field">
-            <label class="field-label">Current Loan Balance</label>
-            <input type="number" class="field-input" id="currentLoanBalance" value="300000">
-          </div>
-          <div class="field">
-            <label class="field-label">Desired New Loan Amount</label>
-            <input type="number" class="field-input" id="desiredLoanAmount" value="400000">
-          </div>
-          <div class="field">
-            <label class="field-label">New Interest Rate (%)</label>
-            <input type="number" step="0.125" class="field-input" id="newInterestRate" value="7.0">
-          </div>
-          <div class="field">
-            <label class="field-label">Loan Term</label>
-            <select class="field-select" id="loanTerm">
-              <option value="15">15 Years</option>
-              <option value="20">20 Years</option>
-              <option value="30" selected>30 Years</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="input-panel">
-          <div class="panel-title"><div class="panel-icon money">$</div> Taxes, Insurance + Fees</div>
-          <div class="field">
-            <label class="field-label">Annual Property Taxes</label>
-            <input type="number" class="field-input" id="annualPropertyTax" value="8000">
-          </div>
-          <div class="field">
-            <label class="field-label">Annual Homeowners Insurance</label>
-            <input type="number" class="field-input" id="annualInsurance" value="2000">
-          </div>
-          <div class="field">
-            <label class="field-label">Monthly PMI</label>
-            <input type="number" class="field-input" id="monthlyPMI" value="0">
-          </div>
-          <div class="field">
-            <label class="field-label">Monthly HOA Fees</label>
-            <input type="number" class="field-input" id="monthlyHOA" value="0">
-          </div>
-        </div>
-
-        <div class="input-panel" style="border-left: 3px solid var(--copper);">
-          <div class="panel-title"><div class="panel-icon dti">%</div> Income + Debts (DTI)</div>
-          <div class="field">
-            <label class="field-label">Monthly Gross Income</label>
-            <input type="number" class="field-input" id="monthlyGrossIncome" value="10000">
-          </div>
-          <div class="field">
-            <label class="field-label">Other Monthly Debts</label>
-            <input type="number" class="field-input" id="otherMonthlyDebts" value="500">
-            <div class="field-hint">Car loans, credit cards, student loans, etc.</div>
-          </div>
-          <div class="field">
-            <label class="field-label">Credit Score</label>
-            <input type="number" class="field-input" id="creditScore" value="740" min="300" max="850">
-          </div>
-        </div>
+  <!-- ═══ TOOL 2: CASH-OUT REFI ═══ -->
+  <div class="tool-section" id="refi">
+    <div class="tool-header" onclick="toggleTool('refi')">
+      <div class="tool-header-left">
+        <div class="tool-icon" style="background:var(--signal);">R</div>
+        <h2 class="tool-name">Cash-Out Refinance Calculator</h2>
       </div>
-
-      <!-- ── RESULTS ── -->
-      <div class="calc-results">
-
-        <!-- Approval Probability -->
-        <div class="result-panel dark" id="approvalPanel">
-          <div class="result-title" style="color:#fff;">Loan Approval Probability</div>
-          <div class="approval-meter">
-            <div>
-              <div class="approval-score" id="approvalScore" style="color:var(--green);">0%</div>
-              <div class="approval-label" id="approvalLabel" style="color:var(--green);">Calculating...</div>
+      <span class="tool-badge">DTI + Approval Analysis</span>
+      <div class="tool-chevron"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+    </div>
+    <div class="tool-body">
+      <div class="tool-body-inner">
+        <div class="calc-grid">
+          <div class="calc-inputs">
+            <div class="input-panel">
+              <div class="panel-title"><div class="panel-icon home">H</div> Property + Loan</div>
+              <div class="field"><label class="field-label">Current Home Value</label><input type="number" class="field-input" id="currentHomeValue" value="500000"></div>
+              <div class="field"><label class="field-label">Current Loan Balance</label><input type="number" class="field-input" id="currentLoanBalance" value="300000"></div>
+              <div class="field"><label class="field-label">Desired New Loan Amount</label><input type="number" class="field-input" id="desiredLoanAmount" value="400000"></div>
+              <div class="field"><label class="field-label">New Interest Rate (%)</label><input type="number" step="0.125" class="field-input" id="newInterestRate" value="7.0"></div>
+              <div class="field"><label class="field-label">Loan Term</label><select class="field-select" id="loanTerm"><option value="15">15 Years</option><option value="20">20 Years</option><option value="30" selected>30 Years</option></select></div>
             </div>
-            <div class="approval-bar-wrap">
-              <div class="approval-bar-label">Approval Score</div>
-              <div class="approval-bar"><div class="approval-bar-fill" id="approvalBar" style="width:0%;background:var(--green);"></div></div>
+            <div class="input-panel">
+              <div class="panel-title"><div class="panel-icon money">$</div> Taxes, Insurance + Fees</div>
+              <div class="field"><label class="field-label">Annual Property Taxes</label><input type="number" class="field-input" id="annualPropertyTax" value="8000"></div>
+              <div class="field"><label class="field-label">Annual Homeowners Insurance</label><input type="number" class="field-input" id="annualInsurance" value="2000"></div>
+              <div class="field"><label class="field-label">Monthly PMI</label><input type="number" class="field-input" id="monthlyPMI" value="0"></div>
+              <div class="field"><label class="field-label">Monthly HOA Fees</label><input type="number" class="field-input" id="monthlyHOA" value="0"></div>
             </div>
-          </div>
-          <div class="factors-grid" id="factorsGrid"></div>
-          <div class="reqs-box" id="reqsBox"></div>
-        </div>
-
-        <!-- DTI Analysis -->
-        <div class="result-panel">
-          <div class="result-title">Debt-to-Income Ratio</div>
-          <div class="kpi-row" style="margin-bottom:1rem;">
-            <div class="kpi">
-              <div class="kpi-label">Front-End DTI (Housing)</div>
-              <div class="kpi-value" id="frontDTI">0%</div>
-            </div>
-            <div class="kpi">
-              <div class="kpi-label">Back-End DTI (All Debts)</div>
-              <div class="kpi-value" id="backDTI">0%</div>
+            <div class="input-panel" style="border-left: 3px solid var(--copper);">
+              <div class="panel-title"><div class="panel-icon dti">%</div> Income + Debts (DTI)</div>
+              <div class="field"><label class="field-label">Monthly Gross Income</label><input type="number" class="field-input" id="monthlyGrossIncome" value="10000"></div>
+              <div class="field"><label class="field-label">Other Monthly Debts</label><input type="number" class="field-input" id="otherMonthlyDebts" value="500"><div class="field-hint">Car loans, credit cards, student loans, etc.</div></div>
+              <div class="field"><label class="field-label">Credit Score</label><input type="number" class="field-input" id="creditScore" value="740" min="300" max="850"></div>
             </div>
           </div>
-          <div id="dtiBreakdown"></div>
-        </div>
-
-        <!-- Cash-Out Summary -->
-        <div class="result-panel">
-          <div class="result-title">Cash-Out Summary</div>
-          <div class="kpi-row">
-            <div class="kpi">
-              <div class="kpi-label">Cash Available</div>
-              <div class="kpi-value" id="cashOut" style="color:var(--green);">$0</div>
+          <div class="calc-results">
+            <div class="result-panel dark" id="approvalPanel">
+              <div class="result-title" style="color:#fff;">Loan Approval Probability</div>
+              <div class="approval-meter">
+                <div><div class="approval-score" id="approvalScore" style="color:var(--green);">0%</div><div class="approval-label" id="approvalLabel" style="color:var(--green);">Calculating...</div></div>
+                <div class="approval-bar-wrap"><div class="approval-bar-label">Approval Score</div><div class="approval-bar"><div class="approval-bar-fill" id="approvalBar" style="width:0%;background:var(--green);"></div></div></div>
+              </div>
+              <div class="factors-grid" id="factorsGrid"></div>
+              <div class="reqs-box" id="reqsBox"></div>
             </div>
-            <div class="kpi">
-              <div class="kpi-label">Loan-to-Value</div>
-              <div class="kpi-value" id="ltvRatio">0%</div>
+            <div class="result-panel">
+              <div class="result-title">Debt-to-Income Ratio</div>
+              <div class="kpi-row" style="margin-bottom:1rem;">
+                <div class="kpi"><div class="kpi-label">Front-End DTI (Housing)</div><div class="kpi-value" id="frontDTI">0%</div></div>
+                <div class="kpi"><div class="kpi-label">Back-End DTI (All Debts)</div><div class="kpi-value" id="backDTI">0%</div></div>
+              </div>
+              <div id="dtiBreakdown"></div>
             </div>
-            <div class="kpi">
-              <div class="kpi-label">Current Equity</div>
-              <div class="kpi-value" id="currentEquity" style="color:var(--signal);">$0</div>
+            <div class="result-panel">
+              <div class="result-title">Cash-Out Summary</div>
+              <div class="kpi-row">
+                <div class="kpi"><div class="kpi-label">Cash Available</div><div class="kpi-value" id="cashOut" style="color:var(--green);">$0</div></div>
+                <div class="kpi"><div class="kpi-label">Loan-to-Value</div><div class="kpi-value" id="ltvRatio">0%</div></div>
+                <div class="kpi"><div class="kpi-label">Current Equity</div><div class="kpi-value" id="currentEquity" style="color:var(--signal);">$0</div></div>
+                <div class="kpi"><div class="kpi-label">Remaining Equity</div><div class="kpi-value" id="remainingEquity" style="color:var(--signal);">$0</div></div>
+              </div>
             </div>
-            <div class="kpi">
-              <div class="kpi-label">Remaining Equity</div>
-              <div class="kpi-value" id="remainingEquity" style="color:var(--signal);">$0</div>
+            <div class="result-panel">
+              <div class="result-title">Monthly Payment Breakdown</div>
+              <div id="paymentBreakdown"></div>
             </div>
+            <div id="warnings"></div>
           </div>
         </div>
-
-        <!-- Monthly Payment -->
-        <div class="result-panel">
-          <div class="result-title">Monthly Payment Breakdown</div>
-          <div id="paymentBreakdown"></div>
-        </div>
-
-        <!-- Warnings -->
-        <div id="warnings"></div>
-
       </div>
     </div>
   </div>
 
-  <div class="tool-divider"></div>
-  <div id="dca"></div>
-  <div class="tool-header">
-    <h2 class="tool-name">Cost Basis / DCA Calculator</h2>
-    <span class="tool-badge">Stock + Crypto Lots</span>
-  </div>
-
-  <div class="calc-wrap">
-    <div class="calc-grid">
-
-      <!-- INPUTS: Lot Table -->
-      <div class="calc-inputs" style="grid-column: 1 / -1;">
+  <!-- ═══ TOOL 3: DCA CALCULATOR ═══ -->
+  <div class="tool-section" id="dca">
+    <div class="tool-header" onclick="toggleTool('dca')">
+      <div class="tool-header-left">
+        <div class="tool-icon" style="background:var(--green);">$</div>
+        <h2 class="tool-name">Cost Basis / DCA Calculator</h2>
+      </div>
+      <span class="tool-badge">Stock + Crypto Lots</span>
+      <div class="tool-chevron"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+    </div>
+    <div class="tool-body">
+      <div class="tool-body-inner">
         <div class="input-panel">
           <div class="panel-title"><div class="panel-icon" style="background:var(--green);">$</div> Purchase Lots</div>
           <div class="lot-table-wrap">
             <table class="lot-table" id="lotTable">
-              <thead>
-                <tr>
-                  <th style="width:30px;">#</th>
-                  <th>Date</th>
-                  <th>Shares / Units</th>
-                  <th>Price Per Share</th>
-                  <th>Lot Total</th>
-                  <th style="width:40px;"></th>
-                </tr>
-              </thead>
+              <thead><tr><th style="width:30px;">#</th><th>Date</th><th>Shares / Units</th><th>Price Per Share</th><th>Lot Total</th><th style="width:40px;"></th></tr></thead>
               <tbody id="lotBody">
-                <tr data-lot="0">
-                  <td class="lot-total">1</td>
-                  <td><input type="date" class="field-input lot-date" value="2025-01-15"></td>
-                  <td><input type="number" class="field-input lot-shares" value="10" step="0.01" min="0"></td>
-                  <td><input type="number" class="field-input lot-price" value="150.00" step="0.01" min="0"></td>
-                  <td class="lot-total lot-cost">$1,500</td>
-                  <td></td>
-                </tr>
-                <tr data-lot="1">
-                  <td class="lot-total">2</td>
-                  <td><input type="date" class="field-input lot-date" value="2025-04-10"></td>
-                  <td><input type="number" class="field-input lot-shares" value="15" step="0.01" min="0"></td>
-                  <td><input type="number" class="field-input lot-price" value="135.00" step="0.01" min="0"></td>
-                  <td class="lot-total lot-cost">$2,025</td>
-                  <td><button class="lot-remove" onclick="removeLot(this)">&times;</button></td>
-                </tr>
-                <tr data-lot="2">
-                  <td class="lot-total">3</td>
-                  <td><input type="date" class="field-input lot-date" value="2025-07-22"></td>
-                  <td><input type="number" class="field-input lot-shares" value="20" step="0.01" min="0"></td>
-                  <td><input type="number" class="field-input lot-price" value="142.50" step="0.01" min="0"></td>
-                  <td class="lot-total lot-cost">$2,850</td>
-                  <td><button class="lot-remove" onclick="removeLot(this)">&times;</button></td>
-                </tr>
+                <tr data-lot="0"><td class="lot-total">1</td><td><input type="date" class="field-input lot-date" value="2025-01-15"></td><td><input type="number" class="field-input lot-shares" value="10" step="0.01" min="0"></td><td><input type="number" class="field-input lot-price" value="150.00" step="0.01" min="0"></td><td class="lot-total lot-cost">$1,500</td><td></td></tr>
+                <tr data-lot="1"><td class="lot-total">2</td><td><input type="date" class="field-input lot-date" value="2025-04-10"></td><td><input type="number" class="field-input lot-shares" value="15" step="0.01" min="0"></td><td><input type="number" class="field-input lot-price" value="135.00" step="0.01" min="0"></td><td class="lot-total lot-cost">$2,025</td><td><button class="lot-remove" onclick="removeLot(this)">&times;</button></td></tr>
+                <tr data-lot="2"><td class="lot-total">3</td><td><input type="date" class="field-input lot-date" value="2025-07-22"></td><td><input type="number" class="field-input lot-shares" value="20" step="0.01" min="0"></td><td><input type="number" class="field-input lot-price" value="142.50" step="0.01" min="0"></td><td class="lot-total lot-cost">$2,850</td><td><button class="lot-remove" onclick="removeLot(this)">&times;</button></td></tr>
               </tbody>
             </table>
           </div>
           <button class="add-lot-btn" onclick="addLot()">+ Add Purchase</button>
         </div>
-
-        <!-- Current Price + P&L -->
         <div class="dca-current-wrap">
-          <div class="field">
-            <label class="field-label">Current Price Per Share</label>
-            <input type="number" class="field-input" id="currentPrice" value="155.00" step="0.01" min="0">
-          </div>
+          <div class="field"><label class="field-label">Current Price Per Share</label><input type="number" class="field-input" id="currentPrice" value="155.00" step="0.01" min="0"></div>
           <div class="dca-pnl" id="dcaPnl">
-            <div class="dca-pnl-card">
-              <div class="dca-pnl-val" id="pnlValue" style="color:var(--green);">$0</div>
-              <div class="dca-pnl-label">Unrealized P&L</div>
-            </div>
-            <div class="dca-pnl-card">
-              <div class="dca-pnl-val" id="pnlPercent" style="color:var(--green);">0%</div>
-              <div class="dca-pnl-label">Return</div>
-            </div>
+            <div class="dca-pnl-card"><div class="dca-pnl-val" id="pnlValue" style="color:var(--green);">$0</div><div class="dca-pnl-label">Unrealized P&L</div></div>
+            <div class="dca-pnl-card"><div class="dca-pnl-val" id="pnlPercent" style="color:var(--green);">0%</div><div class="dca-pnl-label">Return</div></div>
           </div>
         </div>
-
-        <!-- Summary KPIs -->
         <div class="dca-summary" id="dcaSummary">
-          <div class="kpi">
-            <div class="kpi-label">Total Shares</div>
-            <div class="kpi-value" id="totalShares">0</div>
-          </div>
-          <div class="kpi">
-            <div class="kpi-label">Total Cost Basis</div>
-            <div class="kpi-value" id="totalCost" style="color:var(--ink);">$0</div>
-          </div>
-          <div class="kpi">
-            <div class="kpi-label">Avg Cost / Share</div>
-            <div class="kpi-value" id="avgCost" style="color:var(--copper);">$0</div>
-          </div>
-          <div class="kpi">
-            <div class="kpi-label">Current Value</div>
-            <div class="kpi-value" id="currentValue" style="color:var(--signal);">$0</div>
-          </div>
+          <div class="kpi"><div class="kpi-label">Total Shares</div><div class="kpi-value" id="totalShares">0</div></div>
+          <div class="kpi"><div class="kpi-label">Total Cost Basis</div><div class="kpi-value" id="totalCost" style="color:var(--ink);">$0</div></div>
+          <div class="kpi"><div class="kpi-label">Avg Cost / Share</div><div class="kpi-value" id="avgCost" style="color:var(--copper);">$0</div></div>
+          <div class="kpi"><div class="kpi-label">Current Value</div><div class="kpi-value" id="currentValue" style="color:var(--signal);">$0</div></div>
         </div>
       </div>
     </div>
@@ -895,12 +812,26 @@
       $('warnings').innerHTML = warnHTML;
     }
 
-    // Bind refi inputs
-    document.querySelectorAll('#refi ~ .tool-header ~ .calc-wrap .field-input, #refi ~ .tool-header ~ .calc-wrap .field-select').forEach(el => {
-      el.addEventListener('input', calculate);
-      el.addEventListener('change', calculate);
-    });
-    // Fallback: bind by ID for refi inputs
+    // ─────────────────────────────────────────
+    // TOOL SECTION TOGGLE
+    // ─────────────────────────────────────────
+
+    function toggleTool(id) {
+      const section = document.getElementById(id);
+      section.classList.toggle('open');
+    }
+
+    function openTool(id) {
+      const section = document.getElementById(id);
+      if (!section.classList.contains('open')) {
+        section.classList.add('open');
+      }
+      setTimeout(() => {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+
+    // Bind refi inputs by ID
     ['currentHomeValue','currentLoanBalance','desiredLoanAmount','newInterestRate','loanTerm',
      'annualPropertyTax','annualInsurance','monthlyPMI','monthlyHOA',
      'monthlyGrossIncome','otherMonthlyDebts','creditScore'].forEach(id => {
@@ -1066,12 +997,98 @@
       { excel: 'CHOOSE',       dax: 'SWITCH ( index, 1, val1, 2, val2, ... )', note: 'SWITCH replaces CHOOSE in DAX' },
     ];
 
-    // Populate reference table
+    // Populate reference table with expandable Excel syntax
+    const excelSyntax = {
+      'SUMIF': '=SUMIF(range, criteria, sum_range)',
+      'SUMIFS': '=SUMIFS(sum_range, criteria_range1, criteria1, [criteria_range2, criteria2], ...)',
+      'COUNTIF': '=COUNTIF(range, criteria)',
+      'COUNTIFS': '=COUNTIFS(criteria_range1, criteria1, [criteria_range2, criteria2], ...)',
+      'AVERAGEIF': '=AVERAGEIF(range, criteria, [average_range])',
+      'AVERAGEIFS': '=AVERAGEIFS(average_range, criteria_range1, criteria1, ...)',
+      'VLOOKUP': '=VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])',
+      'HLOOKUP': '=HLOOKUP(lookup_value, table_array, row_index_num, [range_lookup])',
+      'XLOOKUP': '=XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode])',
+      'INDEX/MATCH': '=INDEX(return_range, MATCH(lookup_value, lookup_range, 0))',
+      'IF': '=IF(logical_test, value_if_true, [value_if_false])',
+      'IFS': '=IFS(logical_test1, value1, [logical_test2, value2], ...)',
+      'IFERROR': '=IFERROR(value, value_if_error)',
+      'AND': '=AND(logical1, [logical2], ...)',
+      'OR': '=OR(logical1, [logical2], ...)',
+      'NOT': '=NOT(logical)',
+      'SUM': '=SUM(number1, [number2], ...)',
+      'AVERAGE': '=AVERAGE(number1, [number2], ...)',
+      'COUNT': '=COUNT(value1, [value2], ...)',
+      'COUNTA': '=COUNTA(value1, [value2], ...)',
+      'COUNTBLANK': '=COUNTBLANK(range)',
+      'MIN': '=MIN(number1, [number2], ...)',
+      'MAX': '=MAX(number1, [number2], ...)',
+      'LARGE': '=LARGE(array, k)',
+      'SMALL': '=SMALL(array, k)',
+      'RANK': '=RANK(number, ref, [order])',
+      'CONCATENATE': '=CONCATENATE(text1, [text2], ...)',
+      'TEXTJOIN': '=TEXTJOIN(delimiter, ignore_empty, text1, [text2], ...)',
+      'LEFT': '=LEFT(text, [num_chars])',
+      'RIGHT': '=RIGHT(text, [num_chars])',
+      'MID': '=MID(text, start_num, num_chars)',
+      'LEN': '=LEN(text)',
+      'TRIM': '=TRIM(text)',
+      'UPPER': '=UPPER(text)',
+      'LOWER': '=LOWER(text)',
+      'PROPER': '=PROPER(text)',
+      'FIND': '=FIND(find_text, within_text, [start_num])',
+      'SEARCH': '=SEARCH(find_text, within_text, [start_num])',
+      'SUBSTITUTE': '=SUBSTITUTE(text, old_text, new_text, [instance_num])',
+      'TEXT': '=TEXT(value, format_text)',
+      'VALUE': '=VALUE(text)',
+      'DATE': '=DATE(year, month, day)',
+      'TODAY': '=TODAY()',
+      'NOW': '=NOW()',
+      'YEAR': '=YEAR(serial_number)',
+      'MONTH': '=MONTH(serial_number)',
+      'DAY': '=DAY(serial_number)',
+      'DATEDIF': '=DATEDIF(start_date, end_date, unit)',
+      'EOMONTH': '=EOMONTH(start_date, months)',
+      'WEEKDAY': '=WEEKDAY(serial_number, [return_type])',
+      'NETWORKDAYS': '=NETWORKDAYS(start_date, end_date, [holidays])',
+      'ROUND': '=ROUND(number, num_digits)',
+      'ROUNDUP': '=ROUNDUP(number, num_digits)',
+      'ROUNDDOWN': '=ROUNDDOWN(number, num_digits)',
+      'INT': '=INT(number)',
+      'MOD': '=MOD(number, divisor)',
+      'ABS': '=ABS(number)',
+      'POWER': '=POWER(number, power)',
+      'SQRT': '=SQRT(number)',
+      'DISTINCT': 'N/A (Excel uses Remove Duplicates or UNIQUE)',
+      'UNIQUE': '=UNIQUE(array, [by_col], [exactly_once])',
+      'FILTER': '=FILTER(array, include, [if_empty])',
+      'SORT': '=SORT(array, [sort_index], [sort_order], [by_col])',
+      'SWITCH': '=SWITCH(expression, value1, result1, [value2, result2], ..., [default])',
+      'CHOOSE': '=CHOOSE(index_num, value1, [value2], ...)',
+    };
+
     const refBody = document.getElementById('refBody');
     daxMap.forEach(r => {
       const tr = document.createElement('tr');
-      tr.innerHTML = '<td>' + r.excel + '</td><td>' + r.dax + '</td><td>' + r.note + '</td>';
+      const syntax = excelSyntax[r.excel] || '';
+      const syntaxHTML = syntax
+        ? '<div class="ref-syntax" data-fn="' + r.excel + '"><div class="syn-label">Excel Syntax</div><code>' + syntax + '</code></div>'
+        : '';
+      tr.innerHTML =
+        '<td><span class="ref-fn-name">' + r.excel + '</span>' + syntaxHTML + '</td>' +
+        '<td>' + r.dax + '</td>' +
+        '<td>' + r.note + '</td>';
       refBody.appendChild(tr);
+    });
+
+    // Expandable Excel syntax on click
+    refBody.addEventListener('click', function(e) {
+      const fnName = e.target.closest('.ref-fn-name');
+      if (!fnName) return;
+      const td = fnName.closest('td');
+      const syntax = td.querySelector('.ref-syntax');
+      if (syntax) {
+        syntax.classList.toggle('open');
+      }
     });
 
     // Reference search + collapse
