@@ -517,6 +517,107 @@
     .pcard-btn.accent { color: #fff; background: var(--copper); }
     .pcard-btn.accent:hover { box-shadow: 0 0 28px var(--copper-glow), 0 8px 24px rgba(0,0,0,0.2); }
 
+    /* ── SCOPE MODAL ── */
+    .scope-overlay {
+      display: none; position: fixed; inset: 0; z-index: 600;
+      background: rgba(16,20,29,0.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      align-items: center; justify-content: center; padding: 2rem;
+    }
+    .scope-overlay.open { display: flex; }
+    .scope-modal {
+      background: var(--paper); border-radius: 1.5rem; width: 100%; max-width: 640px;
+      max-height: 90vh; overflow-y: auto; position: relative;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+    }
+    .scope-close {
+      position: absolute; top: 1rem; right: 1rem; width: 32px; height: 32px;
+      border-radius: 50%; border: 1px solid rgba(24,29,42,0.1); background: var(--card);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; color: var(--slate); cursor: pointer; z-index: 2;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+    .scope-close:hover { border-color: var(--red); color: var(--red); }
+    .scope-header {
+      padding: 2rem 2rem 0; border-bottom: none;
+    }
+    .scope-tier {
+      font-family: var(--font-mono); font-size: 0.5625rem; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--copper); margin-bottom: 0.5rem;
+    }
+    .scope-title { font-weight: 800; font-size: 1.375rem; color: var(--ink); letter-spacing: -0.03em; margin-bottom: 0.5rem; }
+    .scope-subtitle { font-size: 0.8125rem; color: var(--slate); line-height: 1.6; }
+
+    .scope-body { padding: 1.5rem 2rem; }
+    .scope-section { margin-bottom: 1.5rem; }
+    .scope-section-label {
+      font-family: var(--font-mono); font-size: 0.5rem; font-weight: 600;
+      color: var(--slate); letter-spacing: 0.14em; text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .scope-field { margin-bottom: 1rem; }
+    .scope-field-label {
+      display: block; font-size: 0.8125rem; font-weight: 500; color: var(--ink); margin-bottom: 0.375rem;
+    }
+    .scope-field-hint { font-size: 0.625rem; color: var(--slate); margin-top: 0.25rem; opacity: 0.7; }
+    .scope-input, .scope-select {
+      width: 100%; padding: 0.625rem 0.875rem; border-radius: 0.5rem;
+      border: 1px solid rgba(24,29,42,0.12); background: #fff;
+      font-family: var(--font-sans); font-size: 0.8125rem; color: var(--ink); outline: none;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .scope-input:focus, .scope-select:focus { border-color: var(--copper); box-shadow: 0 0 0 3px var(--copper-glow); }
+    .scope-textarea {
+      width: 100%; min-height: 70px; padding: 0.625rem 0.875rem; border-radius: 0.5rem;
+      border: 1px solid rgba(24,29,42,0.12); background: #fff; resize: vertical;
+      font-family: var(--font-sans); font-size: 0.8125rem; color: var(--ink); outline: none;
+    }
+    .scope-textarea:focus { border-color: var(--copper); box-shadow: 0 0 0 3px var(--copper-glow); }
+
+    .scope-checks { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .scope-check {
+      display: flex; align-items: center; gap: 0.375rem;
+      padding: 0.4rem 0.75rem; border-radius: 0.5rem;
+      border: 1px solid rgba(24,29,42,0.1); background: #fff;
+      cursor: pointer; transition: border-color 0.2s ease, background 0.2s ease;
+      font-size: 0.75rem; color: var(--ink);
+    }
+    .scope-check:hover { border-color: var(--copper); }
+    .scope-check.selected { border-color: var(--copper); background: rgba(192,88,24,0.06); color: var(--copper); font-weight: 600; }
+    .scope-check input { display: none; }
+
+    /* Estimate panel */
+    .scope-estimate {
+      margin: 0 2rem 1.5rem; padding: 1.25rem;
+      background: var(--ink); border-radius: 1rem;
+    }
+    .scope-est-row { display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0; }
+    .scope-est-row:not(:last-child) { border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .scope-est-label { font-size: 0.75rem; color: rgba(255,255,255,0.35); }
+    .scope-est-value { font-family: var(--font-mono); font-size: 0.8125rem; font-weight: 600; color: #fff; }
+    .scope-est-total .scope-est-label { font-size: 0.875rem; color: rgba(255,255,255,0.6); font-weight: 600; }
+    .scope-est-total .scope-est-value { font-size: 1.25rem; color: var(--copper); }
+
+    /* Submit section */
+    .scope-submit { padding: 0 2rem 2rem; }
+    .scope-submit-row { display: flex; gap: 0.75rem; }
+    .scope-submit-row .scope-input { flex: 1; }
+    .scope-submit-btn {
+      padding: 0.625rem 1.5rem; background: var(--copper); color: #fff;
+      font-family: var(--font-sans); font-weight: 700; font-size: 0.8125rem;
+      border: none; border-radius: 0.5rem; cursor: pointer; white-space: nowrap;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .scope-submit-btn:hover { transform: scale(1.02); box-shadow: 0 4px 16px var(--copper-glow); }
+    .scope-submit-btn:disabled { opacity: 0.5; cursor: default; transform: none; }
+    .scope-confirm {
+      font-family: var(--font-mono); font-size: 0.625rem; margin-top: 0.75rem;
+      min-height: 1em;
+    }
+    .scope-confirm.ok { color: var(--green); }
+    .scope-confirm.error { color: var(--red); }
+    .scope-fine { font-family: var(--font-mono); font-size: 0.5rem; color: var(--slate); margin-top: 0.5rem; opacity: 0.5; }
+
     /* ── CTA SECTION ── */
     .cta-section {
       background: var(--dark);
@@ -827,7 +928,10 @@
           <li class="pcard-feat">DAX measures and documentation</li>
           <li class="pcard-feat">Team walkthrough and handoff</li>
         </ul>
-        <a href="#cta" class="pcard-btn outline">Get Started</a>
+        <div style="display:flex;gap:0.625rem;">
+          <a href="#cta" class="pcard-btn outline" style="flex:1;">Connect With Us</a>
+          <a href="javascript:void(0)" class="pcard-btn accent" style="flex:1;" onclick="openScopeModal()">Scope Your Build</a>
+        </div>
       </div>
       <div class="pcard feat" id="pr2">
         <div class="pcard-tier">Data Chassis</div>
@@ -856,6 +960,153 @@
       </div>
     </div>
   </section>
+
+  <!-- SCOPE MODAL -->
+  <div class="scope-overlay" id="scopeOverlay">
+    <div class="scope-modal">
+      <button class="scope-close" onclick="closeScopeModal()">&times;</button>
+      <div class="scope-header">
+        <div class="scope-tier">Build</div>
+        <div class="scope-title">Scope Your Dashboard Build</div>
+        <div class="scope-subtitle">Tell us about your reporting needs and get an instant project estimate. All details are sent directly to our team.</div>
+      </div>
+
+      <div class="scope-body">
+        <!-- Data Sources -->
+        <div class="scope-section">
+          <div class="scope-section-label">Data Sources</div>
+          <div class="scope-field">
+            <label class="scope-field-label">How many data sources do you need connected?</label>
+            <select class="scope-select" id="scopeSources" onchange="updateEstimate()">
+              <option value="1">1 source</option>
+              <option value="2" selected>2 - 3 sources</option>
+              <option value="4">4 - 5 sources</option>
+              <option value="6">6+ sources</option>
+            </select>
+          </div>
+          <div class="scope-field">
+            <label class="scope-field-label">What types of data sources?</label>
+            <div class="scope-checks" id="scopeSourceTypes">
+              <label class="scope-check selected" onclick="toggleCheck(this)"><input type="checkbox" value="Excel/CSV" checked>Excel / CSV</label>
+              <label class="scope-check selected" onclick="toggleCheck(this)"><input type="checkbox" value="SharePoint" checked>SharePoint</label>
+              <label class="scope-check" onclick="toggleCheck(this)"><input type="checkbox" value="SQL Database">SQL Database</label>
+              <label class="scope-check" onclick="toggleCheck(this)"><input type="checkbox" value="Cloud API">Cloud API</label>
+              <label class="scope-check" onclick="toggleCheck(this)"><input type="checkbox" value="OneDrive">OneDrive</label>
+              <label class="scope-check" onclick="toggleCheck(this)"><input type="checkbox" value="Dataverse">Dataverse</label>
+              <label class="scope-check" onclick="toggleCheck(this)"><input type="checkbox" value="Other">Other</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboards -->
+        <div class="scope-section">
+          <div class="scope-section-label">Dashboards + Reports</div>
+          <div class="scope-field">
+            <label class="scope-field-label">How many dashboards or reports do you need?</label>
+            <select class="scope-select" id="scopeDashboards" onchange="updateEstimate()">
+              <option value="1">1 dashboard</option>
+              <option value="2" selected>2 - 3 dashboards</option>
+              <option value="4">4 - 5 dashboards</option>
+              <option value="6">6+ dashboards</option>
+            </select>
+          </div>
+          <div class="scope-field">
+            <label class="scope-field-label">Complexity level</label>
+            <select class="scope-select" id="scopeComplexity" onchange="updateEstimate()">
+              <option value="basic">Basic: KPIs, bar/line charts, filters</option>
+              <option value="standard" selected>Standard: drill-through, calculated measures, multiple pages</option>
+              <option value="advanced">Advanced: row-level security, paginated reports, embedded</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Team -->
+        <div class="scope-section">
+          <div class="scope-section-label">Team + Delivery</div>
+          <div class="scope-field">
+            <label class="scope-field-label">How many people will use the dashboards?</label>
+            <select class="scope-select" id="scopeUsers" onchange="updateEstimate()">
+              <option value="5">1 - 5 users</option>
+              <option value="15" selected>5 - 15 users</option>
+              <option value="30">15 - 30 users</option>
+              <option value="50">30+ users</option>
+            </select>
+          </div>
+          <div class="scope-field">
+            <label class="scope-field-label">Add-ons <span style="font-weight:400;color:var(--slate);font-size:0.6875rem;">(affects estimate)</span></label>
+            <div class="scope-checks" id="scopeAddons">
+              <label class="scope-check" onclick="toggleCheck(this)"><input type="checkbox" value="Hands-On Training">Hands-On Training</label>
+              <label class="scope-check" onclick="toggleCheck(this)"><input type="checkbox" value="Custom Reporting Alerts">Custom Reporting Alerts</label>
+              <label class="scope-check selected" onclick="toggleCheck(this)"><input type="checkbox" value="Documentation" checked>Documentation</label>
+            </div>
+          </div>
+          <div class="scope-field">
+            <label class="scope-field-label">What does your project involve? <span style="font-weight:400;color:var(--slate);font-size:0.6875rem;">(select all that apply)</span></label>
+            <div class="scope-checks" id="scopeNeeds">
+              <label class="scope-check" onclick="toggleCheck(this)"><input type="checkbox" value="Report Migration (Excel to Power BI)">Report Migration (Excel to Power BI)</label>
+              <label class="scope-check" onclick="toggleCheck(this)"><input type="checkbox" value="Translate Business Logic to DAX">Translate Business Logic to DAX</label>
+              <label class="scope-check" onclick="toggleCheck(this)"><input type="checkbox" value="Semantic Model Build Out">Semantic Model Build Out</label>
+              <label class="scope-check" onclick="toggleCheck(this)"><input type="checkbox" value="Scheduled Refresh">Scheduled Refresh</label>
+            </div>
+          </div>
+          <div class="scope-field">
+            <label class="scope-field-label">Timeline preference</label>
+            <select class="scope-select" id="scopeTimeline" onchange="updateEstimate()">
+              <option value="standard" selected>Standard (2 - 4 weeks)</option>
+              <option value="rush">Rush (1 - 2 weeks)</option>
+              <option value="flexible">Flexible (no rush)</option>
+            </select>
+          </div>
+          <div class="scope-field">
+            <label class="scope-field-label">Anything else we should know? (optional)</label>
+            <textarea class="scope-textarea" id="scopeNotes" placeholder="Current pain points, specific metrics you need to track, etc."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estimate -->
+      <div class="scope-estimate" id="scopeEstimate">
+        <div class="scope-est-row">
+          <span class="scope-est-label">Implementation Fee</span>
+          <span class="scope-est-value" id="estImplFee">$600</span>
+        </div>
+        <div class="scope-est-row">
+          <span class="scope-est-label">Dashboard Build <span id="estDashDetail" style="opacity:0.5;">(2 x 6 hrs)</span></span>
+          <span class="scope-est-value" id="estDashCost">$1,200</span>
+        </div>
+        <div class="scope-est-row" id="estDocRow">
+          <span class="scope-est-label">Documentation</span>
+          <span class="scope-est-value" id="estDocCost">$200</span>
+        </div>
+        <div class="scope-est-row" id="estAddonsRow" style="display:none;">
+          <span class="scope-est-label">Add-ons</span>
+          <span class="scope-est-value" id="estAddonsCost">$0</span>
+        </div>
+        <div class="scope-est-row" id="estRushRow" style="display:none;">
+          <span class="scope-est-label">Rush Delivery (1.25x)</span>
+          <span class="scope-est-value" id="estRushCost">$0</span>
+        </div>
+        <div style="border-top:1px solid rgba(255,255,255,0.08);margin:0.5rem 0;"></div>
+        <div class="scope-est-row scope-est-total">
+          <span class="scope-est-label">Estimated Total</span>
+          <span class="scope-est-value" id="estTotal">$2,000</span>
+        </div>
+        <div style="font-family:var(--font-mono);font-size:0.5rem;color:rgba(255,255,255,0.2);margin-top:0.5rem;line-height:1.6;">
+          * This is an estimate based on your selections. Actual pricing may vary based on project complexity and requirements. Final pricing will be confirmed in your proposal.
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="scope-submit">
+        <div class="scope-submit-row">
+          <input type="email" class="scope-input" id="scopeEmail" placeholder="your@email.com" required>
+          <button class="scope-submit-btn" id="scopeSubmitBtn" onclick="submitScope()">Submit Request</button>
+        </div>
+        <div class="scope-confirm" id="scopeConfirm"></div>
+        <div class="scope-fine">We will review your project scope and reach out within 1 business day with a tailored proposal.</div>
+      </div>
+    </div>
+  </div>
 
   <!-- EMAIL CAPTURE CTA -->
   <section class="cta-section" id="cta">
@@ -1558,6 +1809,192 @@
       });
 
     });
+      /* ── SCOPE MODAL ── */
+
+      function openScopeModal() {
+        document.getElementById('scopeOverlay').classList.add('open');
+        document.body.style.overflow = 'hidden';
+        updateEstimate();
+      }
+
+      function closeScopeModal() {
+        document.getElementById('scopeOverlay').classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      // Close on overlay click
+      document.getElementById('scopeOverlay').addEventListener('click', function(e) {
+        if (e.target === this) closeScopeModal();
+      });
+
+      // Close on Escape
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeScopeModal();
+      });
+
+      // Make global for onclick attributes
+      window.openScopeModal = openScopeModal;
+      window.closeScopeModal = closeScopeModal;
+
+      // Toggle check buttons
+      window.toggleCheck = function(label) {
+        var cb = label.querySelector('input');
+        cb.checked = !cb.checked;
+        label.classList.toggle('selected', cb.checked);
+        updateEstimate();
+      };
+
+      // Gather selected checks
+      function getChecked(containerId) {
+        var items = [];
+        document.querySelectorAll('#' + containerId + ' input:checked').forEach(function(cb) {
+          items.push(cb.value);
+        });
+        return items;
+      }
+
+      // Pricing constants
+      var RATE = 100;
+      var IMPL_FEES = { 'basic': 500, 'standard': 600, 'advanced': 750 };
+      var DASH_HOURS = 6;
+      var DOC_BASE_HOURS = 2;
+      var ADDON_HOURS = { 'Hands-On Training': 3, 'Custom Reporting Alerts': 2 };
+      var RUSH_MULT = 1.25;
+
+      // Format currency
+      function fmtPrice(n) {
+        return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+      }
+
+      // Update estimate panel with real pricing
+      function updateEstimate() {
+        var complexity = document.getElementById('scopeComplexity').value;
+        var dashVal = parseInt(document.getElementById('scopeDashboards').value) || 2;
+        var timeline = document.getElementById('scopeTimeline').value;
+        var addons = getChecked('scopeAddons');
+
+        // 1. Implementation fee
+        var implFee = IMPL_FEES[complexity] || 600;
+        document.getElementById('estImplFee').textContent = fmtPrice(implFee);
+
+        // 2. Dashboard build cost
+        // Map select values to actual midpoint counts
+        var dashCounts = { '1': 1, '2': 2.5, '4': 4.5, '6': 7 };
+        var dashCount = dashCounts[dashVal] || 2.5;
+        var dashHours = Math.round(dashCount * DASH_HOURS);
+        var dashCost = dashHours * RATE;
+        document.getElementById('estDashDetail').textContent = '(' + dashCount + ' x ' + DASH_HOURS + ' hrs)';
+        document.getElementById('estDashCost').textContent = fmtPrice(dashCost);
+
+        // 3. Documentation (economy of scale: 2hrs base, +0.5hr per additional dashboard after first)
+        var hasDoc = addons.indexOf('Documentation') !== -1;
+        var docRow = document.getElementById('estDocRow');
+        var docCost = 0;
+        if (hasDoc) {
+          var docHours = DOC_BASE_HOURS + Math.max(0, (dashCount - 1) * 0.5);
+          docCost = Math.round(docHours) * RATE;
+          document.getElementById('estDocCost').textContent = fmtPrice(docCost);
+          docRow.style.display = '';
+        } else {
+          docRow.style.display = 'none';
+        }
+
+        // 4. Add-ons (excluding Documentation which is handled above)
+        var addonsCost = 0;
+        var addonNames = [];
+        addons.forEach(function(a) {
+          if (a !== 'Documentation' && ADDON_HOURS[a]) {
+            addonsCost += ADDON_HOURS[a] * RATE;
+            addonNames.push(a);
+          }
+        });
+        var addonsRow = document.getElementById('estAddonsRow');
+        if (addonsCost > 0) {
+          document.getElementById('estAddonsCost').textContent = fmtPrice(addonsCost);
+          addonsRow.style.display = '';
+        } else {
+          addonsRow.style.display = 'none';
+        }
+
+        // 5. Subtotal before rush
+        var subtotal = implFee + dashCost + docCost + addonsCost;
+
+        // 6. Rush multiplier
+        var rushRow = document.getElementById('estRushRow');
+        var rushCost = 0;
+        if (timeline === 'rush') {
+          rushCost = Math.round(subtotal * (RUSH_MULT - 1));
+          document.getElementById('estRushCost').textContent = '+' + fmtPrice(rushCost);
+          rushRow.style.display = '';
+        } else {
+          rushRow.style.display = 'none';
+        }
+
+        // 7. Total
+        var total = subtotal + rushCost;
+        document.getElementById('estTotal').textContent = fmtPrice(total);
+      }
+      window.updateEstimate = updateEstimate;
+
+      // Submit scope request via FormSubmit
+      window.submitScope = function() {
+        var email = document.getElementById('scopeEmail').value.trim();
+        var confirmEl = document.getElementById('scopeConfirm');
+        var submitBtn = document.getElementById('scopeSubmitBtn');
+
+        if (!email) {
+          confirmEl.textContent = 'Please enter your email address.';
+          confirmEl.className = 'scope-confirm error';
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting...';
+
+        var scopeData = {
+          email: email,
+          _subject: 'Build Scope Request from powerintegrate.co',
+          _template: 'box',
+          service_tier: 'Build: Dashboards + Semantic Model',
+          data_sources_count: document.getElementById('scopeSources').selectedOptions[0].text,
+          data_source_types: getChecked('scopeSourceTypes').join(', ') || '(none selected)',
+          dashboard_count: document.getElementById('scopeDashboards').selectedOptions[0].text,
+          complexity: document.getElementById('scopeComplexity').selectedOptions[0].text,
+          team_size: document.getElementById('scopeUsers').selectedOptions[0].text,
+          addons: getChecked('scopeAddons').join(', ') || '(none)',
+          project_needs: getChecked('scopeNeeds').join(', ') || '(none selected)',
+          timeline: document.getElementById('scopeTimeline').selectedOptions[0].text,
+          estimated_total: document.getElementById('estTotal').textContent,
+          notes: document.getElementById('scopeNotes').value || '(none)',
+        };
+
+        fetch('https://formsubmit.co/ajax/sean@powerintegrate.co', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(scopeData)
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.success) {
+            confirmEl.textContent = '\u2713 Submitted! We will review your scope and follow up within 1 business day.';
+            confirmEl.className = 'scope-confirm ok';
+            submitBtn.textContent = 'Sent';
+          } else {
+            throw new Error('submit failed');
+          }
+        })
+        .catch(function() {
+          confirmEl.textContent = 'Something went wrong. Email sean@powerintegrate.co directly.';
+          confirmEl.className = 'scope-confirm error';
+        })
+        .finally(function() {
+          setTimeout(function() {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Submit Request';
+          }, 5000);
+        });
+      };
+
   </script>
 </body>
 </html>
