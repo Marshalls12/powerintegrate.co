@@ -3,323 +3,77 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PowerLabs — Free Tools | Power Integrate</title>
-  <meta name="description" content="Free calculators and tools built by Power Integrate. Cash-out refinance calculator, stock cost basis calculator, and more.">
+  <title>PowerSpark — Educational Content | Power Integrate</title>
+  <meta name="description" content="Free educational videos and tutorials on Power BI, data automation, and business intelligence from Power Integrate.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Lora:ital,wght@0,400;0,600;1,400;1,600;1,700&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --paper: #EDEAE1;
-      --ink: #181D2A;
-      --signal: #1A52E8;
-      --copper: #C05818;
-      --slate: #5C6474;
-      --card: #F5F2EA;
-      --dark: #10141D;
-      --dark2: #141824;
+      --paper: #EDEAE1; --ink: #181D2A; --signal: #1A52E8; --copper: #C05818;
+      --slate: #5C6474; --card: #F5F2EA; --dark: #10141D; --dark2: #141824;
       --copper-glow: rgba(192,88,24,0.28);
-      --font-sans: 'Outfit', sans-serif;
-      --font-drama: 'Lora', serif;
-      --font-mono: 'Fira Code', monospace;
+      --font-sans: 'Outfit', sans-serif; --font-drama: 'Lora', serif; --font-mono: 'Fira Code', monospace;
       --r-pill: 100px;
-      --green: #3ecf8e;
-      --amber: #E8860A;
-      --red: #CC2936;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body { font-family: var(--font-sans); background: var(--paper); color: var(--ink); -webkit-font-smoothing: antialiased; }
     a { text-decoration: none; color: inherit; }
+    body::after { content:''; position:fixed; inset:0; z-index:9999; pointer-events:none; opacity:0.038; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E"); background-repeat:repeat; }
 
-    /* Noise overlay */
-    body::after {
-      content: ''; position: fixed; inset: 0; z-index: 9999; pointer-events: none; opacity: 0.038;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
-      background-repeat: repeat;
-    }
+    .navbar { position:fixed; top:1.25rem; left:50%; transform:translateX(-50%); z-index:500; display:flex; align-items:center; gap:2.25rem; padding:0.7rem 0.7rem 0.7rem 1.625rem; border-radius:var(--r-pill); background:rgba(16,20,29,0.92); backdrop-filter:blur(24px); border:1px solid rgba(26,82,232,0.2); box-shadow:0 4px 32px rgba(0,0,0,0.35); white-space:nowrap; }
+    .nav-logo { font-weight:800; font-size:0.9rem; letter-spacing:-0.02em; color:rgba(255,255,255,0.92); }
+    .nav-links { display:flex; align-items:center; gap:1.875rem; list-style:none; }
+    .nav-links a { font-size:0.8125rem; font-weight:500; color:rgba(255,255,255,0.46); transition:color 0.22s ease; }
+    .nav-links a:hover { color:rgba(255,255,255,0.9); }
+    .nav-links a.active { color:var(--copper); }
+    .nav-cta { display:inline-block; font-size:0.8125rem; font-weight:700; color:#fff; background:var(--copper); padding:0.65rem 1.375rem; border-radius:var(--r-pill); transition:transform 0.3s ease, box-shadow 0.3s ease; }
+    .nav-cta:hover { transform:scale(1.04); box-shadow:0 0 20px var(--copper-glow); }
+    .nav-hamburger { display:none; background:none; border:none; cursor:pointer; padding:0.375rem; flex-direction:column; gap:5px; }
+    .nav-hamburger span { display:block; width:20px; height:1.5px; background:rgba(255,255,255,0.7); border-radius:2px; transition:transform 0.3s ease, opacity 0.3s ease; }
+    .mobile-menu { display:none; position:fixed; inset:0; z-index:499; background:rgba(16,20,29,0.97); backdrop-filter:blur(24px); flex-direction:column; align-items:center; justify-content:center; gap:2rem; opacity:0; pointer-events:none; transition:opacity 0.35s ease; }
+    .mobile-menu.open { opacity:1; pointer-events:auto; }
+    .mobile-menu a { font-size:1.25rem; font-weight:600; color:rgba(255,255,255,0.6); }
+    .nav-hamburger.active span:nth-child(1) { transform:translateY(6.5px) rotate(45deg); }
+    .nav-hamburger.active span:nth-child(2) { opacity:0; }
+    .nav-hamburger.active span:nth-child(3) { transform:translateY(-6.5px) rotate(-45deg); }
+    @media (max-width:780px) { .nav-links,.nav-cta{display:none;} .nav-hamburger{display:flex;} .navbar{gap:1rem;padding:0.75rem 1.25rem;} .mobile-menu{display:flex;} }
 
-    /* ── NAVBAR ── */
-    .navbar {
-      position: fixed; top: 1.25rem; left: 50%; transform: translateX(-50%); z-index: 500;
-      display: flex; align-items: center; gap: 2.25rem;
-      padding: 0.7rem 0.7rem 0.7rem 1.625rem; border-radius: var(--r-pill);
-      background: rgba(16,20,29,0.92); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(26,82,232,0.2); box-shadow: 0 4px 32px rgba(0,0,0,0.35);
-      white-space: nowrap;
-    }
-    .nav-logo { font-weight: 800; font-size: 0.9rem; letter-spacing: -0.02em; color: rgba(255,255,255,0.92); }
-    .nav-links { display: flex; align-items: center; gap: 1.875rem; list-style: none; }
-    .nav-links a { font-size: 0.8125rem; font-weight: 500; color: rgba(255,255,255,0.46); transition: color 0.22s ease; display: inline-block; }
-    .nav-links a:hover { color: rgba(255,255,255,0.9); }
-    .nav-links a.active { color: var(--copper); }
-    .nav-cta {
-      display: inline-block; font-size: 0.8125rem; font-weight: 700; color: #fff; background: var(--copper);
-      padding: 0.65rem 1.375rem; border-radius: var(--r-pill); transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .nav-cta:hover { transform: scale(1.04); box-shadow: 0 0 20px var(--copper-glow); }
-    .nav-hamburger { display: none; background: none; border: none; cursor: pointer; padding: 0.375rem; flex-direction: column; gap: 5px; }
-    .nav-hamburger span { display: block; width: 20px; height: 1.5px; background: rgba(255,255,255,0.7); border-radius: 2px; transition: transform 0.3s ease, opacity 0.3s ease; }
-    .mobile-menu {
-      display: none; position: fixed; inset: 0; z-index: 499; background: rgba(16,20,29,0.97);
-      backdrop-filter: blur(24px); flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
-      opacity: 0; pointer-events: none; transition: opacity 0.35s ease;
-    }
-    .mobile-menu.open { opacity: 1; pointer-events: auto; }
-    .mobile-menu a { font-size: 1.25rem; font-weight: 600; color: rgba(255,255,255,0.6); transition: color 0.22s ease; }
-    .mobile-menu a:hover { color: rgba(255,255,255,0.95); }
-    .nav-hamburger.active span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-    .nav-hamburger.active span:nth-child(2) { opacity: 0; }
-    .nav-hamburger.active span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-    @media (max-width: 780px) {
-      .nav-links, .nav-cta { display: none; }
-      .nav-hamburger { display: flex; }
-      .navbar { gap: 1rem; padding: 0.75rem 1.25rem; }
-      .mobile-menu { display: flex; }
-    }
+    .page-header { padding:8rem 6vw 3rem; background:var(--dark); position:relative; overflow:hidden; }
+    .page-header-grid { position:absolute; inset:0; pointer-events:none; background-image:linear-gradient(rgba(26,82,232,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(26,82,232,0.05) 1px, transparent 1px); background-size:48px 48px; }
+    .page-header-content { position:relative; z-index:1; max-width:800px; }
+    .page-eyebrow { display:inline-flex; align-items:center; gap:0.5rem; font-family:var(--font-mono); font-size:0.625rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--copper); margin-bottom:1rem; }
+    .page-eyebrow::before { content:''; display:block; width:16px; height:1px; background:var(--copper); }
+    .page-title { font-weight:800; font-size:clamp(2rem,4vw,3rem); color:#fff; letter-spacing:-0.04em; line-height:1.1; margin-bottom:0.75rem; }
+    .page-sub { font-size:1rem; font-weight:400; color:rgba(255,255,255,0.3); line-height:1.75; max-width:500px; }
 
-    /* ── PAGE HEADER ── */
-    .page-header {
-      padding: 8rem 6vw 3rem; background: var(--dark);
-      position: relative; overflow: hidden;
-    }
-    .page-header-grid {
-      position: absolute; inset: 0; pointer-events: none;
-      background-image: linear-gradient(rgba(26,82,232,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(26,82,232,0.05) 1px, transparent 1px);
-      background-size: 48px 48px;
-    }
-    .page-header-content { position: relative; z-index: 1; max-width: 800px; }
-    .page-eyebrow {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.22em;
-      text-transform: uppercase; color: var(--copper); margin-bottom: 1rem;
-    }
-    .page-eyebrow::before { content: ''; display: block; width: 16px; height: 1px; background: var(--copper); }
-    .page-title { font-weight: 800; font-size: clamp(2rem, 4vw, 3rem); color: #fff; letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 0.75rem; }
-    .page-sub { font-size: 1rem; font-weight: 400; color: rgba(255,255,255,0.3); line-height: 1.75; max-width: 500px; }
+    .coming-soon { padding:6rem 6vw; text-align:center; }
+    .cs-icon { font-size:3rem; margin-bottom:1.5rem; opacity:0.2; }
+    .cs-title { font-weight:800; font-size:1.75rem; color:var(--ink); letter-spacing:-0.03em; margin-bottom:0.75rem; }
+    .cs-text { font-size:1rem; color:var(--slate); line-height:1.7; max-width:420px; margin:0 auto 2rem; }
+    .cs-cta { display:inline-block; font-weight:700; font-size:0.875rem; color:var(--copper); border:1.5px solid var(--copper); padding:0.75rem 1.75rem; border-radius:var(--r-pill); transition:background 0.3s ease, color 0.3s ease; }
+    .cs-cta:hover { background:var(--copper); color:#fff; }
 
-    /* ── TOOL HEADER ── */
-    .tool-header {
-      padding: 3rem 6vw 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
-    }
-    .tool-name { font-weight: 800; font-size: 1.5rem; color: var(--ink); letter-spacing: -0.03em; }
-    .tool-badge {
-      font-family: var(--font-mono); font-size: 0.5rem; font-weight: 600; color: var(--copper);
-      background: rgba(192,88,24,0.08); border: 1px solid rgba(192,88,24,0.2);
-      padding: 0.25rem 0.75rem; border-radius: 100px; letter-spacing: 0.12em; text-transform: uppercase;
-    }
-
-    /* ── CALCULATOR ── */
-    .calc-wrap { padding: 0 6vw 4rem; }
-    .calc-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 1.5rem; align-items: start; }
-    @media (max-width: 960px) { .calc-grid { grid-template-columns: 1fr; } }
-
-    /* Input panels */
-    .input-panel {
-      background: var(--card); border: 1px solid rgba(24,29,42,0.09); border-radius: 1.5rem;
-      padding: 1.75rem; margin-bottom: 1rem; box-shadow: 0 2px 16px rgba(0,0,0,0.05);
-    }
-    .panel-title {
-      font-weight: 700; font-size: 0.9375rem; color: var(--ink); margin-bottom: 1.25rem;
-      display: flex; align-items: center; gap: 0.5rem;
-    }
-    .panel-icon {
-      width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center;
-      font-size: 0.6875rem; font-weight: 700; color: #fff;
-    }
-    .panel-icon.home { background: var(--signal); }
-    .panel-icon.money { background: var(--green); }
-    .panel-icon.dti { background: var(--copper); }
-
-    .field { margin-bottom: 1rem; }
-    .field:last-child { margin-bottom: 0; }
-    .field-label {
-      display: block; font-size: 0.75rem; font-weight: 500; color: var(--slate);
-      margin-bottom: 0.375rem; letter-spacing: 0.01em;
-    }
-    .field-hint { font-size: 0.625rem; color: var(--slate); margin-top: 0.25rem; opacity: 0.6; }
-    .field-input {
-      width: 100%; padding: 0.625rem 0.875rem; border-radius: 0.5rem;
-      border: 1px solid rgba(24,29,42,0.12); background: #fff;
-      font-family: var(--font-mono); font-size: 0.8125rem; color: var(--ink);
-      transition: border-color 0.25s ease, box-shadow 0.25s ease; outline: none;
-    }
-    .field-input:focus { border-color: var(--copper); box-shadow: 0 0 0 3px var(--copper-glow); }
-    .field-select {
-      width: 100%; padding: 0.625rem 0.875rem; border-radius: 0.5rem;
-      border: 1px solid rgba(24,29,42,0.12); background: #fff;
-      font-family: var(--font-sans); font-size: 0.8125rem; color: var(--ink);
-      cursor: pointer; outline: none;
-    }
-    .field-select:focus { border-color: var(--copper); box-shadow: 0 0 0 3px var(--copper-glow); }
-
-    /* Results panels */
-    .result-panel {
-      background: var(--card); border: 1px solid rgba(24,29,42,0.09); border-radius: 1.5rem;
-      padding: 1.75rem; margin-bottom: 1rem; box-shadow: 0 2px 16px rgba(0,0,0,0.05);
-    }
-    .result-panel.dark {
-      background: var(--ink); border: none; box-shadow: 0 8px 40px rgba(0,0,0,0.2);
-    }
-    .result-title {
-      font-weight: 700; font-size: 0.9375rem; color: var(--ink); margin-bottom: 1.25rem;
-      display: flex; align-items: center; gap: 0.5rem;
-    }
-    .result-panel.dark .result-title { color: #fff; }
-
-    /* Approval meter */
-    .approval-meter { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; }
-    .approval-score { font-weight: 900; font-size: 3rem; letter-spacing: -0.05em; line-height: 1; }
-    .approval-label { font-weight: 700; font-size: 1rem; margin-top: 0.25rem; }
-    .approval-bar-wrap { flex: 1; }
-    .approval-bar-label { font-family: var(--font-mono); font-size: 0.5rem; color: rgba(255,255,255,0.3); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.5rem; }
-    .approval-bar { height: 8px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden; }
-    .approval-bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
-
-    /* Factor cards */
-    .factors-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.25rem; }
-    @media (max-width: 600px) { .factors-grid { grid-template-columns: 1fr; } }
-    .factor-card {
-      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 0.75rem; padding: 1rem; text-align: center;
-    }
-    .factor-name { font-family: var(--font-mono); font-size: 0.5rem; color: rgba(255,255,255,0.3); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.375rem; }
-    .factor-status { font-weight: 700; font-size: 0.875rem; color: #fff; text-transform: capitalize; margin-bottom: 0.25rem; }
-    .factor-pts { font-family: var(--font-mono); font-size: 0.625rem; color: var(--copper); }
-
-    /* Requirements */
-    .reqs-box {
-      background: rgba(255,255,255,0.04); border-radius: 0.75rem; padding: 1rem 1.25rem;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-    .reqs-title { font-weight: 600; font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-bottom: 0.625rem; }
-    .req-line {
-      font-size: 0.75rem; color: rgba(255,255,255,0.35); line-height: 1.7;
-      padding-left: 0.75rem; position: relative;
-    }
-    .req-line::before { content: ''; position: absolute; left: 0; top: 0.5em; width: 4px; height: 4px; border-radius: 50%; background: var(--copper); }
-
-    /* KPI row */
-    .kpi-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
-    .kpi {
-      background: rgba(24,29,42,0.03); border: 1px solid rgba(24,29,42,0.06);
-      border-radius: 0.75rem; padding: 1rem; text-align: center;
-    }
-    .kpi-label { font-family: var(--font-mono); font-size: 0.4375rem; color: var(--slate); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.375rem; }
-    .kpi-value { font-weight: 900; font-size: 1.5rem; letter-spacing: -0.04em; }
-
-    /* Payment breakdown */
-    .pay-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 0.625rem 0; border-bottom: 1px solid rgba(24,29,42,0.06);
-    }
-    .pay-row:last-child { border-bottom: none; }
-    .pay-label { font-size: 0.8125rem; color: var(--slate); }
-    .pay-val { font-family: var(--font-mono); font-size: 0.8125rem; font-weight: 600; color: var(--ink); }
-    .pay-row.total { border-top: 2px solid rgba(24,29,42,0.1); border-bottom: none; padding-top: 1rem; margin-top: 0.5rem; }
-    .pay-row.total .pay-label { font-weight: 700; font-size: 0.9375rem; color: var(--ink); }
-    .pay-row.total .pay-val { font-size: 1.25rem; color: var(--copper); }
-
-    /* Warnings */
-    .warning {
-      display: flex; align-items: flex-start; gap: 0.75rem;
-      padding: 1rem 1.25rem; border-radius: 0.75rem; margin-bottom: 0.75rem;
-      font-size: 0.8125rem; line-height: 1.6;
-    }
-    .warning.red { background: rgba(204,41,54,0.06); border: 1px solid rgba(204,41,54,0.15); color: var(--red); }
-    .warning.amber { background: rgba(232,134,10,0.06); border: 1px solid rgba(232,134,10,0.15); color: var(--amber); }
-    .warning.yellow { background: rgba(255,189,46,0.06); border: 1px solid rgba(255,189,46,0.15); color: #996B00; }
-    .warning-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 0.375rem; }
-    .warning.red .warning-dot { background: var(--red); }
-    .warning.amber .warning-dot { background: var(--amber); }
-    .warning.yellow .warning-dot { background: #FFBD2E; }
-
-    /* ── TOOL INDEX ── */
-    .tool-index { padding: 2rem 6vw 0; display: flex; gap: 0.75rem; flex-wrap: wrap; }
-    .tool-index-card {
-      display: flex; align-items: center; gap: 0.75rem;
-      padding: 0.75rem 1.25rem; border-radius: 0.75rem;
-      background: var(--card); border: 1px solid rgba(24,29,42,0.09);
-      cursor: pointer; transition: border-color 0.25s ease, box-shadow 0.25s ease;
-      text-decoration: none; color: var(--ink);
-    }
-    .tool-index-card:hover { border-color: var(--copper); box-shadow: 0 2px 12px var(--copper-glow); }
-    .tool-index-icon {
-      width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
-      font-size: 0.875rem; font-weight: 700; color: #fff; flex-shrink: 0;
-    }
-    .tool-index-icon.refi { background: var(--signal); }
-    .tool-index-icon.dca { background: var(--green); }
-    .tool-index-name { font-weight: 600; font-size: 0.8125rem; }
-    .tool-index-sub { font-family: var(--font-mono); font-size: 0.5rem; color: var(--slate); letter-spacing: 0.08em; margin-top: 0.1rem; }
-
-    /* ── DCA CALCULATOR ── */
-    .tool-divider { height: 1px; background: rgba(24,29,42,0.08); margin: 3rem 6vw 0; }
-
-    .lot-table-wrap { overflow-x: auto; }
-    .lot-table {
-      width: 100%; border-collapse: collapse; font-size: 0.8125rem;
-    }
-    .lot-table th {
-      font-family: var(--font-mono); font-size: 0.5rem; font-weight: 600;
-      color: var(--slate); letter-spacing: 0.12em; text-transform: uppercase;
-      text-align: left; padding: 0.625rem 0.5rem; border-bottom: 2px solid rgba(24,29,42,0.1);
-    }
-    .lot-table td { padding: 0.5rem; border-bottom: 1px solid rgba(24,29,42,0.06); vertical-align: middle; }
-    .lot-table .field-input { padding: 0.5rem 0.625rem; font-size: 0.75rem; }
-    .lot-table .lot-total { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; color: var(--ink); }
-    .lot-remove {
-      width: 28px; height: 28px; border-radius: 6px; border: 1px solid rgba(24,29,42,0.1);
-      background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center;
-      font-size: 0.875rem; color: var(--slate); transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-    }
-    .lot-remove:hover { background: rgba(204,41,54,0.08); border-color: var(--red); color: var(--red); }
-
-    .add-lot-btn {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      font-family: var(--font-sans); font-size: 0.75rem; font-weight: 600;
-      color: var(--copper); background: transparent; border: 1.5px dashed rgba(192,88,24,0.3);
-      padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;
-      margin-top: 0.75rem; transition: background 0.2s ease, border-color 0.2s ease;
-    }
-    .add-lot-btn:hover { background: rgba(192,88,24,0.06); border-color: var(--copper); }
-
-    .dca-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-top: 1.5rem; }
-    @media (max-width: 700px) { .dca-summary { grid-template-columns: repeat(2, 1fr); } }
-
-    .dca-current-wrap {
-      display: flex; align-items: center; gap: 1rem; margin-top: 1.5rem;
-      padding: 1.25rem; background: var(--card); border: 1px solid rgba(24,29,42,0.09);
-      border-radius: 1rem;
-    }
-    .dca-current-wrap .field { margin-bottom: 0; flex: 1; max-width: 200px; }
-    .dca-pnl { display: flex; gap: 0.75rem; flex: 1; }
-    .dca-pnl-card { flex: 1; text-align: center; }
-    .dca-pnl-val { font-weight: 900; font-size: 1.25rem; letter-spacing: -0.03em; }
-    .dca-pnl-label { font-family: var(--font-mono); font-size: 0.4375rem; color: var(--slate); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 0.25rem; }
-
-    /* ── FOOTER ── */
-    footer { background: var(--dark2); border-radius: 3rem 3rem 0 0; padding: 4rem 6vw 2.5rem; margin-top: 3rem; }
-    .foot-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-    .foot-legal { font-family: var(--font-mono); font-size: 0.5625rem; color: rgba(255,255,255,0.16); letter-spacing: 0.07em; }
-    .foot-link { font-size: 0.8125rem; color: rgba(255,255,255,0.25); transition: color 0.22s ease; }
-    .foot-link:hover { color: var(--copper); }
+    footer { background:var(--dark2); border-radius:3rem 3rem 0 0; padding:4rem 6vw 2.5rem; margin-top:3rem; }
+    .foot-bottom { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
+    .foot-legal { font-family:var(--font-mono); font-size:0.5625rem; color:rgba(255,255,255,0.16); letter-spacing:0.07em; }
+    .foot-link { font-size:0.8125rem; color:rgba(255,255,255,0.25); transition:color 0.22s ease; }
+    .foot-link:hover { color:var(--copper); }
   </style>
 </head>
 <body>
-
   <div class="mobile-menu" id="mobileMenu">
     <a href="index.html">Home</a>
     <a href="powerspark.html">PowerSpark</a>
     <a href="powerlabs.html">PowerLabs</a>
   </div>
-
   <nav class="navbar">
     <a href="index.html" class="nav-logo">Power Integrate</a>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
-      <li><a href="powerspark.html">PowerSpark</a></li>
-      <li><a href="powerlabs.html" class="active">PowerLabs</a></li>
+      <li><a href="powerspark.html" class="active">PowerSpark</a></li>
+      <li><a href="powerlabs.html">PowerLabs</a></li>
     </ul>
     <a href="index.html#cta" class="nav-cta">Get a Free Audit</a>
     <button class="nav-hamburger" id="navHamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
@@ -328,268 +82,17 @@
   <header class="page-header">
     <div class="page-header-grid"></div>
     <div class="page-header-content">
-      <span class="page-eyebrow">PowerLabs</span>
-      <h1 class="page-title">Free tools for smarter decisions.</h1>
-      <p class="page-sub">Calculators, analyzers, and utilities built by Power Integrate. No signup required.</p>
+      <span class="page-eyebrow">PowerSpark</span>
+      <h1 class="page-title">Learn to own your data.</h1>
+      <p class="page-sub">Tutorials, walkthroughs, and real-world breakdowns on Power BI, data automation, and building reporting that runs itself.</p>
     </div>
   </header>
 
-  <div class="tool-index">
-    <a href="#refi" class="tool-index-card">
-      <div class="tool-index-icon refi">R</div>
-      <div><div class="tool-index-name">Cash-Out Refi Calculator</div><div class="tool-index-sub">DTI + Approval Analysis</div></div>
-    </a>
-    <a href="#dca" class="tool-index-card">
-      <div class="tool-index-icon dca">$</div>
-      <div><div class="tool-index-name">Cost Basis / DCA Calculator</div><div class="tool-index-sub">Stock + Crypto Lots</div></div>
-    </a>
-  </div>
-
-  <div id="refi"></div>
-  <div class="tool-header">
-    <h2 class="tool-name">Cash-Out Refinance Calculator</h2>
-    <span class="tool-badge">DTI + Approval Analysis</span>
-  </div>
-
-  <div class="calc-wrap">
-    <div class="calc-grid">
-
-      <!-- ── INPUTS ── -->
-      <div class="calc-inputs">
-        <div class="input-panel">
-          <div class="panel-title"><div class="panel-icon home">H</div> Property + Loan</div>
-          <div class="field">
-            <label class="field-label">Current Home Value</label>
-            <input type="number" class="field-input" id="currentHomeValue" value="500000">
-          </div>
-          <div class="field">
-            <label class="field-label">Current Loan Balance</label>
-            <input type="number" class="field-input" id="currentLoanBalance" value="300000">
-          </div>
-          <div class="field">
-            <label class="field-label">Desired New Loan Amount</label>
-            <input type="number" class="field-input" id="desiredLoanAmount" value="400000">
-          </div>
-          <div class="field">
-            <label class="field-label">New Interest Rate (%)</label>
-            <input type="number" step="0.125" class="field-input" id="newInterestRate" value="7.0">
-          </div>
-          <div class="field">
-            <label class="field-label">Loan Term</label>
-            <select class="field-select" id="loanTerm">
-              <option value="15">15 Years</option>
-              <option value="20">20 Years</option>
-              <option value="30" selected>30 Years</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="input-panel">
-          <div class="panel-title"><div class="panel-icon money">$</div> Taxes, Insurance + Fees</div>
-          <div class="field">
-            <label class="field-label">Annual Property Taxes</label>
-            <input type="number" class="field-input" id="annualPropertyTax" value="8000">
-          </div>
-          <div class="field">
-            <label class="field-label">Annual Homeowners Insurance</label>
-            <input type="number" class="field-input" id="annualInsurance" value="2000">
-          </div>
-          <div class="field">
-            <label class="field-label">Monthly PMI</label>
-            <input type="number" class="field-input" id="monthlyPMI" value="0">
-          </div>
-          <div class="field">
-            <label class="field-label">Monthly HOA Fees</label>
-            <input type="number" class="field-input" id="monthlyHOA" value="0">
-          </div>
-        </div>
-
-        <div class="input-panel" style="border-left: 3px solid var(--copper);">
-          <div class="panel-title"><div class="panel-icon dti">%</div> Income + Debts (DTI)</div>
-          <div class="field">
-            <label class="field-label">Monthly Gross Income</label>
-            <input type="number" class="field-input" id="monthlyGrossIncome" value="10000">
-          </div>
-          <div class="field">
-            <label class="field-label">Other Monthly Debts</label>
-            <input type="number" class="field-input" id="otherMonthlyDebts" value="500">
-            <div class="field-hint">Car loans, credit cards, student loans, etc.</div>
-          </div>
-          <div class="field">
-            <label class="field-label">Credit Score</label>
-            <input type="number" class="field-input" id="creditScore" value="740" min="300" max="850">
-          </div>
-        </div>
-      </div>
-
-      <!-- ── RESULTS ── -->
-      <div class="calc-results">
-
-        <!-- Approval Probability -->
-        <div class="result-panel dark" id="approvalPanel">
-          <div class="result-title" style="color:#fff;">Loan Approval Probability</div>
-          <div class="approval-meter">
-            <div>
-              <div class="approval-score" id="approvalScore" style="color:var(--green);">0%</div>
-              <div class="approval-label" id="approvalLabel" style="color:var(--green);">Calculating...</div>
-            </div>
-            <div class="approval-bar-wrap">
-              <div class="approval-bar-label">Approval Score</div>
-              <div class="approval-bar"><div class="approval-bar-fill" id="approvalBar" style="width:0%;background:var(--green);"></div></div>
-            </div>
-          </div>
-          <div class="factors-grid" id="factorsGrid"></div>
-          <div class="reqs-box" id="reqsBox"></div>
-        </div>
-
-        <!-- DTI Analysis -->
-        <div class="result-panel">
-          <div class="result-title">Debt-to-Income Ratio</div>
-          <div class="kpi-row" style="margin-bottom:1rem;">
-            <div class="kpi">
-              <div class="kpi-label">Front-End DTI (Housing)</div>
-              <div class="kpi-value" id="frontDTI">0%</div>
-            </div>
-            <div class="kpi">
-              <div class="kpi-label">Back-End DTI (All Debts)</div>
-              <div class="kpi-value" id="backDTI">0%</div>
-            </div>
-          </div>
-          <div id="dtiBreakdown"></div>
-        </div>
-
-        <!-- Cash-Out Summary -->
-        <div class="result-panel">
-          <div class="result-title">Cash-Out Summary</div>
-          <div class="kpi-row">
-            <div class="kpi">
-              <div class="kpi-label">Cash Available</div>
-              <div class="kpi-value" id="cashOut" style="color:var(--green);">$0</div>
-            </div>
-            <div class="kpi">
-              <div class="kpi-label">Loan-to-Value</div>
-              <div class="kpi-value" id="ltvRatio">0%</div>
-            </div>
-            <div class="kpi">
-              <div class="kpi-label">Current Equity</div>
-              <div class="kpi-value" id="currentEquity" style="color:var(--signal);">$0</div>
-            </div>
-            <div class="kpi">
-              <div class="kpi-label">Remaining Equity</div>
-              <div class="kpi-value" id="remainingEquity" style="color:var(--signal);">$0</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Monthly Payment -->
-        <div class="result-panel">
-          <div class="result-title">Monthly Payment Breakdown</div>
-          <div id="paymentBreakdown"></div>
-        </div>
-
-        <!-- Warnings -->
-        <div id="warnings"></div>
-
-      </div>
-    </div>
-  </div>
-
-  <div class="tool-divider"></div>
-  <div id="dca"></div>
-  <div class="tool-header">
-    <h2 class="tool-name">Cost Basis / DCA Calculator</h2>
-    <span class="tool-badge">Stock + Crypto Lots</span>
-  </div>
-
-  <div class="calc-wrap">
-    <div class="calc-grid">
-
-      <!-- INPUTS: Lot Table -->
-      <div class="calc-inputs" style="grid-column: 1 / -1;">
-        <div class="input-panel">
-          <div class="panel-title"><div class="panel-icon" style="background:var(--green);">$</div> Purchase Lots</div>
-          <div class="lot-table-wrap">
-            <table class="lot-table" id="lotTable">
-              <thead>
-                <tr>
-                  <th style="width:30px;">#</th>
-                  <th>Date</th>
-                  <th>Shares / Units</th>
-                  <th>Price Per Share</th>
-                  <th>Lot Total</th>
-                  <th style="width:40px;"></th>
-                </tr>
-              </thead>
-              <tbody id="lotBody">
-                <tr data-lot="0">
-                  <td class="lot-total">1</td>
-                  <td><input type="date" class="field-input lot-date" value="2025-01-15"></td>
-                  <td><input type="number" class="field-input lot-shares" value="10" step="0.01" min="0"></td>
-                  <td><input type="number" class="field-input lot-price" value="150.00" step="0.01" min="0"></td>
-                  <td class="lot-total lot-cost">$1,500</td>
-                  <td></td>
-                </tr>
-                <tr data-lot="1">
-                  <td class="lot-total">2</td>
-                  <td><input type="date" class="field-input lot-date" value="2025-04-10"></td>
-                  <td><input type="number" class="field-input lot-shares" value="15" step="0.01" min="0"></td>
-                  <td><input type="number" class="field-input lot-price" value="135.00" step="0.01" min="0"></td>
-                  <td class="lot-total lot-cost">$2,025</td>
-                  <td><button class="lot-remove" onclick="removeLot(this)">&times;</button></td>
-                </tr>
-                <tr data-lot="2">
-                  <td class="lot-total">3</td>
-                  <td><input type="date" class="field-input lot-date" value="2025-07-22"></td>
-                  <td><input type="number" class="field-input lot-shares" value="20" step="0.01" min="0"></td>
-                  <td><input type="number" class="field-input lot-price" value="142.50" step="0.01" min="0"></td>
-                  <td class="lot-total lot-cost">$2,850</td>
-                  <td><button class="lot-remove" onclick="removeLot(this)">&times;</button></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <button class="add-lot-btn" onclick="addLot()">+ Add Purchase</button>
-        </div>
-
-        <!-- Current Price + P&L -->
-        <div class="dca-current-wrap">
-          <div class="field">
-            <label class="field-label">Current Price Per Share</label>
-            <input type="number" class="field-input" id="currentPrice" value="155.00" step="0.01" min="0">
-          </div>
-          <div class="dca-pnl" id="dcaPnl">
-            <div class="dca-pnl-card">
-              <div class="dca-pnl-val" id="pnlValue" style="color:var(--green);">$0</div>
-              <div class="dca-pnl-label">Unrealized P&L</div>
-            </div>
-            <div class="dca-pnl-card">
-              <div class="dca-pnl-val" id="pnlPercent" style="color:var(--green);">0%</div>
-              <div class="dca-pnl-label">Return</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Summary KPIs -->
-        <div class="dca-summary" id="dcaSummary">
-          <div class="kpi">
-            <div class="kpi-label">Total Shares</div>
-            <div class="kpi-value" id="totalShares">0</div>
-          </div>
-          <div class="kpi">
-            <div class="kpi-label">Total Cost Basis</div>
-            <div class="kpi-value" id="totalCost" style="color:var(--ink);">$0</div>
-          </div>
-          <div class="kpi">
-            <div class="kpi-label">Avg Cost / Share</div>
-            <div class="kpi-value" id="avgCost" style="color:var(--copper);">$0</div>
-          </div>
-          <div class="kpi">
-            <div class="kpi-label">Current Value</div>
-            <div class="kpi-value" id="currentValue" style="color:var(--signal);">$0</div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="coming-soon">
+    <div class="cs-icon">&#9889;</div>
+    <h2 class="cs-title">Videos coming soon.</h2>
+    <p class="cs-text">Educational content on Power BI, DAX, Power Query, and the Data Chassis methodology is in production. Drop your email to get notified when the first video drops.</p>
+    <a href="index.html#cta" class="cs-cta">Get Notified</a>
   </div>
 
   <footer>
@@ -600,240 +103,10 @@
   </footer>
 
   <script>
-    // Mobile menu
     const hamburger = document.getElementById('navHamburger');
     const mobileMenu = document.getElementById('mobileMenu');
-    hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('active');
-      mobileMenu.classList.toggle('open');
-      document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
-    });
-    document.querySelectorAll('.mobile-menu a').forEach(a => {
-      a.addEventListener('click', () => { hamburger.classList.remove('active'); mobileMenu.classList.remove('open'); document.body.style.overflow = ''; });
-    });
-
-    // Calculator
-    const $ = id => document.getElementById(id);
-    const val = id => parseFloat($(id).value) || 0;
-    const fmt = n => new Intl.NumberFormat('en-US', { style:'currency', currency:'USD', minimumFractionDigits:0, maximumFractionDigits:0 }).format(n);
-    const pct = n => n.toFixed(1) + '%';
-
-    function calculate() {
-      const homeVal = val('currentHomeValue');
-      const loanBal = val('currentLoanBalance');
-      const loanAmt = val('desiredLoanAmount');
-      const rate = val('newInterestRate');
-      const term = val('loanTerm');
-      const propTax = val('annualPropertyTax');
-      const ins = val('annualInsurance');
-      const pmi = val('monthlyPMI');
-      const hoa = val('monthlyHOA');
-      const income = val('monthlyGrossIncome');
-      const debts = val('otherMonthlyDebts');
-      const credit = val('creditScore');
-
-      const cashOut = Math.max(0, loanAmt - loanBal);
-      const ltv = homeVal > 0 ? (loanAmt / homeVal) * 100 : 0;
-      const mr = (rate / 100) / 12;
-      const np = term * 12;
-      const pi = mr > 0 ? loanAmt * (mr * Math.pow(1+mr, np)) / (Math.pow(1+mr, np) - 1) : loanAmt / np;
-      const mTax = propTax / 12;
-      const mIns = ins / 12;
-      const totalPay = pi + mTax + mIns + pmi + hoa;
-      const totalDebts = totalPay + debts;
-      const frontDTI = income > 0 ? (totalPay / income) * 100 : 0;
-      const backDTI = income > 0 ? (totalDebts / income) * 100 : 0;
-      const curEquity = homeVal - loanBal;
-      const remEquity = homeVal - loanAmt;
-
-      // Approval scoring
-      let score = 0;
-      const factors = [];
-
-      if (credit >= 760) { score += 30; factors.push({n:'Credit Score',s:'excellent',p:30,m:30}); }
-      else if (credit >= 700) { score += 25; factors.push({n:'Credit Score',s:'good',p:25,m:30}); }
-      else if (credit >= 660) { score += 18; factors.push({n:'Credit Score',s:'fair',p:18,m:30}); }
-      else if (credit >= 620) { score += 10; factors.push({n:'Credit Score',s:'poor',p:10,m:30}); }
-      else { factors.push({n:'Credit Score',s:'very poor',p:0,m:30}); }
-
-      if (ltv <= 70) { score += 30; factors.push({n:'Loan-to-Value',s:'excellent',p:30,m:30}); }
-      else if (ltv <= 80) { score += 25; factors.push({n:'Loan-to-Value',s:'good',p:25,m:30}); }
-      else if (ltv <= 85) { score += 15; factors.push({n:'Loan-to-Value',s:'fair',p:15,m:30}); }
-      else if (ltv <= 90) { score += 8; factors.push({n:'Loan-to-Value',s:'poor',p:8,m:30}); }
-      else { factors.push({n:'Loan-to-Value',s:'very poor',p:0,m:30}); }
-
-      if (backDTI <= 36) { score += 40; factors.push({n:'Debt-to-Income',s:'excellent',p:40,m:40}); }
-      else if (backDTI <= 43) { score += 30; factors.push({n:'Debt-to-Income',s:'good',p:30,m:40}); }
-      else if (backDTI <= 50) { score += 15; factors.push({n:'Debt-to-Income',s:'fair',p:15,m:40}); }
-      else if (backDTI <= 55) { score += 5; factors.push({n:'Debt-to-Income',s:'poor',p:5,m:40}); }
-      else { factors.push({n:'Debt-to-Income',s:'very poor',p:0,m:40}); }
-
-      let statusText, statusColor;
-      if (score >= 85) { statusText = 'Excellent'; statusColor = 'var(--green)'; }
-      else if (score >= 70) { statusText = 'Good'; statusColor = 'var(--signal)'; }
-      else if (score >= 50) { statusText = 'Fair'; statusColor = 'var(--amber)'; }
-      else if (score >= 30) { statusText = 'Poor'; statusColor = 'var(--copper)'; }
-      else { statusText = 'Very Unlikely'; statusColor = 'var(--red)'; }
-
-      // Render approval
-      $('approvalScore').textContent = score + '%';
-      $('approvalScore').style.color = statusColor;
-      $('approvalLabel').textContent = statusText;
-      $('approvalLabel').style.color = statusColor;
-      $('approvalBar').style.width = score + '%';
-      $('approvalBar').style.background = statusColor;
-
-      // Factors
-      $('factorsGrid').innerHTML = factors.map(f =>
-        '<div class="factor-card"><div class="factor-name">' + f.n + '</div>' +
-        '<div class="factor-status">' + f.s + '</div>' +
-        '<div class="factor-pts">' + f.p + ' / ' + f.m + ' pts</div></div>'
-      ).join('');
-
-      // Requirements
-      $('reqsBox').innerHTML =
-        '<div class="reqs-title">Key Requirements</div>' +
-        '<div class="req-line">Most lenders prefer DTI below 43% (yours: ' + pct(backDTI) + ')</div>' +
-        '<div class="req-line">LTV typically should be 80% or below (yours: ' + pct(ltv) + ')</div>' +
-        '<div class="req-line">Credit score of 620+ usually required (yours: ' + credit + ')</div>' +
-        '<div class="req-line">Conventional cash-out refi typically allows up to 80% LTV</div>';
-
-      // DTI
-      const dtiColor = v => v <= 36 ? 'var(--green)' : v <= 43 ? 'var(--amber)' : 'var(--red)';
-      $('frontDTI').textContent = pct(frontDTI);
-      $('frontDTI').style.color = dtiColor(frontDTI);
-      $('backDTI').textContent = pct(backDTI);
-      $('backDTI').style.color = dtiColor(backDTI);
-
-      $('dtiBreakdown').innerHTML =
-        '<div class="pay-row"><span class="pay-label">Monthly Gross Income</span><span class="pay-val">' + fmt(income) + '</span></div>' +
-        '<div class="pay-row"><span class="pay-label">Housing Payment (PITI)</span><span class="pay-val">' + fmt(totalPay) + '</span></div>' +
-        '<div class="pay-row"><span class="pay-label">Other Monthly Debts</span><span class="pay-val">' + fmt(debts) + '</span></div>' +
-        '<div class="pay-row total"><span class="pay-label">Total Monthly Debts</span><span class="pay-val">' + fmt(totalDebts) + '</span></div>';
-
-      // Cash out
-      $('cashOut').textContent = fmt(cashOut);
-      $('ltvRatio').textContent = pct(ltv);
-      $('ltvRatio').style.color = ltv > 80 ? 'var(--red)' : 'var(--green)';
-      $('currentEquity').textContent = fmt(curEquity);
-      $('remainingEquity').textContent = fmt(remEquity);
-
-      // Payment
-      let payHTML =
-        '<div class="pay-row"><span class="pay-label">Principal + Interest</span><span class="pay-val">' + fmt(pi) + '</span></div>' +
-        '<div class="pay-row"><span class="pay-label">Property Taxes</span><span class="pay-val">' + fmt(mTax) + '</span></div>' +
-        '<div class="pay-row"><span class="pay-label">Home Insurance</span><span class="pay-val">' + fmt(mIns) + '</span></div>';
-      if (pmi > 0) payHTML += '<div class="pay-row"><span class="pay-label">PMI</span><span class="pay-val">' + fmt(pmi) + '</span></div>';
-      if (hoa > 0) payHTML += '<div class="pay-row"><span class="pay-label">HOA Fees</span><span class="pay-val">' + fmt(hoa) + '</span></div>';
-      payHTML += '<div class="pay-row total"><span class="pay-label">Total Monthly Payment</span><span class="pay-val">' + fmt(totalPay) + '</span></div>';
-      $('paymentBreakdown').innerHTML = payHTML;
-
-      // Warnings
-      let warnHTML = '';
-      if (ltv > 80) warnHTML += '<div class="warning red"><div class="warning-dot"></div><div><strong>High LTV:</strong> Your loan-to-value ratio exceeds 80%. You may face higher rates, require PMI, or have difficulty getting approved.</div></div>';
-      if (backDTI > 43) warnHTML += '<div class="warning amber"><div class="warning-dot"></div><div><strong>High DTI:</strong> Your debt-to-income ratio exceeds 43%. Most conventional lenders prefer DTI below this threshold.</div></div>';
-      if (cashOut === 0) warnHTML += '<div class="warning yellow"><div class="warning-dot"></div><div><strong>No Cash-Out:</strong> Your desired loan amount equals or is less than your current balance. Increase the loan amount to receive cash out.</div></div>';
-      $('warnings').innerHTML = warnHTML;
-    }
-
-    // Bind refi inputs
-    document.querySelectorAll('#refi ~ .tool-header ~ .calc-wrap .field-input, #refi ~ .tool-header ~ .calc-wrap .field-select').forEach(el => {
-      el.addEventListener('input', calculate);
-      el.addEventListener('change', calculate);
-    });
-    // Fallback: bind by ID for refi inputs
-    ['currentHomeValue','currentLoanBalance','desiredLoanAmount','newInterestRate','loanTerm',
-     'annualPropertyTax','annualInsurance','monthlyPMI','monthlyHOA',
-     'monthlyGrossIncome','otherMonthlyDebts','creditScore'].forEach(id => {
-      const el = $(id);
-      if (el) { el.addEventListener('input', calculate); el.addEventListener('change', calculate); }
-    });
-
-    // Initial refi calculation
-    calculate();
-
-    // ─────────────────────────────────────────
-    // DCA CALCULATOR
-    // ─────────────────────────────────────────
-
-    let lotCounter = 3; // starting after the 3 default lots
-
-    function addLot() {
-      const tbody = document.getElementById('lotBody');
-      const idx = lotCounter++;
-      const today = new Date().toISOString().split('T')[0];
-      const tr = document.createElement('tr');
-      tr.setAttribute('data-lot', idx);
-      tr.innerHTML =
-        '<td class="lot-total">' + (tbody.children.length + 1) + '</td>' +
-        '<td><input type="date" class="field-input lot-date" value="' + today + '"></td>' +
-        '<td><input type="number" class="field-input lot-shares" value="0" step="0.01" min="0"></td>' +
-        '<td><input type="number" class="field-input lot-price" value="0" step="0.01" min="0"></td>' +
-        '<td class="lot-total lot-cost">$0</td>' +
-        '<td><button class="lot-remove" onclick="removeLot(this)">&times;</button></td>';
-      tbody.appendChild(tr);
-      bindLotInputs(tr);
-      calcDCA();
-    }
-
-    function removeLot(btn) {
-      const tr = btn.closest('tr');
-      tr.remove();
-      renumberLots();
-      calcDCA();
-    }
-
-    function renumberLots() {
-      document.querySelectorAll('#lotBody tr').forEach((tr, i) => {
-        tr.querySelector('td').textContent = i + 1;
-      });
-    }
-
-    function bindLotInputs(scope) {
-      (scope || document).querySelectorAll('.lot-shares, .lot-price').forEach(el => {
-        el.addEventListener('input', calcDCA);
-      });
-    }
-
-    function calcDCA() {
-      const rows = document.querySelectorAll('#lotBody tr');
-      let totalShares = 0;
-      let totalCost = 0;
-
-      rows.forEach(tr => {
-        const shares = parseFloat(tr.querySelector('.lot-shares').value) || 0;
-        const price = parseFloat(tr.querySelector('.lot-price').value) || 0;
-        const cost = shares * price;
-        tr.querySelector('.lot-cost').textContent = fmt(cost);
-        totalShares += shares;
-        totalCost += cost;
-      });
-
-      const avgCost = totalShares > 0 ? totalCost / totalShares : 0;
-      const curPrice = parseFloat(document.getElementById('currentPrice').value) || 0;
-      const currentValue = totalShares * curPrice;
-      const pnl = currentValue - totalCost;
-      const pnlPct = totalCost > 0 ? (pnl / totalCost) * 100 : 0;
-
-      $('totalShares').textContent = totalShares % 1 === 0 ? totalShares.toLocaleString() : totalShares.toFixed(4);
-      $('totalCost').textContent = fmt(totalCost);
-      $('avgCost').textContent = '$' + avgCost.toFixed(2);
-      $('currentValue').textContent = fmt(currentValue);
-
-      const pnlColor = pnl >= 0 ? 'var(--green)' : 'var(--red)';
-      const pnlSign = pnl >= 0 ? '+' : '';
-      $('pnlValue').textContent = pnlSign + fmt(pnl);
-      $('pnlValue').style.color = pnlColor;
-      $('pnlPercent').textContent = pnlSign + pnlPct.toFixed(2) + '%';
-      $('pnlPercent').style.color = pnlColor;
-    }
-
-    // Bind existing lot inputs
-    bindLotInputs(document);
-    document.getElementById('currentPrice').addEventListener('input', calcDCA);
-
-    // Initial DCA calculation
-    calcDCA();
+    hamburger.addEventListener('click', () => { hamburger.classList.toggle('active'); mobileMenu.classList.toggle('open'); document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : ''; });
+    document.querySelectorAll('.mobile-menu a').forEach(a => { a.addEventListener('click', () => { hamburger.classList.remove('active'); mobileMenu.classList.remove('open'); document.body.style.overflow = ''; }); });
   </script>
 </body>
 </html>
