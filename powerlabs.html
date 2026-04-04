@@ -281,6 +281,24 @@
       text-decoration: none; color: var(--ink);
     }
     .tool-index-card:hover { border-color: var(--copper); box-shadow: 0 2px 12px var(--copper-glow); }
+
+    /* ── TOOL SEGMENTS ── */
+    .tool-segment { margin: 2.5rem 6vw 0; }
+    .tool-segment:first-of-type { margin-top: 2rem; }
+    .tool-segment-header {
+      display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;
+    }
+    .tool-segment-line { flex: 1; height: 1px; background: rgba(24,29,42,0.08); }
+    .tool-segment-label {
+      font-family: var(--font-mono); font-size: 0.5625rem; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--slate);
+      white-space: nowrap;
+    }
+    .tool-segment-cards { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    @media (max-width: 780px) {
+      .tool-segment { margin: 1.5rem 4vw 0; }
+      .tool-segment-cards { gap: 0.5rem; }
+    }
     .tool-index-icon {
       width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
       font-size: 0.875rem; font-weight: 700; color: #fff; flex-shrink: 0;
@@ -497,26 +515,59 @@
     </div>
   </header>
 
-  <div class="tool-index">
-    <a class="tool-index-card" onclick="openTool('dax')">
-      <div class="tool-index-icon" style="background:var(--copper);">fx</div>
-      <div><div class="tool-index-name">Excel to DAX Converter</div><div class="tool-index-sub">Formula Translator</div></div>
-    </a>
-    <a class="tool-index-card" onclick="openTool('pqm')">
-      <div class="tool-index-icon" style="background:var(--signal);">M</div>
-      <div><div class="tool-index-name">SQL to Power Query (M)</div><div class="tool-index-sub">Query Translator</div></div>
-    </a>
-    <a class="tool-index-card" onclick="openTool('refi')">
-      <div class="tool-index-icon refi">R</div>
-      <div><div class="tool-index-name">Cash-Out Refi Calculator</div><div class="tool-index-sub">DTI + Approval Analysis</div></div>
-    </a>
-    <a class="tool-index-card" onclick="openTool('dca')">
-      <div class="tool-index-icon dca">$</div>
-      <div><div class="tool-index-name">Cost Basis / DCA Calculator</div><div class="tool-index-sub">Stock + Crypto Lots</div></div>
-    </a>
+  <!-- TOOL INDEX: POWER BI & DATA -->
+  <div class="tool-segment">
+    <div class="tool-segment-header">
+      <span class="tool-segment-label">Power BI & Data</span>
+      <div class="tool-segment-line"></div>
+    </div>
+    <div class="tool-segment-cards">
+      <a class="tool-index-card" onclick="openTool('dax')">
+        <div class="tool-index-icon" style="background:var(--copper);">fx</div>
+        <div><div class="tool-index-name">Excel to DAX Converter</div><div class="tool-index-sub">Formula Translator</div></div>
+      </a>
+      <a class="tool-index-card" onclick="openTool('pqm')">
+        <div class="tool-index-icon" style="background:var(--signal);">M</div>
+        <div><div class="tool-index-name">SQL to Power Query (M)</div><div class="tool-index-sub">Query Translator</div></div>
+      </a>
+      <a class="tool-index-card" onclick="openTool('daxgen')">
+        <div class="tool-index-icon" style="background:#8B5CF6;">fx</div>
+        <div><div class="tool-index-name">DAX Measure Generator</div><div class="tool-index-sub">Common Business Measures</div></div>
+      </a>
+      <a class="tool-index-card" onclick="openTool('csvtom')">
+        <div class="tool-index-icon" style="background:var(--green);">{}</div>
+        <div><div class="tool-index-name">JSON/CSV to M Converter</div><div class="tool-index-sub">Data to Power Query</div></div>
+      </a>
+    </div>
   </div>
 
-  <!-- ═══ TOOL 1: EXCEL TO DAX ═══ -->
+  <!-- TOOL INDEX: BUSINESS & FINANCE -->
+  <div class="tool-segment">
+    <div class="tool-segment-header">
+      <span class="tool-segment-label">Business & Finance</span>
+      <div class="tool-segment-line"></div>
+    </div>
+    <div class="tool-segment-cards">
+      <a class="tool-index-card" onclick="openTool('roi')">
+        <div class="tool-index-icon" style="background:#CC2936;">%</div>
+        <div><div class="tool-index-name">Reporting ROI Calculator</div><div class="tool-index-sub">Cost of Manual Reporting</div></div>
+      </a>
+      <a class="tool-index-card" onclick="openTool('refi')">
+        <div class="tool-index-icon refi">R</div>
+        <div><div class="tool-index-name">Cash-Out Refi Calculator</div><div class="tool-index-sub">DTI + Approval Analysis</div></div>
+      </a>
+      <a class="tool-index-card" onclick="openTool('dca')">
+        <div class="tool-index-icon dca">$</div>
+        <div><div class="tool-index-name">Cost Basis / DCA Calculator</div><div class="tool-index-sub">Stock + Crypto Lots</div></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- SEGMENT: POWER BI & DATA               -->
+  <!-- ════════════════════════════════════════ -->
+
+  <!-- ═══ EXCEL TO DAX ═══ -->
   <div class="tool-section open" id="dax">
     <div class="tool-header" onclick="toggleTool('dax')">
       <div class="tool-header-left">
@@ -562,7 +613,7 @@
     </div>
   </div>
 
-  <!-- ═══ TOOL 2: SQL TO POWER QUERY (M) ═══ -->
+  <!-- ═══ SQL TO POWER QUERY (M) ═══ -->
   <div class="tool-section" id="pqm">
     <div class="tool-header" onclick="toggleTool('pqm')">
       <div class="tool-header-left">
@@ -608,7 +659,122 @@
     </div>
   </div>
 
-  <!-- ═══ TOOL 3: CASH-OUT REFI ═══ -->
+  <!-- ═══ DAX MEASURE GENERATOR ═══ -->
+  <div class="tool-section" id="daxgen">
+    <div class="tool-header" onclick="toggleTool('daxgen')">
+      <div class="tool-header-left">
+        <div class="tool-icon" style="background:#8B5CF6;">fx</div>
+        <h2 class="tool-name">DAX Measure Generator</h2>
+      </div>
+      <span class="tool-badge">Common Business Measures</span>
+      <div class="tool-chevron"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+    </div>
+    <div class="tool-body">
+      <div class="tool-body-inner">
+        <div class="conv-layout">
+          <div class="conv-panel">
+            <div class="conv-panel-label" style="color:#8B5CF6;">Configure Your Measure</div>
+            <div class="field" style="margin-bottom:1rem;">
+              <label class="field-label">Measure Type</label>
+              <select class="field-select" id="daxgenType" style="border-color:rgba(139,92,246,0.2);">
+                <option value="ytd">Year-to-Date (YTD)</option>
+                <option value="mom">Month-over-Month Growth %</option>
+                <option value="yoy">Year-over-Year Growth %</option>
+                <option value="rolling">Rolling Average (N Months)</option>
+                <option value="pctTotal">% of Total</option>
+                <option value="rank">Rank by Value</option>
+                <option value="cumulative">Cumulative / Running Total</option>
+                <option value="avgPerDay">Average Per Day</option>
+                <option value="distinctCount">Distinct Count</option>
+                <option value="prevPeriod">Previous Period Value</option>
+                <option value="topN">Top N Items</option>
+                <option value="conditional">Conditional Aggregation</option>
+              </select>
+            </div>
+            <div class="field" style="margin-bottom:1rem;">
+              <label class="field-label">Table Name</label>
+              <input type="text" class="field-input" id="daxgenTable" value="Sales" placeholder="e.g. Sales, Orders, Revenue" style="border-color:rgba(139,92,246,0.2);">
+            </div>
+            <div class="field" style="margin-bottom:1rem;">
+              <label class="field-label">Value Column</label>
+              <input type="text" class="field-input" id="daxgenCol" value="Amount" placeholder="e.g. Amount, Revenue, Quantity" style="border-color:rgba(139,92,246,0.2);">
+            </div>
+            <div class="field" style="margin-bottom:1rem;">
+              <label class="field-label">Date Table Name</label>
+              <input type="text" class="field-input" id="daxgenDateTable" value="Calendar" placeholder="e.g. Calendar, Date, DimDate" style="border-color:rgba(139,92,246,0.2);">
+            </div>
+            <div class="field" style="margin-bottom:1rem;">
+              <label class="field-label">Date Column</label>
+              <input type="text" class="field-input" id="daxgenDateCol" value="Date" placeholder="e.g. Date, OrderDate" style="border-color:rgba(139,92,246,0.2);">
+            </div>
+            <div class="field" id="daxgenExtraWrap" style="margin-bottom:0;">
+              <label class="field-label" id="daxgenExtraLabel">Rolling Months (N)</label>
+              <input type="number" class="field-input" id="daxgenExtra" value="3" min="1" max="24" style="border-color:rgba(139,92,246,0.2);">
+            </div>
+          </div>
+          <div class="conv-panel dark">
+            <div class="conv-panel-label" style="color:#8B5CF6;">Generated DAX Measure</div>
+            <div class="conv-output" id="daxgenOutput"><span class="placeholder">Select a measure type...</span></div>
+            <button class="conv-copy" id="daxgenCopy" onclick="copyDaxGen()">Copy</button>
+            <div class="conv-notes" id="daxgenNotes" style="display:none;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ JSON/CSV TO M CONVERTER ═══ -->
+  <div class="tool-section" id="csvtom">
+    <div class="tool-header" onclick="toggleTool('csvtom')">
+      <div class="tool-header-left">
+        <div class="tool-icon" style="background:var(--green);">{}</div>
+        <h2 class="tool-name">JSON/CSV to Power Query (M)</h2>
+      </div>
+      <span class="tool-badge">Data to M Code</span>
+      <div class="tool-chevron"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+    </div>
+    <div class="tool-body">
+      <div class="tool-body-inner">
+        <div class="conv-layout">
+          <div class="conv-panel">
+            <div style="display:flex;gap:0.5rem;margin-bottom:1rem;">
+              <button class="scope-check selected" id="csvModeCSV" onclick="setCsvMode('csv')" style="flex:1;justify-content:center;font-size:0.75rem;font-weight:600;">CSV</button>
+              <button class="scope-check" id="csvModeJSON" onclick="setCsvMode('json')" style="flex:1;justify-content:center;font-size:0.75rem;font-weight:600;">JSON</button>
+            </div>
+            <div class="conv-panel-label" style="color:var(--green);" id="csvInputLabel">Paste CSV Data</div>
+            <textarea class="conv-textarea" id="csvInput" style="min-height:200px;border-color:rgba(62,207,142,0.2);" placeholder="Name,Department,Salary&#10;Alice,Engineering,95000&#10;Bob,Marketing,72000&#10;Carol,Engineering,88000"></textarea>
+            <div class="field" style="margin-top:0.75rem;">
+              <label class="field-label">Delimiter (CSV only)</label>
+              <select class="field-select" id="csvDelimiter" style="max-width:160px;">
+                <option value="," selected>Comma (,)</option>
+                <option value="&#9;">Tab</option>
+                <option value=";">Semicolon (;)</option>
+                <option value="|">Pipe (|)</option>
+              </select>
+            </div>
+          </div>
+          <div class="conv-panel dark">
+            <div class="conv-panel-label mcode">Power Query (M)</div>
+            <div class="conv-output" id="csvMOutput"><span class="placeholder">Paste data on the left...</span></div>
+            <button class="conv-copy" id="csvMCopy" onclick="copyCsvM()">Copy</button>
+            <div class="conv-notes" id="csvMNotes" style="display:none;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- SEGMENT: BUSINESS & FINANCE             -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="tool-segment" style="margin-top:3rem;">
+    <div class="tool-segment-header">
+      <span class="tool-segment-label">Business & Finance</span>
+      <div class="tool-segment-line"></div>
+    </div>
+  </div>
+
+  <!-- ═══ CASH-OUT REFI CALCULATOR ═══ -->
   <div class="tool-section" id="refi">
     <div class="tool-header" onclick="toggleTool('refi')">
       <div class="tool-header-left">
@@ -682,7 +848,7 @@
     </div>
   </div>
 
-  <!-- ═══ TOOL 4: DCA CALCULATOR ═══ -->
+  <!-- ═══ DCA CALCULATOR ═══ -->
   <div class="tool-section" id="dca">
     <div class="tool-header" onclick="toggleTool('dca')">
       <div class="tool-header-left">
@@ -720,6 +886,107 @@
           <div class="kpi"><div class="kpi-label">Total Cost Basis</div><div class="kpi-value" id="totalCost" style="color:var(--ink);">$0</div></div>
           <div class="kpi"><div class="kpi-label">Avg Cost / Share</div><div class="kpi-value" id="avgCost" style="color:var(--copper);">$0</div></div>
           <div class="kpi"><div class="kpi-label">Current Value</div><div class="kpi-value" id="currentValue" style="color:var(--signal);">$0</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ REPORTING ROI CALCULATOR ═══ -->
+  <div class="tool-section" id="roi">
+    <div class="tool-header" onclick="toggleTool('roi')">
+      <div class="tool-header-left">
+        <div class="tool-icon" style="background:#CC2936;">%</div>
+        <h2 class="tool-name">Reporting ROI Calculator</h2>
+      </div>
+      <span class="tool-badge">Cost of Manual Reporting</span>
+      <div class="tool-chevron"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+    </div>
+    <div class="tool-body">
+      <div class="tool-body-inner">
+        <div class="calc-grid">
+          <div class="calc-inputs">
+            <div class="input-panel">
+              <div class="panel-title"><div class="panel-icon" style="background:#CC2936;">$</div> Current Reporting Costs</div>
+              <div class="field">
+                <label class="field-label">How many recurring reports does your team build?</label>
+                <input type="number" class="field-input" id="roiReports" value="5" min="1" max="50">
+              </div>
+              <div class="field">
+                <label class="field-label">Average hours per report (build + update)</label>
+                <input type="number" class="field-input" id="roiHoursPerReport" value="4" min="0.5" step="0.5">
+              </div>
+              <div class="field">
+                <label class="field-label">How often are reports rebuilt?</label>
+                <select class="field-select" id="roiFrequency">
+                  <option value="52">Weekly</option>
+                  <option value="26">Bi-weekly</option>
+                  <option value="12" selected>Monthly</option>
+                  <option value="4">Quarterly</option>
+                </select>
+              </div>
+              <div class="field">
+                <label class="field-label">Fully loaded hourly cost of the person building them ($)</label>
+                <input type="number" class="field-input" id="roiHourlyRate" value="45" min="10" step="5">
+                <div class="field-hint">Salary + benefits + overhead, divided by ~2,080 hours. A $70K employee is roughly $45/hr loaded.</div>
+              </div>
+            </div>
+            <div class="input-panel" style="border-left: 3px solid var(--copper);">
+              <div class="panel-title"><div class="panel-icon" style="background:var(--copper);">A</div> After Automation</div>
+              <div class="field">
+                <label class="field-label">Estimated hours per report after automation</label>
+                <input type="number" class="field-input" id="roiAutoHours" value="0.5" min="0" step="0.25">
+                <div class="field-hint">Most automated reports need 0 - 1 hour for review only. No manual rebuilding.</div>
+              </div>
+              <div class="field">
+                <label class="field-label">One-time automation build cost ($)</label>
+                <input type="number" class="field-input" id="roiBuildCost" value="3000" min="0" step="500">
+                <div class="field-hint">Typical Power Integrate engagement: $1,800 - $4,500</div>
+              </div>
+            </div>
+          </div>
+          <div class="calc-results">
+            <div class="result-panel dark">
+              <div class="result-title" style="color:#fff;">Annual Cost of Manual Reporting</div>
+              <div class="approval-meter">
+                <div>
+                  <div class="approval-score" id="roiAnnualCost" style="color:#CC2936;">$0</div>
+                  <div class="approval-label" id="roiAnnualHours" style="color:rgba(255,255,255,0.4);">0 hours/year</div>
+                </div>
+              </div>
+              <div class="factors-grid" style="grid-template-columns:repeat(2,1fr);">
+                <div class="factor-card">
+                  <div class="factor-name">Cost Per Report</div>
+                  <div class="factor-status" id="roiCostPerReport" style="color:#CC2936;">$0</div>
+                </div>
+                <div class="factor-card">
+                  <div class="factor-name">Hours Per Week</div>
+                  <div class="factor-status" id="roiWeeklyHours" style="color:rgba(255,255,255,0.7);">0</div>
+                </div>
+              </div>
+            </div>
+            <div class="result-panel" style="background:rgba(62,207,142,0.04);border-color:rgba(62,207,142,0.15);">
+              <div class="result-title" style="color:var(--green);">After Automation</div>
+              <div class="kpi-row">
+                <div class="kpi">
+                  <div class="kpi-label">Annual Savings</div>
+                  <div class="kpi-value" id="roiSavings" style="color:var(--green);">$0</div>
+                </div>
+                <div class="kpi">
+                  <div class="kpi-label">Hours Reclaimed / Year</div>
+                  <div class="kpi-value" id="roiHoursSaved" style="color:var(--green);">0</div>
+                </div>
+                <div class="kpi">
+                  <div class="kpi-label">Break-Even</div>
+                  <div class="kpi-value" id="roiBreakeven" style="color:var(--copper);">0 months</div>
+                </div>
+                <div class="kpi">
+                  <div class="kpi-label">3-Year ROI</div>
+                  <div class="kpi-value" id="roi3Year" style="color:var(--signal);">0%</div>
+                </div>
+              </div>
+            </div>
+            <div id="roiWarnings"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -1693,6 +1960,359 @@
     }
 
     document.getElementById('sqlInput').addEventListener('input', convertSQLAndRender);
+
+    // ─────────────────────────────────────────
+    // REPORTING ROI CALCULATOR
+    // ─────────────────────────────────────────
+
+    function calcROI() {
+      var reports = parseFloat($('roiReports').value) || 1;
+      var hrsPerReport = parseFloat($('roiHoursPerReport').value) || 1;
+      var freq = parseInt($('roiFrequency').value) || 12;
+      var rate = parseFloat($('roiHourlyRate').value) || 45;
+      var autoHrs = parseFloat($('roiAutoHours').value) || 0;
+      var buildCost = parseFloat($('roiBuildCost').value) || 0;
+
+      // Current state
+      var annualCycles = reports * freq;
+      var annualHours = annualCycles * hrsPerReport;
+      var annualCost = annualHours * rate;
+      var weeklyHours = annualHours / 52;
+      var costPerReport = hrsPerReport * rate;
+
+      // After automation
+      var autoAnnualHours = annualCycles * autoHrs;
+      var autoAnnualCost = autoAnnualHours * rate;
+      var annualSavings = annualCost - autoAnnualCost;
+      var hoursSaved = annualHours - autoAnnualHours;
+
+      // Break-even
+      var monthlyAnnualSavings = annualSavings / 12;
+      var breakeven = monthlyAnnualSavings > 0 ? Math.ceil(buildCost / monthlyAnnualSavings) : 0;
+
+      // 3-year ROI
+      var threeYearSavings = (annualSavings * 3) - buildCost;
+      var roi3yr = buildCost > 0 ? (threeYearSavings / buildCost) * 100 : 0;
+
+      $('roiAnnualCost').textContent = fmt(annualCost);
+      $('roiAnnualHours').textContent = Math.round(annualHours) + ' hours/year spent on manual reporting';
+      $('roiCostPerReport').textContent = fmt(costPerReport);
+      $('roiWeeklyHours').textContent = weeklyHours.toFixed(1) + ' hrs';
+      $('roiSavings').textContent = fmt(annualSavings) + '/yr';
+      $('roiHoursSaved').textContent = Math.round(hoursSaved);
+      $('roiBreakeven').textContent = breakeven <= 0 ? 'Immediate' : breakeven + (breakeven === 1 ? ' month' : ' months');
+      $('roi3Year').textContent = roi3yr >= 0 ? '+' + Math.round(roi3yr) + '%' : Math.round(roi3yr) + '%';
+
+      // Warnings
+      var warnHTML = '';
+      if (weeklyHours > 10) {
+        warnHTML += '<div class="warning red"><div class="warning-dot"></div><div><strong>High labor cost:</strong> Your team is spending ' + weeklyHours.toFixed(1) + ' hours per week just rebuilding reports. That is ' + Math.round(weeklyHours / 40 * 100) + '% of one full-time role.</div></div>';
+      }
+      if (annualCost > 10000) {
+        warnHTML += '<div class="warning amber"><div class="warning-dot"></div><div><strong>' + fmt(annualCost) + ' per year</strong> in hidden reporting labor. Most teams do not realize this cost until they see it quantified.</div></div>';
+      }
+      if (breakeven <= 3 && buildCost > 0) {
+        warnHTML += '<div class="warning" style="background:rgba(62,207,142,0.06);border-color:rgba(62,207,142,0.15);color:var(--green);"><div class="warning-dot" style="background:var(--green);"></div><div><strong>Fast payback:</strong> This project pays for itself in ' + breakeven + ' month' + (breakeven === 1 ? '' : 's') + '. After that, ' + fmt(annualSavings) + '/year goes straight to your bottom line.</div></div>';
+      }
+      $('roiWarnings').innerHTML = warnHTML;
+    }
+
+    ['roiReports','roiHoursPerReport','roiHourlyRate','roiAutoHours','roiBuildCost'].forEach(function(id) {
+      $(id).addEventListener('input', calcROI);
+    });
+    $('roiFrequency').addEventListener('change', calcROI);
+    calcROI();
+
+    // ─────────────────────────────────────────
+    // DAX MEASURE GENERATOR
+    // ─────────────────────────────────────────
+
+    var daxTemplates = {
+      ytd: {
+        label: 'Year-to-Date',
+        gen: function(t, c, dt, dc, x) {
+          return t + ' YTD =\nCALCULATE (\n    SUM ( ' + t + '[' + c + '] ),\n    DATESYTD ( ' + dt + '[' + dc + '] )\n)';
+        },
+        note: 'Requires a date table marked as a date table in your model. DATESYTD filters the date table from Jan 1 to the current date context.',
+        showExtra: false,
+      },
+      mom: {
+        label: 'Month-over-Month Growth %',
+        gen: function(t, c, dt, dc, x) {
+          return t + ' MoM Growth % =\nVAR _CurrentMonth = SUM ( ' + t + '[' + c + '] )\nVAR _PreviousMonth =\n    CALCULATE (\n        SUM ( ' + t + '[' + c + '] ),\n        DATEADD ( ' + dt + '[' + dc + '], -1, MONTH )\n    )\nRETURN\n    IF (\n        NOT ISBLANK ( _PreviousMonth ),\n        DIVIDE ( _CurrentMonth - _PreviousMonth, _PreviousMonth )\n    )';
+        },
+        note: 'Returns BLANK if no previous month data exists. DIVIDE handles division by zero automatically.',
+        showExtra: false,
+      },
+      yoy: {
+        label: 'Year-over-Year Growth %',
+        gen: function(t, c, dt, dc, x) {
+          return t + ' YoY Growth % =\nVAR _Current = SUM ( ' + t + '[' + c + '] )\nVAR _PriorYear =\n    CALCULATE (\n        SUM ( ' + t + '[' + c + '] ),\n        DATEADD ( ' + dt + '[' + dc + '], -1, YEAR )\n    )\nRETURN\n    IF (\n        NOT ISBLANK ( _PriorYear ),\n        DIVIDE ( _Current - _PriorYear, _PriorYear )\n    )';
+        },
+        note: 'Compares the current period to the same period one year ago. Format as percentage in your visual.',
+        showExtra: false,
+      },
+      rolling: {
+        label: 'Rolling Average',
+        gen: function(t, c, dt, dc, x) {
+          return t + ' Rolling ' + x + 'M Avg =\nVAR _Period = ' + x + '\nRETURN\n    AVERAGEX (\n        DATESINPERIOD (\n            ' + dt + '[' + dc + '],\n            MAX ( ' + dt + '[' + dc + '] ),\n            -_Period,\n            MONTH\n        ),\n        CALCULATE ( SUM ( ' + t + '[' + c + '] ) )\n    )';
+        },
+        note: 'Smooths out spikes by averaging the last N months. Increase N for a smoother trend line.',
+        showExtra: true, extraLabel: 'Rolling Months (N)',
+      },
+      pctTotal: {
+        label: '% of Total',
+        gen: function(t, c, dt, dc, x) {
+          return t + ' % of Total =\nVAR _Current = SUM ( ' + t + '[' + c + '] )\nVAR _Total =\n    CALCULATE (\n        SUM ( ' + t + '[' + c + '] ),\n        REMOVEFILTERS ()\n    )\nRETURN\n    DIVIDE ( _Current, _Total )';
+        },
+        note: 'REMOVEFILTERS clears all filter context to get the grand total. Use ALL(Table) or ALL(Column) for partial removal.',
+        showExtra: false,
+      },
+      rank: {
+        label: 'Rank by Value',
+        gen: function(t, c, dt, dc, x) {
+          return t + ' Rank =\nRANKX (\n    ALL ( ' + t + ' ),\n    SUM ( ' + t + '[' + c + '] ),\n    ,\n    DESC,\n    DENSE\n)';
+        },
+        note: 'ALL() removes filters so the rank considers all rows. DENSE means ties get the same rank with no gaps.',
+        showExtra: false,
+      },
+      cumulative: {
+        label: 'Cumulative / Running Total',
+        gen: function(t, c, dt, dc, x) {
+          return t + ' Running Total =\nCALCULATE (\n    SUM ( ' + t + '[' + c + '] ),\n    FILTER (\n        ALL ( ' + dt + '[' + dc + '] ),\n        ' + dt + '[' + dc + '] <= MAX ( ' + dt + '[' + dc + '] )\n    )\n)';
+        },
+        note: 'Accumulates from the earliest date up to the current date in context. Works in tables and charts.',
+        showExtra: false,
+      },
+      avgPerDay: {
+        label: 'Average Per Day',
+        gen: function(t, c, dt, dc, x) {
+          return t + ' Avg Per Day =\nDIVIDE (\n    SUM ( ' + t + '[' + c + '] ),\n    DISTINCTCOUNT ( ' + dt + '[' + dc + '] )\n)';
+        },
+        note: 'Divides the total by the number of distinct dates with data. DIVIDE handles empty dates gracefully.',
+        showExtra: false,
+      },
+      distinctCount: {
+        label: 'Distinct Count',
+        gen: function(t, c, dt, dc, x) {
+          return t + ' Distinct ' + c + ' Count =\nDISTINCTCOUNT ( ' + t + '[' + c + '] )';
+        },
+        note: 'Counts unique values in the column, ignoring duplicates. Useful for counting unique customers, products, etc.',
+        showExtra: false,
+      },
+      prevPeriod: {
+        label: 'Previous Period Value',
+        gen: function(t, c, dt, dc, x) {
+          return t + ' Previous Month =\nCALCULATE (\n    SUM ( ' + t + '[' + c + '] ),\n    DATEADD ( ' + dt + '[' + dc + '], -1, MONTH )\n)';
+        },
+        note: 'Returns the value from exactly one month prior. Change MONTH to QUARTER or YEAR for other intervals.',
+        showExtra: false,
+      },
+      topN: {
+        label: 'Top N Items',
+        gen: function(t, c, dt, dc, x) {
+          return t + ' Is Top ' + x + ' =\nVAR _Rank =\n    RANKX (\n        ALL ( ' + t + ' ),\n        SUM ( ' + t + '[' + c + '] ),\n        ,\n        DESC\n    )\nRETURN\n    IF ( _Rank <= ' + x + ', SUM ( ' + t + '[' + c + '] ) )';
+        },
+        note: 'Returns the value only if the item ranks in the top N. Items outside top N show BLANK. Useful for "Top 10" visuals.',
+        showExtra: true, extraLabel: 'Top N count',
+      },
+      conditional: {
+        label: 'Conditional Aggregation',
+        gen: function(t, c, dt, dc, x) {
+          return t + ' Conditional Sum =\nCALCULATE (\n    SUM ( ' + t + '[' + c + '] ),\n    ' + t + '[Status] = "Active"\n)';
+        },
+        note: 'Filters to a specific condition before aggregating. Replace [Status] = "Active" with your actual filter condition.',
+        showExtra: false,
+      },
+    };
+
+    function generateDAX() {
+      var type = $('daxgenType').value;
+      var t = $('daxgenTable').value || 'Sales';
+      var c = $('daxgenCol').value || 'Amount';
+      var dt = $('daxgenDateTable').value || 'Calendar';
+      var dc = $('daxgenDateCol').value || 'Date';
+      var x = $('daxgenExtra').value || '3';
+      var tmpl = daxTemplates[type];
+      if (!tmpl) return;
+
+      var code = tmpl.gen(t, c, dt, dc, x);
+      $('daxgenOutput').innerHTML = highlightDAX(code);
+
+      var notesEl = $('daxgenNotes');
+      if (tmpl.note) {
+        notesEl.style.display = 'block';
+        notesEl.innerHTML = '<div class="conv-note">' + tmpl.note + '</div>';
+      } else {
+        notesEl.style.display = 'none';
+      }
+
+      // Show/hide extra field
+      var extraWrap = $('daxgenExtraWrap');
+      if (tmpl.showExtra) {
+        extraWrap.style.display = '';
+        $('daxgenExtraLabel').textContent = tmpl.extraLabel || 'Value';
+      } else {
+        extraWrap.style.display = 'none';
+      }
+    }
+
+    function copyDaxGen() {
+      navigator.clipboard.writeText($('daxgenOutput').textContent).then(function() {
+        var btn = $('daxgenCopy');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+    window.copyDaxGen = copyDaxGen;
+
+    ['daxgenType'].forEach(function(id) { $(id).addEventListener('change', generateDAX); });
+    ['daxgenTable','daxgenCol','daxgenDateTable','daxgenDateCol','daxgenExtra'].forEach(function(id) {
+      $(id).addEventListener('input', generateDAX);
+    });
+    generateDAX();
+
+    // ─────────────────────────────────────────
+    // JSON/CSV TO M CONVERTER
+    // ─────────────────────────────────────────
+
+    var csvMode = 'csv';
+
+    window.setCsvMode = function(mode) {
+      csvMode = mode;
+      $('csvModeCSV').classList.toggle('selected', mode === 'csv');
+      $('csvModeJSON').classList.toggle('selected', mode === 'json');
+      $('csvInputLabel').textContent = mode === 'csv' ? 'Paste CSV Data' : 'Paste JSON Data';
+      $('csvDelimiter').closest('.field').style.display = mode === 'csv' ? '' : 'none';
+      var ta = $('csvInput');
+      if (mode === 'json') {
+        ta.placeholder = '[\n  {"Name":"Alice","Dept":"Engineering","Salary":95000},\n  {"Name":"Bob","Dept":"Marketing","Salary":72000}\n]';
+      } else {
+        ta.placeholder = 'Name,Department,Salary\nAlice,Engineering,95000\nBob,Marketing,72000\nCarol,Engineering,88000';
+      }
+      convertCsvToM();
+    };
+
+    function convertCsvToM() {
+      var input = $('csvInput').value.trim();
+      var output = $('csvMOutput');
+      var notesEl = $('csvMNotes');
+
+      if (!input) {
+        output.innerHTML = '<span class="placeholder">Paste data on the left...</span>';
+        notesEl.style.display = 'none';
+        return;
+      }
+
+      var mCode = '';
+      var notes = [];
+
+      if (csvMode === 'json') {
+        try {
+          var data = JSON.parse(input);
+          if (!Array.isArray(data)) data = [data];
+          if (data.length === 0) { output.innerHTML = '<span class="placeholder">Empty JSON array</span>'; return; }
+
+          var keys = Object.keys(data[0]);
+          var rows = data.map(function(row) {
+            var fields = keys.map(function(k) {
+              var v = row[k];
+              if (typeof v === 'string') return '[' + k + ' = "' + v + '"]';
+              if (v === null) return '[' + k + ' = null]';
+              return '[' + k + ' = ' + v + ']';
+            });
+            return '        ' + fields.join(', ').replace(/\]/, '] ').replace(/\], /g, '], ');
+          });
+
+          // Build proper record format
+          var rowStrs = data.map(function(row) {
+            var pairs = keys.map(function(k) {
+              var v = row[k];
+              if (typeof v === 'string') return k + ' = "' + v + '"';
+              if (v === null) return k + ' = null';
+              return k + ' = ' + v;
+            });
+            return '        [' + pairs.join(', ') + ']';
+          });
+
+          // Type detection
+          var types = keys.map(function(k) {
+            var v = data[0][k];
+            if (typeof v === 'number') return '{"' + k + '", type number}';
+            return '{"' + k + '", type text}';
+          });
+
+          mCode = 'let\n';
+          mCode += '    Source = Table.FromRecords(\n        {\n';
+          mCode += rowStrs.join(',\n');
+          mCode += '\n        }\n    ),\n';
+          mCode += '    SetTypes = Table.TransformColumnTypes(\n        Source,\n        {' + types.join(', ') + '}\n    )\n';
+          mCode += 'in\n    SetTypes';
+
+          notes.push('Parsed ' + data.length + ' record' + (data.length === 1 ? '' : 's') + ' with ' + keys.length + ' column' + (keys.length === 1 ? '' : 's') + ': ' + keys.join(', '));
+        } catch (e) {
+          output.innerHTML = '<span style="color:var(--red);">Invalid JSON: ' + e.message + '</span>';
+          notesEl.style.display = 'none';
+          return;
+        }
+      } else {
+        // CSV mode
+        var delim = $('csvDelimiter').value;
+        var lines = input.split('\n').map(function(l) { return l.trim(); }).filter(function(l) { return l.length > 0; });
+        if (lines.length < 2) { output.innerHTML = '<span class="placeholder">Need at least a header row and one data row</span>'; return; }
+
+        var headers = lines[0].split(delim).map(function(h) { return h.trim().replace(/^["']|["']$/g, ''); });
+        var dataRows = lines.slice(1);
+
+        // Detect types from first data row
+        var firstRow = dataRows[0].split(delim).map(function(v) { return v.trim().replace(/^["']|["']$/g, ''); });
+        var types = headers.map(function(h, i) {
+          var v = firstRow[i] || '';
+          if (!isNaN(v) && v !== '') return '{"' + h + '", type number}';
+          return '{"' + h + '", type text}';
+        });
+
+        var rowStrs = dataRows.map(function(line) {
+          var vals = line.split(delim).map(function(v) { return v.trim().replace(/^["']|["']$/g, ''); });
+          var pairs = headers.map(function(h, i) {
+            var v = vals[i] || '';
+            if (!isNaN(v) && v !== '') return h + ' = ' + v;
+            return h + ' = "' + v + '"';
+          });
+          return '        [' + pairs.join(', ') + ']';
+        });
+
+        mCode = 'let\n';
+        mCode += '    Source = Table.FromRecords(\n        {\n';
+        mCode += rowStrs.join(',\n');
+        mCode += '\n        }\n    ),\n';
+        mCode += '    SetTypes = Table.TransformColumnTypes(\n        Source,\n        {' + types.join(', ') + '}\n    )\n';
+        mCode += 'in\n    SetTypes';
+
+        notes.push('Parsed ' + dataRows.length + ' row' + (dataRows.length === 1 ? '' : 's') + ' with ' + headers.length + ' column' + (headers.length === 1 ? '' : 's') + ': ' + headers.join(', '));
+      }
+
+      output.innerHTML = highlightM(mCode);
+
+      if (notes.length > 0) {
+        notesEl.style.display = 'block';
+        notesEl.innerHTML = notes.map(function(n) { return '<div class="conv-note">' + n + '</div>'; }).join('');
+      } else {
+        notesEl.style.display = 'none';
+      }
+    }
+
+    function copyCsvM() {
+      navigator.clipboard.writeText($('csvMOutput').textContent).then(function() {
+        var btn = $('csvMCopy');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+    window.copyCsvM = copyCsvM;
+
+    $('csvInput').addEventListener('input', convertCsvToM);
+    $('csvDelimiter').addEventListener('change', convertCsvToM);
   </script>
 </body>
 </html>
