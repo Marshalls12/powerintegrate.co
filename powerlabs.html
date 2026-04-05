@@ -345,8 +345,6 @@
       width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center;
       font-size: 0.6875rem; font-weight: 700; color: #fff; flex-shrink: 0;
     }
-    .tool-index-icon.refi { background: var(--signal); }
-    .tool-index-icon.dca { background: var(--green); }
     .tool-index-name { font-weight: 600; font-size: 0.75rem; line-height: 1.3; }
     .tool-index-sub { font-family: var(--font-mono); font-size: 0.4375rem; color: var(--slate); letter-spacing: 0.06em; margin-top: 0.1rem; }
     @media (max-width: 780px) {
@@ -358,8 +356,6 @@
       width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
       font-size: 0.875rem; font-weight: 700; color: #fff; flex-shrink: 0;
     }
-    .tool-index-icon.refi { background: var(--signal); }
-    .tool-index-icon.dca { background: var(--green); }
     .tool-index-name { font-weight: 600; font-size: 0.8125rem; }
     .tool-index-sub { font-family: var(--font-mono); font-size: 0.5rem; color: var(--slate); letter-spacing: 0.08em; margin-top: 0.1rem; }
 
@@ -394,19 +390,7 @@
     }
     .add-lot-btn:hover { background: rgba(192,88,24,0.06); border-color: var(--copper); }
 
-    .dca-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-top: 1.5rem; }
-    @media (max-width: 700px) { .dca-summary { grid-template-columns: repeat(2, 1fr); } }
 
-    .dca-current-wrap {
-      display: flex; align-items: center; gap: 1rem; margin-top: 1.5rem;
-      padding: 1.25rem; background: var(--card); border: 1px solid rgba(24,29,42,0.09);
-      border-radius: 1rem;
-    }
-    .dca-current-wrap .field { margin-bottom: 0; flex: 1; max-width: 200px; }
-    .dca-pnl { display: flex; gap: 0.75rem; flex: 1; }
-    .dca-pnl-card { flex: 1; text-align: center; }
-    .dca-pnl-val { font-weight: 900; font-size: 1.25rem; letter-spacing: -0.03em; }
-    .dca-pnl-label { font-family: var(--font-mono); font-size: 0.4375rem; color: var(--slate); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 0.25rem; }
 
     /* ── FORMULA CONVERTER ── */
     .conv-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
@@ -448,13 +432,7 @@
     .conv-output .tbl { color: var(--green); }
     .conv-output .str { color: #FFBD2E; }
     .conv-output .num { color: var(--signal); }
-    .conv-output .kw-m { color: #0078D4; font-weight: 600; }
-    .conv-output .tbl-m { color: var(--green); }
-    .conv-output .fn-m { color: var(--copper); font-weight: 600; }
-    .conv-output .comment-m { color: var(--slate); font-style: italic; }
 
-    .conv-panel-label.sql { color: #CC2936; }
-    .conv-panel-label.mcode { color: #0078D4; }
 
     .conv-copy {
       display: inline-flex; align-items: center; gap: 0.375rem;
@@ -565,10 +543,24 @@
     <div class="page-header-grid"></div>
     <div class="page-header-content">
       <span class="page-eyebrow">PowerLabs</span>
-      <h1 class="page-title">Free tools for smarter decisions.</h1>
-      <p class="page-sub">Calculators, analyzers, and utilities built by Power Integrate. No signup required.</p>
+      <h1 class="page-title">Built for the work. Free for you.</h1>
+      <p class="page-sub">We build automated reporting stacks for growing businesses. We built these internal tools to speed up our own work. Now we are giving them to you for free.</p>
     </div>
   </header>
+
+  <!-- TOOL INDEX: FEATURED -->
+  <div class="tool-segment">
+    <div class="tool-segment-header">
+      <span class="tool-segment-label">See Your Savings</span>
+      <div class="tool-segment-line"></div>
+    </div>
+    <div class="tool-segment-cards">
+      <a class="tool-index-card active" data-tool="roi" onclick="openTool('roi')">
+        <div class="tool-index-icon" style="background:#CC2936;">%</div>
+        <div><div class="tool-index-name">Reporting ROI Calculator</div><div class="tool-index-sub">What manual reporting actually costs you</div></div>
+      </a>
+    </div>
+  </div>
 
   <!-- TOOL INDEX: POWER BI & DATA -->
   <div class="tool-segment">
@@ -577,17 +569,13 @@
       <div class="tool-segment-line"></div>
     </div>
     <div class="tool-segment-cards">
-      <a class="tool-index-card active" data-tool="dax" onclick="openTool('dax')">
+      <a class="tool-index-card" data-tool="dax" onclick="openTool('dax')">
         <div class="tool-index-icon" style="background:var(--copper);">fx</div>
         <div><div class="tool-index-name">Excel to DAX Converter</div><div class="tool-index-sub">Formula Translator</div></div>
       </a>
       <a class="tool-index-card" data-tool="daxgen" onclick="openTool('daxgen')">
         <div class="tool-index-icon" style="background:#8B5CF6;">fx</div>
         <div><div class="tool-index-name">DAX Measure Generator</div><div class="tool-index-sub">Common Business Measures</div></div>
-      </a>
-      <a class="tool-index-card" data-tool="datamodel" onclick="openTool('datamodel')">
-        <div class="tool-index-icon" style="background:#0078D4;">DM</div>
-        <div><div class="tool-index-name">Data Model Planner</div><div class="tool-index-sub">Star Schema Builder</div></div>
       </a>
       <a class="tool-index-card" data-tool="pbitheme" onclick="openTool('pbitheme')">
         <div class="tool-index-icon" style="background:#E8860A;">T</div>
@@ -596,464 +584,22 @@
     </div>
   </div>
 
-  <!-- TOOL INDEX: BUSINESS & FINANCE -->
+  <!-- TOOL INDEX: BUSINESS -->
   <div class="tool-segment">
     <div class="tool-segment-header">
-      <span class="tool-segment-label">Business & Finance</span>
+      <span class="tool-segment-label">Business</span>
       <div class="tool-segment-line"></div>
     </div>
     <div class="tool-segment-cards">
-      <a class="tool-index-card" data-tool="roi" onclick="openTool('roi')">
-        <div class="tool-index-icon" style="background:#CC2936;">%</div>
-        <div><div class="tool-index-name">Reporting ROI Calculator</div><div class="tool-index-sub">Cost of Manual Reporting</div></div>
-      </a>
-      <a class="tool-index-card" data-tool="refi" onclick="openTool('refi')">
-        <div class="tool-index-icon refi">R</div>
-        <div><div class="tool-index-name">Cash-Out Refi Calculator</div><div class="tool-index-sub">DTI + Approval Analysis</div></div>
-      </a>
-      <a class="tool-index-card" data-tool="dca" onclick="openTool('dca')">
-        <div class="tool-index-icon dca">$</div>
-        <div><div class="tool-index-name">Cost Basis / DCA Calculator</div><div class="tool-index-sub">Stock + Crypto Lots</div></div>
-      </a>
       <a class="tool-index-card" data-tool="markup" onclick="openTool('markup')">
         <div class="tool-index-icon" style="background:var(--ink);">%</div>
         <div><div class="tool-index-name">Markup vs Margin</div><div class="tool-index-sub">Quick Converter</div></div>
       </a>
-      <a class="tool-index-card" data-tool="options" onclick="openTool('options')">
-        <div class="tool-index-icon" style="background:#16A34A;">OP</div>
-        <div><div class="tool-index-name">Options Profit Calculator</div><div class="tool-index-sub">Calls + Puts P&L</div></div>
-      </a>
-    </div>
-  </div>
-
-  <!-- ════════════════════════════════════════ -->
-  <!-- SEGMENT: POWER BI & DATA               -->
-  <!-- ════════════════════════════════════════ -->
-
-  <!-- ═══ EXCEL TO DAX ═══ -->
-  <div class="tool-section open" id="dax">
-    <div class="tool-header" onclick="toggleTool('dax')">
-      <div class="tool-header-left">
-        <div class="tool-icon" style="background:var(--copper);">fx</div>
-        <h2 class="tool-name">Excel to DAX Converter</h2>
-      </div>
-      <span class="tool-badge">Formula Translator</span>
-      <div class="tool-chevron"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
-    </div>
-    <div class="tool-body">
-      <div class="tool-body-inner">
-        <div class="conv-layout">
-          <div class="conv-panel">
-            <div class="conv-panel-label excel">Excel Formula</div>
-            <textarea class="conv-textarea" id="excelInput" placeholder="Enter an Excel formula...&#10;&#10;Examples:&#10;=SUMIFS(Sales, Region, &quot;East&quot;)&#10;=VLOOKUP(A2, Data!A:C, 3, FALSE)&#10;=IF(AND(A1>10, B1<5), &quot;Yes&quot;, &quot;No&quot;)"></textarea>
-          </div>
-          <div class="conv-panel dark">
-            <div class="conv-panel-label dax">DAX Equivalent</div>
-            <div class="conv-output" id="daxOutput"><span class="placeholder">DAX formula will appear here...</span></div>
-            <button class="conv-copy" id="daxCopy" onclick="copyDAX()">Copy</button>
-            <div class="conv-notes" id="convNotes" style="display:none;"></div>
-          </div>
-          <div class="ref-table-wrap">
-            <div class="ref-panel">
-              <div class="ref-header">
-                <div class="panel-title" style="margin-bottom:0;">Quick Reference</div>
-                <button class="ref-toggle" id="refToggle" onclick="toggleRef()"><span>Show All</span> <span class="ref-toggle-arrow">&#9660;</span></button>
-              </div>
-              <input type="text" class="ref-search" id="refSearch" placeholder="Search functions...">
-              <div class="ref-result-count" id="refCount"></div>
-              <div class="ref-table-body" id="refTableBody">
-                <div class="lot-table-wrap">
-                  <table class="ref-table" id="refTable">
-                    <thead><tr><th>Excel<span class="ref-expand-hint">(click to expand)</span></th><th>DAX</th><th>Notes</th></tr></thead>
-                    <tbody id="refBody"></tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="tool-nudge">
-          <span class="tool-nudge-text">Need this built into your reporting stack?</span>
-          <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="tool-nudge-cta">Book a Free Audit</a>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-
-  <!-- ═══ DAX MEASURE GENERATOR ═══ -->
-  <div class="tool-section" id="daxgen">
-    <div class="tool-header" onclick="toggleTool('daxgen')">
-      <div class="tool-header-left">
-        <div class="tool-icon" style="background:#8B5CF6;">fx</div>
-        <h2 class="tool-name">DAX Measure Generator</h2>
-      </div>
-      <span class="tool-badge">Common Business Measures</span>
-      <div class="tool-chevron"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
-    </div>
-    <div class="tool-body">
-      <div class="tool-body-inner">
-        <div class="conv-layout">
-          <div class="conv-panel">
-            <div class="conv-panel-label" style="color:#8B5CF6;">Configure Your Measure</div>
-            <div class="field" style="margin-bottom:1rem;">
-              <label class="field-label">Measure Type</label>
-              <select class="field-select" id="daxgenType" style="border-color:rgba(139,92,246,0.2);">
-                <option value="ytd">Year-to-Date (YTD)</option>
-                <option value="mom">Month-over-Month Growth %</option>
-                <option value="yoy">Year-over-Year Growth %</option>
-                <option value="rolling">Rolling Average (N Months)</option>
-                <option value="pctTotal">% of Total</option>
-                <option value="rank">Rank by Value</option>
-                <option value="cumulative">Cumulative / Running Total</option>
-                <option value="avgPerDay">Average Per Day</option>
-                <option value="distinctCount">Distinct Count</option>
-                <option value="prevPeriod">Previous Period Value</option>
-                <option value="topN">Top N Items</option>
-                <option value="conditional">Conditional Aggregation</option>
-              </select>
-            </div>
-            <div class="field" style="margin-bottom:1rem;">
-              <label class="field-label">Table Name</label>
-              <input type="text" class="field-input" id="daxgenTable" value="Sales" placeholder="e.g. Sales, Orders, Revenue" style="border-color:rgba(139,92,246,0.2);">
-            </div>
-            <div class="field" style="margin-bottom:1rem;">
-              <label class="field-label">Value Column</label>
-              <input type="text" class="field-input" id="daxgenCol" value="Amount" placeholder="e.g. Amount, Revenue, Quantity" style="border-color:rgba(139,92,246,0.2);">
-            </div>
-            <div class="field" style="margin-bottom:1rem;">
-              <label class="field-label">Date Table Name</label>
-              <input type="text" class="field-input" id="daxgenDateTable" value="Calendar" placeholder="e.g. Calendar, Date, DimDate" style="border-color:rgba(139,92,246,0.2);">
-            </div>
-            <div class="field" style="margin-bottom:1rem;">
-              <label class="field-label">Date Column</label>
-              <input type="text" class="field-input" id="daxgenDateCol" value="Date" placeholder="e.g. Date, OrderDate" style="border-color:rgba(139,92,246,0.2);">
-            </div>
-            <div class="field" id="daxgenExtraWrap" style="margin-bottom:0;">
-              <label class="field-label" id="daxgenExtraLabel">Rolling Months (N)</label>
-              <input type="number" class="field-input" id="daxgenExtra" value="3" min="1" max="24" style="border-color:rgba(139,92,246,0.2);">
-            </div>
-          </div>
-          <div class="conv-panel dark">
-            <div class="conv-panel-label" style="color:#8B5CF6;">Generated DAX Measure</div>
-            <div class="conv-output" id="daxgenOutput"><span class="placeholder">Select a measure type...</span></div>
-            <button class="conv-copy" id="daxgenCopy" onclick="copyDaxGen()">Copy</button>
-            <div class="conv-notes" id="daxgenNotes" style="display:none;"></div>
-          </div>
-        </div>
-        <div class="tool-nudge">
-          <span class="tool-nudge-text">Need this built into your reporting stack?</span>
-          <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="tool-nudge-cta">Book a Free Audit</a>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-
-  <!-- ═══ DATA MODEL PLANNER ═══ -->
-  <div class="tool-section" id="datamodel">
-    <div class="tool-header" onclick="toggleTool('datamodel')">
-      <div class="tool-header-left">
-        <div class="tool-icon" style="background:#0078D4;">DM</div>
-        <h2 class="tool-name">Data Model Planner</h2>
-      </div>
-      <span class="tool-badge">Star Schema Builder</span>
-      <div class="tool-chevron"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
-    </div>
-    <div class="tool-body">
-      <div class="tool-body-inner">
-        <div class="conv-layout">
-          <div class="conv-panel">
-            <div class="conv-panel-label" style="color:#0078D4;">Define Tables</div>
-            <div id="dmTables">
-              <div class="dm-table-block" data-idx="0">
-                <div style="display:flex;gap:0.5rem;align-items:center;margin-bottom:0.5rem;">
-                  <select class="field-select dm-table-type" style="max-width:120px;font-size:0.75rem;" onchange="renderDM()">
-                    <option value="fact" selected>Fact</option><option value="dim">Dimension</option>
-                  </select>
-                  <input type="text" class="field-input dm-table-name" value="FactSales" placeholder="Table name" style="flex:1;font-size:0.75rem;" oninput="renderDM()">
-                  <button class="lot-remove" onclick="removeDMTable(this)" style="flex-shrink:0;">&times;</button>
-                </div>
-                <textarea class="conv-textarea dm-table-cols" placeholder="Column names, one per line&#10;SalesID&#10;Date&#10;ProductKey&#10;Amount" style="min-height:80px;font-size:0.75rem;" oninput="renderDM()">SalesID
-Date
-ProductKey
-CustomerKey
-Amount
-Quantity</textarea>
-              </div>
-              <div class="dm-table-block" data-idx="1" style="margin-top:0.75rem;">
-                <div style="display:flex;gap:0.5rem;align-items:center;margin-bottom:0.5rem;">
-                  <select class="field-select dm-table-type" style="max-width:120px;font-size:0.75rem;" onchange="renderDM()">
-                    <option value="fact">Fact</option><option value="dim" selected>Dimension</option>
-                  </select>
-                  <input type="text" class="field-input dm-table-name" value="DimProduct" placeholder="Table name" style="flex:1;font-size:0.75rem;" oninput="renderDM()">
-                  <button class="lot-remove" onclick="removeDMTable(this)" style="flex-shrink:0;">&times;</button>
-                </div>
-                <textarea class="conv-textarea dm-table-cols" placeholder="Column names, one per line" style="min-height:80px;font-size:0.75rem;" oninput="renderDM()">ProductKey
-ProductName
-Category
-SubCategory</textarea>
-              </div>
-              <div class="dm-table-block" data-idx="2" style="margin-top:0.75rem;">
-                <div style="display:flex;gap:0.5rem;align-items:center;margin-bottom:0.5rem;">
-                  <select class="field-select dm-table-type" style="max-width:120px;font-size:0.75rem;" onchange="renderDM()">
-                    <option value="fact">Fact</option><option value="dim" selected>Dimension</option>
-                  </select>
-                  <input type="text" class="field-input dm-table-name" value="DimCustomer" placeholder="Table name" style="flex:1;font-size:0.75rem;" oninput="renderDM()">
-                  <button class="lot-remove" onclick="removeDMTable(this)" style="flex-shrink:0;">&times;</button>
-                </div>
-                <textarea class="conv-textarea dm-table-cols" placeholder="Column names, one per line" style="min-height:80px;font-size:0.75rem;" oninput="renderDM()">CustomerKey
-CustomerName
-Region
-Segment</textarea>
-              </div>
-            </div>
-            <button class="add-lot-btn" onclick="addDMTable()" style="margin-top:0.75rem;">+ Add Table</button>
-          </div>
-          <div class="conv-panel dark" style="min-height:400px;position:relative;">
-            <div class="conv-panel-label" style="color:#0078D4;">Schema Diagram</div>
-            <canvas id="dmCanvas" width="500" height="400" style="width:100%;border-radius:0.5rem;background:rgba(0,0,0,0.2);cursor:grab;"></canvas>
-            <div class="conv-notes" style="display:block;margin-top:0.75rem;">
-              <div class="conv-note">Fact tables (blue) sit at the center. Dimensions (green) connect via matching key columns.</div>
-              <div class="conv-note">Relationships are auto-detected by matching column names across tables.</div>
-            </div>
-          </div>
-        </div>
-        <div class="tool-nudge">
-          <span class="tool-nudge-text">Need this built into your reporting stack?</span>
-          <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="tool-nudge-cta">Book a Free Audit</a>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══ POWER BI THEME GENERATOR ═══ -->
-  <div class="tool-section" id="pbitheme">
-    <div class="tool-header" onclick="toggleTool('pbitheme')">
-      <div class="tool-header-left">
-        <div class="tool-icon" style="background:#E8860A;">T</div>
-        <h2 class="tool-name">Power BI Theme Generator</h2>
-      </div>
-      <span class="tool-badge">JSON Theme Builder</span>
-      <div class="tool-chevron"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
-    </div>
-    <div class="tool-body">
-      <div class="tool-body-inner">
-        <div class="conv-layout">
-          <div class="conv-panel">
-            <div class="conv-panel-label" style="color:#E8860A;">Theme Settings</div>
-            <div class="field" style="margin-bottom:1rem;">
-              <label class="field-label">Theme Name</label>
-              <input type="text" class="field-input" id="themeNameInput" value="My Custom Theme" oninput="generateTheme()">
-            </div>
-            <div class="field" style="margin-bottom:1rem;">
-              <label class="field-label">Data Colors (6 palette colors)</label>
-              <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:0.5rem;" id="themeColors">
-                <div><input type="color" value="#C05818" class="theme-color-input" oninput="generateTheme()" style="width:100%;height:36px;border:none;border-radius:0.375rem;cursor:pointer;"><div style="font-family:var(--font-mono);font-size:0.5rem;text-align:center;margin-top:0.25rem;color:var(--slate);" class="theme-color-hex">#C05818</div></div>
-                <div><input type="color" value="#1A52E8" class="theme-color-input" oninput="generateTheme()" style="width:100%;height:36px;border:none;border-radius:0.375rem;cursor:pointer;"><div style="font-family:var(--font-mono);font-size:0.5rem;text-align:center;margin-top:0.25rem;color:var(--slate);" class="theme-color-hex">#1A52E8</div></div>
-                <div><input type="color" value="#3ECF8E" class="theme-color-input" oninput="generateTheme()" style="width:100%;height:36px;border:none;border-radius:0.375rem;cursor:pointer;"><div style="font-family:var(--font-mono);font-size:0.5rem;text-align:center;margin-top:0.25rem;color:var(--slate);" class="theme-color-hex">#3ECF8E</div></div>
-                <div><input type="color" value="#E8860A" class="theme-color-input" oninput="generateTheme()" style="width:100%;height:36px;border:none;border-radius:0.375rem;cursor:pointer;"><div style="font-family:var(--font-mono);font-size:0.5rem;text-align:center;margin-top:0.25rem;color:var(--slate);" class="theme-color-hex">#E8860A</div></div>
-                <div><input type="color" value="#8B5CF6" class="theme-color-input" oninput="generateTheme()" style="width:100%;height:36px;border:none;border-radius:0.375rem;cursor:pointer;"><div style="font-family:var(--font-mono);font-size:0.5rem;text-align:center;margin-top:0.25rem;color:var(--slate);" class="theme-color-hex">#8B5CF6</div></div>
-                <div><input type="color" value="#CC2936" class="theme-color-input" oninput="generateTheme()" style="width:100%;height:36px;border:none;border-radius:0.375rem;cursor:pointer;"><div style="font-family:var(--font-mono);font-size:0.5rem;text-align:center;margin-top:0.25rem;color:var(--slate);" class="theme-color-hex">#CC2936</div></div>
-              </div>
-            </div>
-            <div class="field" style="margin-bottom:1rem;">
-              <label class="field-label">Background Color</label>
-              <div style="display:flex;gap:0.5rem;align-items:center;">
-                <input type="color" value="#FFFFFF" id="themeBg" oninput="generateTheme()" style="width:48px;height:36px;border:none;border-radius:0.375rem;cursor:pointer;">
-                <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--slate);" id="themeBgHex">#FFFFFF</span>
-              </div>
-            </div>
-            <div class="field" style="margin-bottom:1rem;">
-              <label class="field-label">Foreground / Text Color</label>
-              <div style="display:flex;gap:0.5rem;align-items:center;">
-                <input type="color" value="#181D2A" id="themeFg" oninput="generateTheme()" style="width:48px;height:36px;border:none;border-radius:0.375rem;cursor:pointer;">
-                <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--slate);" id="themeFgHex">#181D2A</span>
-              </div>
-            </div>
-            <div class="field" style="margin-bottom:1rem;">
-              <label class="field-label">Font Family</label>
-              <select class="field-select" id="themeFont" onchange="generateTheme()">
-                <option value="Segoe UI" selected>Segoe UI</option>
-                <option value="Arial">Arial</option>
-                <option value="Calibri">Calibri</option>
-                <option value="DIN">DIN</option>
-                <option value="Helvetica Neue">Helvetica Neue</option>
-                <option value="Verdana">Verdana</option>
-                <option value="Trebuchet MS">Trebuchet MS</option>
-              </select>
-            </div>
-            <div class="field" style="margin-bottom:0;">
-              <label class="field-label">Preset Themes</label>
-              <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-                <button class="scope-check" onclick="applyPreset('corporate')" style="font-size:0.7rem;">Corporate</button>
-                <button class="scope-check" onclick="applyPreset('dark')" style="font-size:0.7rem;">Dark Mode</button>
-                <button class="scope-check" onclick="applyPreset('earth')" style="font-size:0.7rem;">Earth Tones</button>
-                <button class="scope-check" onclick="applyPreset('powerintegrate')" style="font-size:0.7rem;">Power Integrate</button>
-              </div>
-            </div>
-          </div>
-          <div class="conv-panel dark">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-              <div class="conv-panel-label" style="color:#E8860A;">theme.json</div>
-              <button class="conv-copy" id="themeCopy" onclick="copyTheme()" style="margin:0;">Copy</button>
-            </div>
-            <div class="conv-output" id="themeOutput" style="min-height:250px;font-size:0.7rem;line-height:1.6;"></div>
-            <button class="add-lot-btn" onclick="downloadTheme()" style="margin-top:0.75rem;border-color:rgba(232,134,10,0.3);color:#E8860A;">Download .json</button>
-            <div class="conv-notes" style="display:block;margin-top:0.75rem;">
-              <div class="conv-note">Import in Power BI Desktop: View > Themes > Browse for themes > select your .json file</div>
-            </div>
-          </div>
-        </div>
-        <div class="tool-nudge">
-          <span class="tool-nudge-text">Need this built into your reporting stack?</span>
-          <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="tool-nudge-cta">Book a Free Audit</a>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- ════════════════════════════════════════ -->
-  <div class="tool-segment" style="margin-top:3rem;">
-    <div class="tool-segment-header">
-      <span class="tool-segment-label">Business & Finance</span>
-      <div class="tool-segment-line"></div>
-    </div>
-  </div>
-
-  <!-- ═══ CASH-OUT REFI CALCULATOR ═══ -->
-  <div class="tool-section" id="refi">
-    <div class="tool-header" onclick="toggleTool('refi')">
-      <div class="tool-header-left">
-        <div class="tool-icon" style="background:var(--signal);">R</div>
-        <h2 class="tool-name">Cash-Out Refinance Calculator</h2>
-      </div>
-      <span class="tool-badge">DTI + Approval Analysis</span>
-      <div class="tool-chevron"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
-    </div>
-    <div class="tool-body">
-      <div class="tool-body-inner">
-        <div class="calc-grid">
-          <div class="calc-inputs">
-            <div class="input-panel">
-              <div class="panel-title"><div class="panel-icon home">H</div> Property + Loan</div>
-              <div class="field"><label class="field-label">Current Home Value</label><input type="number" class="field-input" id="currentHomeValue" value="500000"></div>
-              <div class="field"><label class="field-label">Current Loan Balance</label><input type="number" class="field-input" id="currentLoanBalance" value="300000"></div>
-              <div class="field"><label class="field-label">Desired New Loan Amount</label><input type="number" class="field-input" id="desiredLoanAmount" value="400000"></div>
-              <div class="field"><label class="field-label">New Interest Rate (%)</label><input type="number" step="0.125" class="field-input" id="newInterestRate" value="7.0"></div>
-              <div class="field"><label class="field-label">Loan Term</label><select class="field-select" id="loanTerm"><option value="15">15 Years</option><option value="20">20 Years</option><option value="30" selected>30 Years</option></select></div>
-            </div>
-            <div class="input-panel">
-              <div class="panel-title"><div class="panel-icon money">$</div> Taxes, Insurance + Fees</div>
-              <div class="field"><label class="field-label">Annual Property Taxes</label><input type="number" class="field-input" id="annualPropertyTax" value="8000"></div>
-              <div class="field"><label class="field-label">Annual Homeowners Insurance</label><input type="number" class="field-input" id="annualInsurance" value="2000"></div>
-              <div class="field"><label class="field-label">Monthly PMI</label><input type="number" class="field-input" id="monthlyPMI" value="0"></div>
-              <div class="field"><label class="field-label">Monthly HOA Fees</label><input type="number" class="field-input" id="monthlyHOA" value="0"></div>
-            </div>
-            <div class="input-panel" style="border-left: 3px solid var(--copper);">
-              <div class="panel-title"><div class="panel-icon dti">%</div> Income + Debts (DTI)</div>
-              <div class="field"><label class="field-label">Monthly Gross Income</label><input type="number" class="field-input" id="monthlyGrossIncome" value="10000"></div>
-              <div class="field"><label class="field-label">Other Monthly Debts</label><input type="number" class="field-input" id="otherMonthlyDebts" value="500"><div class="field-hint">Car loans, credit cards, student loans, etc.</div></div>
-              <div class="field"><label class="field-label">Credit Score</label><input type="number" class="field-input" id="creditScore" value="740" min="300" max="850"></div>
-            </div>
-          </div>
-          <div class="calc-results">
-            <div class="result-panel dark" id="approvalPanel">
-              <div class="result-title" style="color:#fff;">Loan Approval Probability</div>
-              <div class="approval-meter">
-                <div><div class="approval-score" id="approvalScore" style="color:var(--green);">0%</div><div class="approval-label" id="approvalLabel" style="color:var(--green);">Calculating...</div></div>
-                <div class="approval-bar-wrap"><div class="approval-bar-label">Approval Score</div><div class="approval-bar"><div class="approval-bar-fill" id="approvalBar" style="width:0%;background:var(--green);"></div></div></div>
-              </div>
-              <div class="factors-grid" id="factorsGrid"></div>
-              <div class="reqs-box" id="reqsBox"></div>
-            </div>
-            <div class="result-panel">
-              <div class="result-title">Debt-to-Income Ratio</div>
-              <div class="kpi-row" style="margin-bottom:1rem;">
-                <div class="kpi"><div class="kpi-label">Front-End DTI (Housing)</div><div class="kpi-value" id="frontDTI">0%</div></div>
-                <div class="kpi"><div class="kpi-label">Back-End DTI (All Debts)</div><div class="kpi-value" id="backDTI">0%</div></div>
-              </div>
-              <div id="dtiBreakdown"></div>
-            </div>
-            <div class="result-panel">
-              <div class="result-title">Cash-Out Summary</div>
-              <div class="kpi-row">
-                <div class="kpi"><div class="kpi-label">Cash Available</div><div class="kpi-value" id="cashOut" style="color:var(--green);">$0</div></div>
-                <div class="kpi"><div class="kpi-label">Loan-to-Value</div><div class="kpi-value" id="ltvRatio">0%</div></div>
-                <div class="kpi"><div class="kpi-label">Current Equity</div><div class="kpi-value" id="currentEquity" style="color:var(--signal);">$0</div></div>
-                <div class="kpi"><div class="kpi-label">Remaining Equity</div><div class="kpi-value" id="remainingEquity" style="color:var(--signal);">$0</div></div>
-              </div>
-            </div>
-            <div class="result-panel">
-              <div class="result-title">Monthly Payment Breakdown</div>
-              <div id="paymentBreakdown"></div>
-            </div>
-            <div id="warnings"></div>
-          </div>
-        </div>
-        <div class="tool-nudge">
-          <span class="tool-nudge-text">Need this built into your reporting stack?</span>
-          <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="tool-nudge-cta">Book a Free Audit</a>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══ DCA CALCULATOR ═══ -->
-  <div class="tool-section" id="dca">
-    <div class="tool-header" onclick="toggleTool('dca')">
-      <div class="tool-header-left">
-        <div class="tool-icon" style="background:var(--green);">$</div>
-        <h2 class="tool-name">Cost Basis / DCA Calculator</h2>
-      </div>
-      <span class="tool-badge">Stock + Crypto Lots</span>
-      <div class="tool-chevron"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
-    </div>
-    <div class="tool-body">
-      <div class="tool-body-inner">
-        <div class="input-panel">
-          <div class="panel-title"><div class="panel-icon" style="background:var(--green);">$</div> Purchase Lots</div>
-          <div class="lot-table-wrap">
-            <table class="lot-table" id="lotTable">
-              <thead><tr><th style="width:30px;">#</th><th>Date</th><th>Shares / Units</th><th>Price Per Share</th><th>Lot Total</th><th style="width:40px;"></th></tr></thead>
-              <tbody id="lotBody">
-                <tr data-lot="0"><td class="lot-total">1</td><td><input type="date" class="field-input lot-date" value="2025-01-15"></td><td><input type="number" class="field-input lot-shares" value="10" step="0.01" min="0"></td><td><input type="number" class="field-input lot-price" value="150.00" step="0.01" min="0"></td><td class="lot-total lot-cost">$1,500</td><td></td></tr>
-                <tr data-lot="1"><td class="lot-total">2</td><td><input type="date" class="field-input lot-date" value="2025-04-10"></td><td><input type="number" class="field-input lot-shares" value="15" step="0.01" min="0"></td><td><input type="number" class="field-input lot-price" value="135.00" step="0.01" min="0"></td><td class="lot-total lot-cost">$2,025</td><td><button class="lot-remove" onclick="removeLot(this)">&times;</button></td></tr>
-                <tr data-lot="2"><td class="lot-total">3</td><td><input type="date" class="field-input lot-date" value="2025-07-22"></td><td><input type="number" class="field-input lot-shares" value="20" step="0.01" min="0"></td><td><input type="number" class="field-input lot-price" value="142.50" step="0.01" min="0"></td><td class="lot-total lot-cost">$2,850</td><td><button class="lot-remove" onclick="removeLot(this)">&times;</button></td></tr>
-              </tbody>
-            </table>
-          </div>
-          <button class="add-lot-btn" onclick="addLot()">+ Add Purchase</button>
-        </div>
-        <div class="dca-current-wrap">
-          <div class="field"><label class="field-label">Current Price Per Share</label><input type="number" class="field-input" id="currentPrice" value="155.00" step="0.01" min="0"></div>
-          <div class="dca-pnl" id="dcaPnl">
-            <div class="dca-pnl-card"><div class="dca-pnl-val" id="pnlValue" style="color:var(--green);">$0</div><div class="dca-pnl-label">Unrealized P&L</div></div>
-            <div class="dca-pnl-card"><div class="dca-pnl-val" id="pnlPercent" style="color:var(--green);">0%</div><div class="dca-pnl-label">Return</div></div>
-          </div>
-        </div>
-        <div class="dca-summary" id="dcaSummary">
-          <div class="kpi"><div class="kpi-label">Total Shares</div><div class="kpi-value" id="totalShares">0</div></div>
-          <div class="kpi"><div class="kpi-label">Total Cost Basis</div><div class="kpi-value" id="totalCost" style="color:var(--ink);">$0</div></div>
-          <div class="kpi"><div class="kpi-label">Avg Cost / Share</div><div class="kpi-value" id="avgCost" style="color:var(--copper);">$0</div></div>
-          <div class="kpi"><div class="kpi-label">Current Value</div><div class="kpi-value" id="currentValue" style="color:var(--signal);">$0</div></div>
-        </div>
-        <div class="tool-nudge">
-          <span class="tool-nudge-text">Need this built into your reporting stack?</span>
-          <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="tool-nudge-cta">Book a Free Audit</a>
-        </div>
-
-      </div>
     </div>
   </div>
 
   <!-- ═══ REPORTING ROI CALCULATOR ═══ -->
-  <div class="tool-section" id="roi">
+  <div class="tool-section open" id="roi">
     <div class="tool-header" onclick="toggleTool('roi')">
       <div class="tool-header-left">
         <div class="tool-icon" style="background:#CC2936;">%</div>
@@ -1150,11 +696,230 @@ Segment</textarea>
           </div>
         </div>
         <div class="tool-nudge">
-          <span class="tool-nudge-text">Need this built into your reporting stack?</span>
-          <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="tool-nudge-cta">Book a Free Audit</a>
+          <span class="tool-nudge-text" id="roiNudgeText">Ready to reclaim those hours?</span>
+          <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="tool-nudge-cta">Book an Automation Discovery Call</a>
         </div>
 
       </div>
+    </div>
+  </div>
+
+
+  <!-- ═══ EXCEL TO DAX ═══ -->
+  <div class="tool-section" id="dax">
+    <div class="tool-header" onclick="toggleTool('dax')">
+      <div class="tool-header-left">
+        <div class="tool-icon" style="background:var(--copper);">fx</div>
+        <h2 class="tool-name">Excel to DAX Converter</h2>
+      </div>
+      <span class="tool-badge">Formula Translator</span>
+      <div class="tool-chevron"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+    </div>
+    <div class="tool-body">
+      <div class="tool-body-inner">
+        <div class="conv-layout">
+          <div class="conv-panel">
+            <div class="conv-panel-label excel">Excel Formula</div>
+            <textarea class="conv-textarea" id="excelInput" placeholder="Enter an Excel formula...&#10;&#10;Examples:&#10;=SUMIFS(Sales, Region, &quot;East&quot;)&#10;=VLOOKUP(A2, Data!A:C, 3, FALSE)&#10;=IF(AND(A1>10, B1<5), &quot;Yes&quot;, &quot;No&quot;)"></textarea>
+          </div>
+          <div class="conv-panel dark">
+            <div class="conv-panel-label dax">DAX Equivalent</div>
+            <div class="conv-output" id="daxOutput"><span class="placeholder">DAX formula will appear here...</span></div>
+            <button class="conv-copy" id="daxCopy" onclick="copyDAX()">Copy</button>
+            <div class="conv-notes" id="convNotes" style="display:none;"></div>
+          </div>
+          <div class="ref-table-wrap">
+            <div class="ref-panel">
+              <div class="ref-header">
+                <div class="panel-title" style="margin-bottom:0;">Quick Reference</div>
+                <button class="ref-toggle" id="refToggle" onclick="toggleRef()"><span>Show All</span> <span class="ref-toggle-arrow">&#9660;</span></button>
+              </div>
+              <input type="text" class="ref-search" id="refSearch" placeholder="Search functions...">
+              <div class="ref-result-count" id="refCount"></div>
+              <div class="ref-table-body" id="refTableBody">
+                <div class="lot-table-wrap">
+                  <table class="ref-table" id="refTable">
+                    <thead><tr><th>Excel<span class="ref-expand-hint">(click to expand)</span></th><th>DAX</th><th>Notes</th></tr></thead>
+                    <tbody id="refBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tool-nudge">
+          <span class="tool-nudge-text">Tired of translating formulas by hand? We build fully automated semantic models.</span>
+          <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="tool-nudge-cta">Let's Talk</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══ DAX MEASURE GENERATOR ═══ -->
+  <div class="tool-section" id="daxgen">
+    <div class="tool-header" onclick="toggleTool('daxgen')">
+      <div class="tool-header-left">
+        <div class="tool-icon" style="background:#8B5CF6;">fx</div>
+        <h2 class="tool-name">DAX Measure Generator</h2>
+      </div>
+      <span class="tool-badge">Common Business Measures</span>
+      <div class="tool-chevron"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+    </div>
+    <div class="tool-body">
+      <div class="tool-body-inner">
+        <div class="conv-layout">
+          <div class="conv-panel">
+            <div class="conv-panel-label" style="color:#8B5CF6;">Configure Your Measure</div>
+            <div class="field" style="margin-bottom:1rem;">
+              <label class="field-label">Measure Type</label>
+              <select class="field-select" id="daxgenType" style="border-color:rgba(139,92,246,0.2);">
+                <option value="ytd">Year-to-Date (YTD)</option>
+                <option value="mom">Month-over-Month Growth %</option>
+                <option value="yoy">Year-over-Year Growth %</option>
+                <option value="rolling">Rolling Average (N Months)</option>
+                <option value="pctTotal">% of Total</option>
+                <option value="rank">Rank by Value</option>
+                <option value="cumulative">Cumulative / Running Total</option>
+                <option value="avgPerDay">Average Per Day</option>
+                <option value="distinctCount">Distinct Count</option>
+                <option value="prevPeriod">Previous Period Value</option>
+                <option value="topN">Top N Items</option>
+                <option value="conditional">Conditional Aggregation</option>
+              </select>
+            </div>
+            <div class="field" style="margin-bottom:1rem;">
+              <label class="field-label">Table Name</label>
+              <input type="text" class="field-input" id="daxgenTable" value="Sales" placeholder="e.g. Sales, Orders, Revenue" style="border-color:rgba(139,92,246,0.2);">
+            </div>
+            <div class="field" style="margin-bottom:1rem;">
+              <label class="field-label">Value Column</label>
+              <input type="text" class="field-input" id="daxgenCol" value="Amount" placeholder="e.g. Amount, Revenue, Quantity" style="border-color:rgba(139,92,246,0.2);">
+            </div>
+            <div class="field" style="margin-bottom:1rem;">
+              <label class="field-label">Date Table Name</label>
+              <input type="text" class="field-input" id="daxgenDateTable" value="Calendar" placeholder="e.g. Calendar, Date, DimDate" style="border-color:rgba(139,92,246,0.2);">
+            </div>
+            <div class="field" style="margin-bottom:1rem;">
+              <label class="field-label">Date Column</label>
+              <input type="text" class="field-input" id="daxgenDateCol" value="Date" placeholder="e.g. Date, OrderDate" style="border-color:rgba(139,92,246,0.2);">
+            </div>
+            <div class="field" id="daxgenExtraWrap" style="margin-bottom:0;">
+              <label class="field-label" id="daxgenExtraLabel">Rolling Months (N)</label>
+              <input type="number" class="field-input" id="daxgenExtra" value="3" min="1" max="24" style="border-color:rgba(139,92,246,0.2);">
+            </div>
+          </div>
+          <div class="conv-panel dark">
+            <div class="conv-panel-label" style="color:#8B5CF6;">Generated DAX Measure</div>
+            <div class="conv-output" id="daxgenOutput"><span class="placeholder">Select a measure type...</span></div>
+            <button class="conv-copy" id="daxgenCopy" onclick="copyDaxGen()">Copy</button>
+            <div class="conv-notes" id="daxgenNotes" style="display:none;"></div>
+          </div>
+        </div>
+        <div class="tool-nudge">
+          <span class="tool-nudge-text">Need a full library of production DAX measures? We build them into every engagement.</span>
+          <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="tool-nudge-cta">Book a Discovery Call</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- ═══ POWER BI THEME GENERATOR ═══ -->
+  <div class="tool-section" id="pbitheme">
+    <div class="tool-header" onclick="toggleTool('pbitheme')">
+      <div class="tool-header-left">
+        <div class="tool-icon" style="background:#E8860A;">T</div>
+        <h2 class="tool-name">Power BI Theme Generator</h2>
+      </div>
+      <span class="tool-badge">JSON Theme Builder</span>
+      <div class="tool-chevron"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+    </div>
+    <div class="tool-body">
+      <div class="tool-body-inner">
+        <div class="conv-layout">
+          <div class="conv-panel">
+            <div class="conv-panel-label" style="color:#E8860A;">Theme Settings</div>
+            <div class="field" style="margin-bottom:1rem;">
+              <label class="field-label">Theme Name</label>
+              <input type="text" class="field-input" id="themeNameInput" value="My Custom Theme" oninput="generateTheme()">
+            </div>
+            <div class="field" style="margin-bottom:1rem;">
+              <label class="field-label">Data Colors (6 palette colors)</label>
+              <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:0.5rem;" id="themeColors">
+                <div><input type="color" value="#C05818" class="theme-color-input" oninput="generateTheme()" style="width:100%;height:36px;border:none;border-radius:0.375rem;cursor:pointer;"><div style="font-family:var(--font-mono);font-size:0.5rem;text-align:center;margin-top:0.25rem;color:var(--slate);" class="theme-color-hex">#C05818</div></div>
+                <div><input type="color" value="#1A52E8" class="theme-color-input" oninput="generateTheme()" style="width:100%;height:36px;border:none;border-radius:0.375rem;cursor:pointer;"><div style="font-family:var(--font-mono);font-size:0.5rem;text-align:center;margin-top:0.25rem;color:var(--slate);" class="theme-color-hex">#1A52E8</div></div>
+                <div><input type="color" value="#3ECF8E" class="theme-color-input" oninput="generateTheme()" style="width:100%;height:36px;border:none;border-radius:0.375rem;cursor:pointer;"><div style="font-family:var(--font-mono);font-size:0.5rem;text-align:center;margin-top:0.25rem;color:var(--slate);" class="theme-color-hex">#3ECF8E</div></div>
+                <div><input type="color" value="#E8860A" class="theme-color-input" oninput="generateTheme()" style="width:100%;height:36px;border:none;border-radius:0.375rem;cursor:pointer;"><div style="font-family:var(--font-mono);font-size:0.5rem;text-align:center;margin-top:0.25rem;color:var(--slate);" class="theme-color-hex">#E8860A</div></div>
+                <div><input type="color" value="#8B5CF6" class="theme-color-input" oninput="generateTheme()" style="width:100%;height:36px;border:none;border-radius:0.375rem;cursor:pointer;"><div style="font-family:var(--font-mono);font-size:0.5rem;text-align:center;margin-top:0.25rem;color:var(--slate);" class="theme-color-hex">#8B5CF6</div></div>
+                <div><input type="color" value="#CC2936" class="theme-color-input" oninput="generateTheme()" style="width:100%;height:36px;border:none;border-radius:0.375rem;cursor:pointer;"><div style="font-family:var(--font-mono);font-size:0.5rem;text-align:center;margin-top:0.25rem;color:var(--slate);" class="theme-color-hex">#CC2936</div></div>
+              </div>
+            </div>
+            <div class="field" style="margin-bottom:1rem;">
+              <label class="field-label">Background Color</label>
+              <div style="display:flex;gap:0.5rem;align-items:center;">
+                <input type="color" value="#FFFFFF" id="themeBg" oninput="generateTheme()" style="width:48px;height:36px;border:none;border-radius:0.375rem;cursor:pointer;">
+                <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--slate);" id="themeBgHex">#FFFFFF</span>
+              </div>
+            </div>
+            <div class="field" style="margin-bottom:1rem;">
+              <label class="field-label">Foreground / Text Color</label>
+              <div style="display:flex;gap:0.5rem;align-items:center;">
+                <input type="color" value="#181D2A" id="themeFg" oninput="generateTheme()" style="width:48px;height:36px;border:none;border-radius:0.375rem;cursor:pointer;">
+                <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--slate);" id="themeFgHex">#181D2A</span>
+              </div>
+            </div>
+            <div class="field" style="margin-bottom:1rem;">
+              <label class="field-label">Font Family</label>
+              <select class="field-select" id="themeFont" onchange="generateTheme()">
+                <option value="Segoe UI" selected>Segoe UI</option>
+                <option value="Arial">Arial</option>
+                <option value="Calibri">Calibri</option>
+                <option value="DIN">DIN</option>
+                <option value="Helvetica Neue">Helvetica Neue</option>
+                <option value="Verdana">Verdana</option>
+                <option value="Trebuchet MS">Trebuchet MS</option>
+              </select>
+            </div>
+            <div class="field" style="margin-bottom:0;">
+              <label class="field-label">Preset Themes</label>
+              <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+                <button class="scope-check" onclick="applyPreset('corporate')" style="font-size:0.7rem;">Corporate</button>
+                <button class="scope-check" onclick="applyPreset('dark')" style="font-size:0.7rem;">Dark Mode</button>
+                <button class="scope-check" onclick="applyPreset('earth')" style="font-size:0.7rem;">Earth Tones</button>
+                <button class="scope-check" onclick="applyPreset('powerintegrate')" style="font-size:0.7rem;">Power Integrate</button>
+              </div>
+            </div>
+          </div>
+          <div class="conv-panel dark">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div class="conv-panel-label" style="color:#E8860A;">theme.json</div>
+              <button class="conv-copy" id="themeCopy" onclick="copyTheme()" style="margin:0;">Copy</button>
+            </div>
+            <div class="conv-output" id="themeOutput" style="min-height:250px;font-size:0.7rem;line-height:1.6;"></div>
+            <button class="add-lot-btn" onclick="downloadTheme()" style="margin-top:0.75rem;border-color:rgba(232,134,10,0.3);color:#E8860A;">Download .json</button>
+            <div class="conv-notes" style="display:block;margin-top:0.75rem;">
+              <div class="conv-note">Import in Power BI Desktop: View > Themes > Browse for themes > select your .json file</div>
+            </div>
+          </div>
+        </div>
+        <div class="tool-nudge">
+          <span class="tool-nudge-text">Need dashboards that match your brand? We design and build them from scratch.</span>
+          <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="tool-nudge-cta">Book a Discovery Call</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <div class="tool-segment" style="margin-top:3rem;">
+    <div class="tool-segment-header">
+      <span class="tool-segment-label">Business & Finance</span>
+      <div class="tool-segment-line"></div>
     </div>
   </div>
 
@@ -1216,120 +981,8 @@ Segment</textarea>
           </div>
         </div>
         <div class="tool-nudge">
-          <span class="tool-nudge-text">Need this built into your reporting stack?</span>
-          <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="tool-nudge-cta">Book a Free Audit</a>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══ OPTIONS PROFIT CALCULATOR ═══ -->
-  <div class="tool-section" id="options">
-    <div class="tool-header" onclick="toggleTool('options')">
-      <div class="tool-header-left">
-        <div class="tool-icon" style="background:#16A34A;">OP</div>
-        <h2 class="tool-name">Options Profit Calculator</h2>
-      </div>
-      <span class="tool-badge">Calls + Puts P&L</span>
-      <div class="tool-chevron"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
-    </div>
-    <div class="tool-body">
-      <div class="tool-body-inner">
-        <div class="calc-grid">
-          <div class="calc-inputs">
-            <div class="input-panel">
-              <div class="panel-title"><div class="panel-icon" style="background:#16A34A;">OP</div> Contract Details</div>
-              <div class="field">
-                <label class="field-label">Strategy</label>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;">
-                  <button class="scope-check selected" id="optBuyCall" onclick="setOptType('buyCall')" style="justify-content:center;font-weight:600;font-size:0.7rem;">Buy Call</button>
-                  <button class="scope-check" id="optSellCall" onclick="setOptType('sellCall')" style="justify-content:center;font-weight:600;font-size:0.7rem;">Sell Call</button>
-                  <button class="scope-check" id="optBuyPut" onclick="setOptType('buyPut')" style="justify-content:center;font-weight:600;font-size:0.7rem;">Buy Put</button>
-                  <button class="scope-check" id="optSellPut" onclick="setOptType('sellPut')" style="justify-content:center;font-weight:600;font-size:0.7rem;">Sell Put</button>
-                </div>
-              </div>
-              <div class="field">
-                <label class="field-label">Current Stock Price ($)</label>
-                <input type="number" class="field-input" id="optStock" value="150" min="0" step="0.01">
-              </div>
-              <div class="field">
-                <label class="field-label">Strike Price ($)</label>
-                <input type="number" class="field-input" id="optStrike" value="155" min="0" step="0.01">
-              </div>
-              <div class="field">
-                <label class="field-label">Premium Paid per Share ($)</label>
-                <input type="number" class="field-input" id="optPremium" value="3.50" min="0" step="0.01">
-              </div>
-              <div class="field">
-                <label class="field-label">Number of Contracts</label>
-                <input type="number" class="field-input" id="optContracts" value="1" min="1" step="1">
-                <div class="field-hint">1 contract = 100 shares</div>
-              </div>
-            </div>
-          </div>
-          <div class="calc-results">
-            <div class="result-panel dark">
-              <div class="result-title" style="color:#fff;">P&L Summary</div>
-              <div class="factors-grid" style="grid-template-columns:repeat(2,1fr);">
-                <div class="factor-card">
-                  <div class="factor-name">Break-Even</div>
-                  <div class="factor-status" id="optBreakeven" style="color:#fff;">$0</div>
-                </div>
-                <div class="factor-card">
-                  <div class="factor-name">Max Loss</div>
-                  <div class="factor-status" id="optMaxLoss" style="color:#CC2936;">$0</div>
-                </div>
-                <div class="factor-card">
-                  <div class="factor-name">Max Profit</div>
-                  <div class="factor-status" id="optMaxProfit" style="color:var(--green);">Unlimited</div>
-                </div>
-                <div class="factor-card">
-                  <div class="factor-name">Total Cost</div>
-                  <div class="factor-status" id="optTotalCost" style="color:var(--copper);">$0</div>
-                </div>
-              </div>
-            </div>
-            <div class="result-panel">
-              <div class="result-title">P&L at Expiration</div>
-              <div class="field" style="margin-bottom:0.75rem;">
-                <label class="field-label">Stock Price at Expiration ($)</label>
-                <input type="range" id="optExpPrice" min="0" max="300" value="160" step="0.5" style="width:100%;accent-color:var(--copper);" oninput="calcOptions()">
-                <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:0.625rem;color:var(--slate);">
-                  <span id="optRangeMin">$0</span>
-                  <span id="optRangeCur" style="font-weight:700;color:var(--ink);">$160.00</span>
-                  <span id="optRangeMax">$300</span>
-                </div>
-              </div>
-              <div class="kpi-row" style="grid-template-columns:repeat(3,1fr);">
-                <div class="kpi">
-                  <div class="kpi-label">P&L at This Price</div>
-                  <div class="kpi-value" id="optPnlAtPrice" style="color:var(--green);">$0</div>
-                </div>
-                <div class="kpi">
-                  <div class="kpi-label">Return %</div>
-                  <div class="kpi-value" id="optReturnPct" style="color:var(--green);">0%</div>
-                </div>
-                <div class="kpi">
-                  <div class="kpi-label">Intrinsic Value</div>
-                  <div class="kpi-value" id="optIntrinsic" style="color:var(--ink);">$0</div>
-                </div>
-              </div>
-            </div>
-            <div class="result-panel">
-              <div class="result-title">P&L Table</div>
-              <div class="lot-table-wrap" style="max-height:200px;overflow-y:auto;">
-                <table class="lot-table" id="optPnlTable">
-                  <thead><tr><th>Stock Price</th><th>Intrinsic</th><th>P&L</th><th>Return %</th></tr></thead>
-                  <tbody id="optPnlBody"></tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="tool-nudge">
-          <span class="tool-nudge-text">Need this built into your reporting stack?</span>
-          <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="tool-nudge-cta">Book a Free Audit</a>
+          <span class="tool-nudge-text">Need help pricing your services? We build financial models and reporting for growing businesses.</span>
+          <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="tool-nudge-cta">Book a Discovery Call</a>
         </div>
 
       </div>
@@ -1362,124 +1015,6 @@ Segment</textarea>
     const fmt = n => new Intl.NumberFormat('en-US', { style:'currency', currency:'USD', minimumFractionDigits:0, maximumFractionDigits:0 }).format(n);
     const pct = n => n.toFixed(1) + '%';
 
-    function calculate() {
-      const homeVal = val('currentHomeValue');
-      const loanBal = val('currentLoanBalance');
-      const loanAmt = val('desiredLoanAmount');
-      const rate = val('newInterestRate');
-      const term = val('loanTerm');
-      const propTax = val('annualPropertyTax');
-      const ins = val('annualInsurance');
-      const pmi = val('monthlyPMI');
-      const hoa = val('monthlyHOA');
-      const income = val('monthlyGrossIncome');
-      const debts = val('otherMonthlyDebts');
-      const credit = val('creditScore');
-
-      const cashOut = Math.max(0, loanAmt - loanBal);
-      const ltv = homeVal > 0 ? (loanAmt / homeVal) * 100 : 0;
-      const mr = (rate / 100) / 12;
-      const np = term * 12;
-      const pi = mr > 0 ? loanAmt * (mr * Math.pow(1+mr, np)) / (Math.pow(1+mr, np) - 1) : loanAmt / np;
-      const mTax = propTax / 12;
-      const mIns = ins / 12;
-      const totalPay = pi + mTax + mIns + pmi + hoa;
-      const totalDebts = totalPay + debts;
-      const frontDTI = income > 0 ? (totalPay / income) * 100 : 0;
-      const backDTI = income > 0 ? (totalDebts / income) * 100 : 0;
-      const curEquity = homeVal - loanBal;
-      const remEquity = homeVal - loanAmt;
-
-      // Approval scoring
-      let score = 0;
-      const factors = [];
-
-      if (credit >= 760) { score += 30; factors.push({n:'Credit Score',s:'excellent',p:30,m:30}); }
-      else if (credit >= 700) { score += 25; factors.push({n:'Credit Score',s:'good',p:25,m:30}); }
-      else if (credit >= 660) { score += 18; factors.push({n:'Credit Score',s:'fair',p:18,m:30}); }
-      else if (credit >= 620) { score += 10; factors.push({n:'Credit Score',s:'poor',p:10,m:30}); }
-      else { factors.push({n:'Credit Score',s:'very poor',p:0,m:30}); }
-
-      if (ltv <= 70) { score += 30; factors.push({n:'Loan-to-Value',s:'excellent',p:30,m:30}); }
-      else if (ltv <= 80) { score += 25; factors.push({n:'Loan-to-Value',s:'good',p:25,m:30}); }
-      else if (ltv <= 85) { score += 15; factors.push({n:'Loan-to-Value',s:'fair',p:15,m:30}); }
-      else if (ltv <= 90) { score += 8; factors.push({n:'Loan-to-Value',s:'poor',p:8,m:30}); }
-      else { factors.push({n:'Loan-to-Value',s:'very poor',p:0,m:30}); }
-
-      if (backDTI <= 36) { score += 40; factors.push({n:'Debt-to-Income',s:'excellent',p:40,m:40}); }
-      else if (backDTI <= 43) { score += 30; factors.push({n:'Debt-to-Income',s:'good',p:30,m:40}); }
-      else if (backDTI <= 50) { score += 15; factors.push({n:'Debt-to-Income',s:'fair',p:15,m:40}); }
-      else if (backDTI <= 55) { score += 5; factors.push({n:'Debt-to-Income',s:'poor',p:5,m:40}); }
-      else { factors.push({n:'Debt-to-Income',s:'very poor',p:0,m:40}); }
-
-      let statusText, statusColor;
-      if (score >= 85) { statusText = 'Excellent'; statusColor = 'var(--green)'; }
-      else if (score >= 70) { statusText = 'Good'; statusColor = 'var(--signal)'; }
-      else if (score >= 50) { statusText = 'Fair'; statusColor = 'var(--amber)'; }
-      else if (score >= 30) { statusText = 'Poor'; statusColor = 'var(--copper)'; }
-      else { statusText = 'Very Unlikely'; statusColor = 'var(--red)'; }
-
-      // Render approval
-      $('approvalScore').textContent = score + '%';
-      $('approvalScore').style.color = statusColor;
-      $('approvalLabel').textContent = statusText;
-      $('approvalLabel').style.color = statusColor;
-      $('approvalBar').style.width = score + '%';
-      $('approvalBar').style.background = statusColor;
-
-      // Factors
-      $('factorsGrid').innerHTML = factors.map(f =>
-        '<div class="factor-card"><div class="factor-name">' + f.n + '</div>' +
-        '<div class="factor-status">' + f.s + '</div>' +
-        '<div class="factor-pts">' + f.p + ' / ' + f.m + ' pts</div></div>'
-      ).join('');
-
-      // Requirements
-      $('reqsBox').innerHTML =
-        '<div class="reqs-title">Key Requirements</div>' +
-        '<div class="req-line">Most lenders prefer DTI below 43% (yours: ' + pct(backDTI) + ')</div>' +
-        '<div class="req-line">LTV typically should be 80% or below (yours: ' + pct(ltv) + ')</div>' +
-        '<div class="req-line">Credit score of 620+ usually required (yours: ' + credit + ')</div>' +
-        '<div class="req-line">Conventional cash-out refi typically allows up to 80% LTV</div>';
-
-      // DTI
-      const dtiColor = v => v <= 36 ? 'var(--green)' : v <= 43 ? 'var(--amber)' : 'var(--red)';
-      $('frontDTI').textContent = pct(frontDTI);
-      $('frontDTI').style.color = dtiColor(frontDTI);
-      $('backDTI').textContent = pct(backDTI);
-      $('backDTI').style.color = dtiColor(backDTI);
-
-      $('dtiBreakdown').innerHTML =
-        '<div class="pay-row"><span class="pay-label">Monthly Gross Income</span><span class="pay-val">' + fmt(income) + '</span></div>' +
-        '<div class="pay-row"><span class="pay-label">Housing Payment (PITI)</span><span class="pay-val">' + fmt(totalPay) + '</span></div>' +
-        '<div class="pay-row"><span class="pay-label">Other Monthly Debts</span><span class="pay-val">' + fmt(debts) + '</span></div>' +
-        '<div class="pay-row total"><span class="pay-label">Total Monthly Debts</span><span class="pay-val">' + fmt(totalDebts) + '</span></div>';
-
-      // Cash out
-      $('cashOut').textContent = fmt(cashOut);
-      $('ltvRatio').textContent = pct(ltv);
-      $('ltvRatio').style.color = ltv > 80 ? 'var(--red)' : 'var(--green)';
-      $('currentEquity').textContent = fmt(curEquity);
-      $('remainingEquity').textContent = fmt(remEquity);
-
-      // Payment
-      let payHTML =
-        '<div class="pay-row"><span class="pay-label">Principal + Interest</span><span class="pay-val">' + fmt(pi) + '</span></div>' +
-        '<div class="pay-row"><span class="pay-label">Property Taxes</span><span class="pay-val">' + fmt(mTax) + '</span></div>' +
-        '<div class="pay-row"><span class="pay-label">Home Insurance</span><span class="pay-val">' + fmt(mIns) + '</span></div>';
-      if (pmi > 0) payHTML += '<div class="pay-row"><span class="pay-label">PMI</span><span class="pay-val">' + fmt(pmi) + '</span></div>';
-      if (hoa > 0) payHTML += '<div class="pay-row"><span class="pay-label">HOA Fees</span><span class="pay-val">' + fmt(hoa) + '</span></div>';
-      payHTML += '<div class="pay-row total"><span class="pay-label">Total Monthly Payment</span><span class="pay-val">' + fmt(totalPay) + '</span></div>';
-      $('paymentBreakdown').innerHTML = payHTML;
-
-      // Warnings
-      let warnHTML = '';
-      if (ltv > 80) warnHTML += '<div class="warning red"><div class="warning-dot"></div><div><strong>High LTV:</strong> Your loan-to-value ratio exceeds 80%. You may face higher rates, require PMI, or have difficulty getting approved.</div></div>';
-      if (backDTI > 43) warnHTML += '<div class="warning amber"><div class="warning-dot"></div><div><strong>High DTI:</strong> Your debt-to-income ratio exceeds 43%. Most conventional lenders prefer DTI below this threshold.</div></div>';
-      if (cashOut === 0) warnHTML += '<div class="warning yellow"><div class="warning-dot"></div><div><strong>No Cash-Out:</strong> Your desired loan amount equals or is less than your current balance. Increase the loan amount to receive cash out.</div></div>';
-      $('warnings').innerHTML = warnHTML;
-    }
-
     // ─────────────────────────────────────────
     // TOOL SECTION TOGGLE (exclusive mode)
     // ─────────────────────────────────────────
@@ -1487,18 +1022,14 @@ Segment</textarea>
     var nudgeTimers = {};
 
     function toggleTool(id) {
-      const section = document.getElementById(id);
-      const wasOpen = section.classList.contains('open');
-
-      // Close all sections
+      var section = document.getElementById(id);
+      var wasOpen = section.classList.contains('open');
       document.querySelectorAll('.tool-section.open').forEach(function(s) {
         s.classList.remove('open');
         var nudge = s.querySelector('.tool-nudge');
         if (nudge) nudge.classList.remove('visible');
       });
       document.querySelectorAll('.tool-index-card.active').forEach(function(c) { c.classList.remove('active'); });
-
-      // Open this one if it was closed
       if (!wasOpen) {
         section.classList.add('open');
         var card = document.querySelector('.tool-index-card[data-tool="' + id + '"]');
@@ -1507,26 +1038,19 @@ Segment</textarea>
     }
 
     function openTool(id) {
-      // Close all
       document.querySelectorAll('.tool-section.open').forEach(function(s) {
         s.classList.remove('open');
         var nudge = s.querySelector('.tool-nudge');
         if (nudge) nudge.classList.remove('visible');
       });
       document.querySelectorAll('.tool-index-card.active').forEach(function(c) { c.classList.remove('active'); });
-
-      // Open target
-      const section = document.getElementById(id);
+      var section = document.getElementById(id);
       section.classList.add('open');
       var card = document.querySelector('.tool-index-card[data-tool="' + id + '"]');
       if (card) card.classList.add('active');
-
-      setTimeout(() => {
-        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 100);
+      setTimeout(function() { section.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
     }
 
-    // Lead nudge: show after user interacts with a tool
     function triggerNudge(toolId) {
       if (nudgeTimers[toolId]) return;
       nudgeTimers[toolId] = setTimeout(function() {
@@ -1538,7 +1062,6 @@ Segment</textarea>
       }, 4000);
     }
 
-    // Listen for interaction inside tool sections
     document.querySelectorAll('.tool-section').forEach(function(section) {
       var id = section.id;
       section.addEventListener('input', function() { triggerNudge(id); });
@@ -1548,500 +1071,186 @@ Segment</textarea>
       });
     });
 
-    // Bind refi inputs by ID
-    ['currentHomeValue','currentLoanBalance','desiredLoanAmount','newInterestRate','loanTerm',
-     'annualPropertyTax','annualInsurance','monthlyPMI','monthlyHOA',
-     'monthlyGrossIncome','otherMonthlyDebts','creditScore'].forEach(id => {
-      const el = $(id);
-      if (el) { el.addEventListener('input', calculate); el.addEventListener('change', calculate); }
-    });
-
-    // Initial refi calculation
-    calculate();
-
     // ─────────────────────────────────────────
-    // DCA CALCULATOR
+    // SHARED: DAX SYNTAX HIGHLIGHTING
     // ─────────────────────────────────────────
 
-    let lotCounter = 3; // starting after the 3 default lots
-
-    function addLot() {
-      const tbody = document.getElementById('lotBody');
-      const idx = lotCounter++;
-      const today = new Date().toISOString().split('T')[0];
-      const tr = document.createElement('tr');
-      tr.setAttribute('data-lot', idx);
-      tr.innerHTML =
-        '<td class="lot-total">' + (tbody.children.length + 1) + '</td>' +
-        '<td><input type="date" class="field-input lot-date" value="' + today + '"></td>' +
-        '<td><input type="number" class="field-input lot-shares" value="0" step="0.01" min="0"></td>' +
-        '<td><input type="number" class="field-input lot-price" value="0" step="0.01" min="0"></td>' +
-        '<td class="lot-total lot-cost">$0</td>' +
-        '<td><button class="lot-remove" onclick="removeLot(this)">&times;</button></td>';
-      tbody.appendChild(tr);
-      bindLotInputs(tr);
-      calcDCA();
+    function highlightDAX(text) {
+      return text
+        .replace(/\b(CALCULATE|SUM|AVERAGE|COUNTROWS|COUNT|COUNTA|MIN|MAX|FILTER|ALL|ALLEXCEPT|VALUES|DISTINCT|LOOKUPVALUE|RELATED|RELATEDTABLE|SWITCH|IF|IFERROR|FORMAT|RANKX|TOPN|CONCATENATEX|DATEDIFF|EOMONTH|YEAR|MONTH|DAY|TODAY|NOW|LEFT|RIGHT|MID|LEN|TRIM|UPPER|LOWER|FIND|SEARCH|SUBSTITUTE|ROUND|ROUNDUP|ROUNDDOWN|INT|MOD|ABS|POWER|SQRT|AND|OR|NOT|TRUE|FALSE|BLANK|ISBLANK|DIVIDE|SELECTEDVALUE|HASONEVALUE|DISTINCTCOUNT|EARLIER|EARLIEST|VAR|RETURN|DATEADD|DATESYTD|DATESQTD|DATESMTD|DATESINPERIOD|REMOVEFILTERS|AVERAGEX)\b/g, '<span class="fn">$1</span>')
+        .replace(/(Table\[\w+\]|\w+\[\w+\])/g, '<span class="tbl">$1</span>')
+        .replace(/"([^"]*)"/g, '<span class="str">"$1"</span>')
+        .replace(/\b(\d+\.?\d*)\b/g, '<span class="num">$1</span>');
     }
-
-    function removeLot(btn) {
-      const tr = btn.closest('tr');
-      tr.remove();
-      renumberLots();
-      calcDCA();
-    }
-
-    function renumberLots() {
-      document.querySelectorAll('#lotBody tr').forEach((tr, i) => {
-        tr.querySelector('td').textContent = i + 1;
-      });
-    }
-
-    function bindLotInputs(scope) {
-      (scope || document).querySelectorAll('.lot-shares, .lot-price').forEach(el => {
-        el.addEventListener('input', calcDCA);
-      });
-    }
-
-    function calcDCA() {
-      const rows = document.querySelectorAll('#lotBody tr');
-      let totalShares = 0;
-      let totalCost = 0;
-
-      rows.forEach(tr => {
-        const shares = parseFloat(tr.querySelector('.lot-shares').value) || 0;
-        const price = parseFloat(tr.querySelector('.lot-price').value) || 0;
-        const cost = shares * price;
-        tr.querySelector('.lot-cost').textContent = fmt(cost);
-        totalShares += shares;
-        totalCost += cost;
-      });
-
-      const avgCost = totalShares > 0 ? totalCost / totalShares : 0;
-      const curPrice = parseFloat(document.getElementById('currentPrice').value) || 0;
-      const currentValue = totalShares * curPrice;
-      const pnl = currentValue - totalCost;
-      const pnlPct = totalCost > 0 ? (pnl / totalCost) * 100 : 0;
-
-      $('totalShares').textContent = totalShares % 1 === 0 ? totalShares.toLocaleString() : totalShares.toFixed(4);
-      $('totalCost').textContent = fmt(totalCost);
-      $('avgCost').textContent = '$' + avgCost.toFixed(2);
-      $('currentValue').textContent = fmt(currentValue);
-
-      const pnlColor = pnl >= 0 ? 'var(--green)' : 'var(--red)';
-      const pnlSign = pnl >= 0 ? '+' : '';
-      $('pnlValue').textContent = pnlSign + fmt(pnl);
-      $('pnlValue').style.color = pnlColor;
-      $('pnlPercent').textContent = pnlSign + pnlPct.toFixed(2) + '%';
-      $('pnlPercent').style.color = pnlColor;
-    }
-
-    // Bind existing lot inputs
-    bindLotInputs(document);
-    document.getElementById('currentPrice').addEventListener('input', calcDCA);
-
-    // Initial DCA calculation
-    calcDCA();
 
     // ─────────────────────────────────────────
     // EXCEL TO DAX CONVERTER
     // ─────────────────────────────────────────
 
-    const daxMap = [
-      { excel: 'SUMIF',       dax: 'CALCULATE ( SUM ( Table[Column] ), Table[FilterCol] = "value" )', note: 'DAX separates the aggregation from the filter using CALCULATE' },
-      { excel: 'SUMIFS',      dax: 'CALCULATE ( SUM ( Table[Column] ), Table[Filter1] = "val1", Table[Filter2] = "val2" )', note: 'Multiple filter conditions go as additional arguments in CALCULATE' },
-      { excel: 'COUNTIF',     dax: 'CALCULATE ( COUNTROWS ( Table ), Table[Column] = "value" )', note: 'Use COUNTROWS inside CALCULATE instead of COUNTIF' },
-      { excel: 'COUNTIFS',    dax: 'CALCULATE ( COUNTROWS ( Table ), Table[Col1] = "val1", Table[Col2] = "val2" )', note: 'Multiple conditions are comma-separated filters in CALCULATE' },
-      { excel: 'AVERAGEIF',   dax: 'CALCULATE ( AVERAGE ( Table[Column] ), Table[FilterCol] = "value" )', note: 'Same CALCULATE pattern with AVERAGE as the aggregation' },
-      { excel: 'AVERAGEIFS',  dax: 'CALCULATE ( AVERAGE ( Table[Column] ), Table[Filter1] = "val1", Table[Filter2] = "val2" )', note: 'Multiple conditions follow the same CALCULATE pattern' },
-      { excel: 'VLOOKUP',     dax: 'LOOKUPVALUE ( Table[ReturnCol], Table[SearchCol], SearchValue )', note: 'LOOKUPVALUE replaces VLOOKUP. Also consider RELATED for model relationships' },
-      { excel: 'HLOOKUP',     dax: 'LOOKUPVALUE ( Table[ReturnCol], Table[SearchCol], SearchValue )', note: 'DAX has no row/column distinction. Use LOOKUPVALUE the same way' },
-      { excel: 'XLOOKUP',     dax: 'LOOKUPVALUE ( Table[ReturnCol], Table[SearchCol], SearchValue, DefaultValue )', note: 'LOOKUPVALUE supports a default value as the last argument' },
+    var daxMap = [
+      { excel: 'SUMIF', dax: 'CALCULATE ( SUM ( Table[Column] ), Table[FilterCol] = "value" )', note: 'DAX separates the aggregation from the filter using CALCULATE' },
+      { excel: 'SUMIFS', dax: 'CALCULATE ( SUM ( Table[Column] ), Table[Filter1] = "val1", Table[Filter2] = "val2" )', note: 'Multiple filter conditions go as additional arguments in CALCULATE' },
+      { excel: 'COUNTIF', dax: 'CALCULATE ( COUNTROWS ( Table ), Table[Column] = "value" )', note: 'Use COUNTROWS inside CALCULATE instead of COUNTIF' },
+      { excel: 'COUNTIFS', dax: 'CALCULATE ( COUNTROWS ( Table ), Table[Col1] = "val1", Table[Col2] = "val2" )', note: 'Multiple conditions are comma-separated filters in CALCULATE' },
+      { excel: 'AVERAGEIF', dax: 'CALCULATE ( AVERAGE ( Table[Column] ), Table[FilterCol] = "value" )', note: 'Same CALCULATE pattern with AVERAGE as the aggregation' },
+      { excel: 'AVERAGEIFS', dax: 'CALCULATE ( AVERAGE ( Table[Column] ), Table[Filter1] = "val1", Table[Filter2] = "val2" )', note: 'Multiple conditions follow the same CALCULATE pattern' },
+      { excel: 'VLOOKUP', dax: 'LOOKUPVALUE ( Table[ReturnCol], Table[SearchCol], SearchValue )', note: 'LOOKUPVALUE replaces VLOOKUP. Also consider RELATED for model relationships' },
+      { excel: 'HLOOKUP', dax: 'LOOKUPVALUE ( Table[ReturnCol], Table[SearchCol], SearchValue )', note: 'DAX has no row/column distinction. Use LOOKUPVALUE the same way' },
+      { excel: 'XLOOKUP', dax: 'LOOKUPVALUE ( Table[ReturnCol], Table[SearchCol], SearchValue, DefaultValue )', note: 'LOOKUPVALUE supports a default value as the last argument' },
       { excel: 'INDEX/MATCH', dax: 'LOOKUPVALUE ( Table[ReturnCol], Table[MatchCol], MatchValue )', note: 'The INDEX/MATCH pattern maps directly to LOOKUPVALUE in DAX' },
-      { excel: 'IF',          dax: 'IF ( condition, true_result, false_result )', note: 'Syntax is nearly identical. Use && for AND, || for OR inside conditions' },
-      { excel: 'IFS',         dax: 'SWITCH ( TRUE(), condition1, result1, condition2, result2, default )', note: 'SWITCH(TRUE(),...) is the DAX equivalent of IFS' },
-      { excel: 'IFERROR',     dax: 'IFERROR ( expression, fallback_value )', note: 'Identical syntax in DAX' },
-      { excel: 'AND',         dax: '&& (operator) or AND ( cond1, cond2 )', note: 'DAX supports both AND() function and && operator' },
-      { excel: 'OR',          dax: '|| (operator) or OR ( cond1, cond2 )', note: 'DAX supports both OR() function and || operator' },
-      { excel: 'NOT',         dax: 'NOT ( condition )', note: 'Identical syntax' },
-      { excel: 'SUM',         dax: 'SUM ( Table[Column] )', note: 'Must reference a table column, not a cell range' },
-      { excel: 'AVERAGE',     dax: 'AVERAGE ( Table[Column] )', note: 'Must reference a table column' },
-      { excel: 'COUNT',       dax: 'COUNTROWS ( Table ) or COUNT ( Table[Column] )', note: 'COUNTROWS counts all rows. COUNT counts non-blank values in a column' },
-      { excel: 'COUNTA',      dax: 'COUNTA ( Table[Column] )', note: 'Counts non-blank values, same as Excel' },
-      { excel: 'COUNTBLANK',  dax: 'COUNTBLANK ( Table[Column] )', note: 'Identical syntax' },
-      { excel: 'MIN',         dax: 'MIN ( Table[Column] )', note: 'Must reference a table column' },
-      { excel: 'MAX',         dax: 'MAX ( Table[Column] )', note: 'Must reference a table column' },
-      { excel: 'LARGE',       dax: 'PERCENTILEX.INC ( Table, Table[Column], 1 - k/n )', note: 'No direct equivalent. Use TOPN or PERCENTILEX as alternatives' },
-      { excel: 'SMALL',       dax: 'PERCENTILEX.INC ( Table, Table[Column], k/n )', note: 'No direct equivalent. Use TOPN with ASC ordering' },
-      { excel: 'RANK',        dax: 'RANKX ( Table, Table[Column] )', note: 'RANKX is more powerful than RANK, supports custom ordering' },
+      { excel: 'IF', dax: 'IF ( condition, true_result, false_result )', note: 'Syntax is nearly identical. Use && for AND, || for OR inside conditions' },
+      { excel: 'IFS', dax: 'SWITCH ( TRUE(), condition1, result1, condition2, result2, default )', note: 'SWITCH(TRUE(),...) is the DAX equivalent of IFS' },
+      { excel: 'IFERROR', dax: 'IFERROR ( expression, fallback_value )', note: 'Identical syntax in DAX' },
+      { excel: 'AND', dax: '&& (operator) or AND ( cond1, cond2 )', note: 'DAX supports both AND() function and && operator' },
+      { excel: 'OR', dax: '|| (operator) or OR ( cond1, cond2 )', note: 'DAX supports both OR() function and || operator' },
+      { excel: 'NOT', dax: 'NOT ( condition )', note: 'Identical syntax' },
+      { excel: 'SUM', dax: 'SUM ( Table[Column] )', note: 'Must reference a table column, not a cell range' },
+      { excel: 'AVERAGE', dax: 'AVERAGE ( Table[Column] )', note: 'Must reference a table column' },
+      { excel: 'COUNT', dax: 'COUNTROWS ( Table ) or COUNT ( Table[Column] )', note: 'COUNTROWS counts all rows. COUNT counts non-blank values in a column' },
+      { excel: 'COUNTA', dax: 'COUNTA ( Table[Column] )', note: 'Counts non-blank values, same as Excel' },
+      { excel: 'COUNTBLANK', dax: 'COUNTBLANK ( Table[Column] )', note: 'Identical syntax' },
+      { excel: 'MIN', dax: 'MIN ( Table[Column] )', note: 'Must reference a table column' },
+      { excel: 'MAX', dax: 'MAX ( Table[Column] )', note: 'Must reference a table column' },
+      { excel: 'RANK', dax: 'RANKX ( Table, Table[Column] )', note: 'RANKX is more powerful than RANK, supports custom ordering' },
       { excel: 'CONCATENATE', dax: 'Table[Col1] & " " & Table[Col2]', note: 'Use the & operator. Also see CONCATENATEX for grouped concatenation' },
-      { excel: 'TEXTJOIN',    dax: 'CONCATENATEX ( Table, Table[Column], ", " )', note: 'CONCATENATEX iterates a table and joins with a delimiter' },
-      { excel: 'LEFT',        dax: 'LEFT ( Table[Column], n )', note: 'Identical syntax' },
-      { excel: 'RIGHT',       dax: 'RIGHT ( Table[Column], n )', note: 'Identical syntax' },
-      { excel: 'MID',         dax: 'MID ( Table[Column], start, length )', note: 'Identical syntax' },
-      { excel: 'LEN',         dax: 'LEN ( Table[Column] )', note: 'Identical syntax' },
-      { excel: 'TRIM',        dax: 'TRIM ( Table[Column] )', note: 'Identical syntax' },
-      { excel: 'UPPER',       dax: 'UPPER ( Table[Column] )', note: 'Identical syntax' },
-      { excel: 'LOWER',       dax: 'LOWER ( Table[Column] )', note: 'Identical syntax' },
-      { excel: 'PROPER',      dax: 'No direct equivalent', note: 'Use UPPER(LEFT(...)) & LOWER(MID(...)) or handle in Power Query' },
-      { excel: 'FIND',        dax: 'FIND ( search_text, Table[Column], start, not_found )', note: 'Case-sensitive. Fourth arg is the not-found value (replaces IFERROR)' },
-      { excel: 'SEARCH',      dax: 'SEARCH ( search_text, Table[Column], start, not_found )', note: 'Case-insensitive version of FIND' },
-      { excel: 'SUBSTITUTE',  dax: 'SUBSTITUTE ( Table[Column], old, new )', note: 'Identical syntax' },
-      { excel: 'TEXT',         dax: 'FORMAT ( value, "format_string" )', note: 'FORMAT replaces TEXT. Format strings are slightly different' },
-      { excel: 'VALUE',        dax: 'VALUE ( text )', note: 'Identical syntax' },
-      { excel: 'DATE',         dax: 'DATE ( year, month, day )', note: 'Identical syntax' },
-      { excel: 'TODAY',        dax: 'TODAY()', note: 'Identical syntax' },
-      { excel: 'NOW',          dax: 'NOW()', note: 'Identical syntax' },
-      { excel: 'YEAR',         dax: 'YEAR ( date )', note: 'Identical syntax' },
-      { excel: 'MONTH',        dax: 'MONTH ( date )', note: 'Identical syntax' },
-      { excel: 'DAY',          dax: 'DAY ( date )', note: 'Identical syntax' },
-      { excel: 'DATEDIF',      dax: 'DATEDIFF ( start, end, interval )', note: 'Note: DATEDIFF (two Fs) in DAX. Interval: DAY, MONTH, QUARTER, YEAR' },
-      { excel: 'EOMONTH',      dax: 'EOMONTH ( start_date, months )', note: 'Identical syntax' },
-      { excel: 'WEEKDAY',      dax: 'WEEKDAY ( date, return_type )', note: 'Identical syntax' },
-      { excel: 'NETWORKDAYS',   dax: 'No direct equivalent', note: 'Calculate using COUNTROWS + FILTER + WEEKDAY logic, or handle in Power Query' },
-      { excel: 'ROUND',        dax: 'ROUND ( number, digits )', note: 'Identical syntax' },
-      { excel: 'ROUNDUP',      dax: 'ROUNDUP ( number, digits )', note: 'Identical syntax' },
-      { excel: 'ROUNDDOWN',    dax: 'ROUNDDOWN ( number, digits )', note: 'Identical syntax' },
-      { excel: 'INT',          dax: 'INT ( number )', note: 'Identical syntax' },
-      { excel: 'MOD',          dax: 'MOD ( number, divisor )', note: 'Identical syntax' },
-      { excel: 'ABS',          dax: 'ABS ( number )', note: 'Identical syntax' },
-      { excel: 'POWER',        dax: 'POWER ( base, exponent )', note: 'Identical syntax' },
-      { excel: 'SQRT',         dax: 'SQRT ( number )', note: 'Identical syntax' },
-      { excel: 'DISTINCT',     dax: 'DISTINCTCOUNT ( Table[Column] )', note: 'DISTINCTCOUNT is a single function in DAX' },
-      { excel: 'UNIQUE',       dax: 'DISTINCT ( Table[Column] )', note: 'DISTINCT returns a table of unique values' },
-      { excel: 'FILTER',       dax: 'FILTER ( Table, condition )', note: 'FILTER returns a table. Often used inside CALCULATE or COUNTROWS' },
-      { excel: 'SORT',         dax: 'TOPN ( n, Table, Table[Column], ASC )', note: 'Use TOPN for sorted subsets. Full sort is implicit in visuals' },
-      { excel: 'SWITCH',       dax: 'SWITCH ( expression, val1, result1, val2, result2, default )', note: 'Identical pattern. Use SWITCH(TRUE(),...) for condition-based logic' },
-      { excel: 'CHOOSE',       dax: 'SWITCH ( index, 1, val1, 2, val2, ... )', note: 'SWITCH replaces CHOOSE in DAX' },
+      { excel: 'TEXTJOIN', dax: 'CONCATENATEX ( Table, Table[Column], ", " )', note: 'CONCATENATEX iterates a table and joins with a delimiter' },
+      { excel: 'LEFT', dax: 'LEFT ( Table[Column], n )', note: 'Identical syntax' },
+      { excel: 'RIGHT', dax: 'RIGHT ( Table[Column], n )', note: 'Identical syntax' },
+      { excel: 'MID', dax: 'MID ( Table[Column], start, length )', note: 'Identical syntax' },
+      { excel: 'LEN', dax: 'LEN ( Table[Column] )', note: 'Identical syntax' },
+      { excel: 'TRIM', dax: 'TRIM ( Table[Column] )', note: 'Identical syntax' },
+      { excel: 'UPPER', dax: 'UPPER ( Table[Column] )', note: 'Identical syntax' },
+      { excel: 'LOWER', dax: 'LOWER ( Table[Column] )', note: 'Identical syntax' },
+      { excel: 'FIND', dax: 'FIND ( search_text, Table[Column], start, not_found )', note: 'Case-sensitive. Fourth arg is the not-found value' },
+      { excel: 'SEARCH', dax: 'SEARCH ( search_text, Table[Column], start, not_found )', note: 'Case-insensitive version of FIND' },
+      { excel: 'SUBSTITUTE', dax: 'SUBSTITUTE ( Table[Column], old, new )', note: 'Identical syntax' },
+      { excel: 'TEXT', dax: 'FORMAT ( value, "format_string" )', note: 'FORMAT replaces TEXT' },
+      { excel: 'VALUE', dax: 'VALUE ( text )', note: 'Identical syntax' },
+      { excel: 'DATE', dax: 'DATE ( year, month, day )', note: 'Identical syntax' },
+      { excel: 'TODAY', dax: 'TODAY()', note: 'Identical syntax' },
+      { excel: 'NOW', dax: 'NOW()', note: 'Identical syntax' },
+      { excel: 'YEAR', dax: 'YEAR ( date )', note: 'Identical syntax' },
+      { excel: 'MONTH', dax: 'MONTH ( date )', note: 'Identical syntax' },
+      { excel: 'DAY', dax: 'DAY ( date )', note: 'Identical syntax' },
+      { excel: 'DATEDIF', dax: 'DATEDIFF ( start, end, interval )', note: 'Note: DATEDIFF (two Fs) in DAX. Intervals: DAY, MONTH, QUARTER, YEAR' },
+      { excel: 'EOMONTH', dax: 'EOMONTH ( start_date, months )', note: 'Identical syntax' },
+      { excel: 'ROUND', dax: 'ROUND ( number, digits )', note: 'Identical syntax' },
+      { excel: 'INT', dax: 'INT ( number )', note: 'Identical syntax' },
+      { excel: 'MOD', dax: 'MOD ( number, divisor )', note: 'Identical syntax' },
+      { excel: 'ABS', dax: 'ABS ( number )', note: 'Identical syntax' },
+      { excel: 'SWITCH', dax: 'SWITCH ( expression, val1, result1, val2, result2, default )', note: 'Identical pattern. Use SWITCH(TRUE(),...) for condition-based logic' },
     ];
 
-    // Populate reference table with expandable Excel syntax
-    const excelSyntax = {
-      'SUMIF': '=SUMIF(range, criteria, sum_range)',
-      'SUMIFS': '=SUMIFS(sum_range, criteria_range1, criteria1, [criteria_range2, criteria2], ...)',
-      'COUNTIF': '=COUNTIF(range, criteria)',
-      'COUNTIFS': '=COUNTIFS(criteria_range1, criteria1, [criteria_range2, criteria2], ...)',
-      'AVERAGEIF': '=AVERAGEIF(range, criteria, [average_range])',
-      'AVERAGEIFS': '=AVERAGEIFS(average_range, criteria_range1, criteria1, ...)',
-      'VLOOKUP': '=VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])',
-      'HLOOKUP': '=HLOOKUP(lookup_value, table_array, row_index_num, [range_lookup])',
-      'XLOOKUP': '=XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode])',
-      'INDEX/MATCH': '=INDEX(return_range, MATCH(lookup_value, lookup_range, 0))',
-      'IF': '=IF(logical_test, value_if_true, [value_if_false])',
-      'IFS': '=IFS(logical_test1, value1, [logical_test2, value2], ...)',
-      'IFERROR': '=IFERROR(value, value_if_error)',
-      'AND': '=AND(logical1, [logical2], ...)',
-      'OR': '=OR(logical1, [logical2], ...)',
-      'NOT': '=NOT(logical)',
-      'SUM': '=SUM(number1, [number2], ...)',
-      'AVERAGE': '=AVERAGE(number1, [number2], ...)',
-      'COUNT': '=COUNT(value1, [value2], ...)',
-      'COUNTA': '=COUNTA(value1, [value2], ...)',
-      'COUNTBLANK': '=COUNTBLANK(range)',
-      'MIN': '=MIN(number1, [number2], ...)',
-      'MAX': '=MAX(number1, [number2], ...)',
-      'LARGE': '=LARGE(array, k)',
-      'SMALL': '=SMALL(array, k)',
-      'RANK': '=RANK(number, ref, [order])',
-      'CONCATENATE': '=CONCATENATE(text1, [text2], ...)',
-      'TEXTJOIN': '=TEXTJOIN(delimiter, ignore_empty, text1, [text2], ...)',
-      'LEFT': '=LEFT(text, [num_chars])',
-      'RIGHT': '=RIGHT(text, [num_chars])',
-      'MID': '=MID(text, start_num, num_chars)',
-      'LEN': '=LEN(text)',
-      'TRIM': '=TRIM(text)',
-      'UPPER': '=UPPER(text)',
-      'LOWER': '=LOWER(text)',
-      'PROPER': '=PROPER(text)',
-      'FIND': '=FIND(find_text, within_text, [start_num])',
-      'SEARCH': '=SEARCH(find_text, within_text, [start_num])',
-      'SUBSTITUTE': '=SUBSTITUTE(text, old_text, new_text, [instance_num])',
-      'TEXT': '=TEXT(value, format_text)',
-      'VALUE': '=VALUE(text)',
-      'DATE': '=DATE(year, month, day)',
-      'TODAY': '=TODAY()',
-      'NOW': '=NOW()',
-      'YEAR': '=YEAR(serial_number)',
-      'MONTH': '=MONTH(serial_number)',
-      'DAY': '=DAY(serial_number)',
-      'DATEDIF': '=DATEDIF(start_date, end_date, unit)',
-      'EOMONTH': '=EOMONTH(start_date, months)',
-      'WEEKDAY': '=WEEKDAY(serial_number, [return_type])',
-      'NETWORKDAYS': '=NETWORKDAYS(start_date, end_date, [holidays])',
-      'ROUND': '=ROUND(number, num_digits)',
-      'ROUNDUP': '=ROUNDUP(number, num_digits)',
-      'ROUNDDOWN': '=ROUNDDOWN(number, num_digits)',
-      'INT': '=INT(number)',
-      'MOD': '=MOD(number, divisor)',
-      'ABS': '=ABS(number)',
-      'POWER': '=POWER(number, power)',
-      'SQRT': '=SQRT(number)',
-      'DISTINCT': 'N/A (Excel uses Remove Duplicates or UNIQUE)',
-      'UNIQUE': '=UNIQUE(array, [by_col], [exactly_once])',
-      'FILTER': '=FILTER(array, include, [if_empty])',
-      'SORT': '=SORT(array, [sort_index], [sort_order], [by_col])',
-      'SWITCH': '=SWITCH(expression, value1, result1, [value2, result2], ..., [default])',
-      'CHOOSE': '=CHOOSE(index_num, value1, [value2], ...)',
+    var excelSyntax = {
+      'SUMIF':'=SUMIF(range, criteria, sum_range)','SUMIFS':'=SUMIFS(sum_range, criteria_range1, criteria1, ...)','COUNTIF':'=COUNTIF(range, criteria)','COUNTIFS':'=COUNTIFS(criteria_range1, criteria1, ...)','AVERAGEIF':'=AVERAGEIF(range, criteria, [average_range])','AVERAGEIFS':'=AVERAGEIFS(average_range, criteria_range1, criteria1, ...)','VLOOKUP':'=VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])','HLOOKUP':'=HLOOKUP(lookup_value, table_array, row_index_num, [range_lookup])','XLOOKUP':'=XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found])','INDEX/MATCH':'=INDEX(return_range, MATCH(lookup_value, lookup_range, 0))','IF':'=IF(logical_test, value_if_true, [value_if_false])','IFS':'=IFS(logical_test1, value1, [logical_test2, value2], ...)','IFERROR':'=IFERROR(value, value_if_error)','AND':'=AND(logical1, [logical2], ...)','OR':'=OR(logical1, [logical2], ...)','NOT':'=NOT(logical)','SUM':'=SUM(number1, [number2], ...)','AVERAGE':'=AVERAGE(number1, [number2], ...)','COUNT':'=COUNT(value1, [value2], ...)','COUNTA':'=COUNTA(value1, [value2], ...)','COUNTBLANK':'=COUNTBLANK(range)','MIN':'=MIN(number1, [number2], ...)','MAX':'=MAX(number1, [number2], ...)','RANK':'=RANK(number, ref, [order])','CONCATENATE':'=CONCATENATE(text1, [text2], ...)','TEXTJOIN':'=TEXTJOIN(delimiter, ignore_empty, text1, ...)','LEFT':'=LEFT(text, [num_chars])','RIGHT':'=RIGHT(text, [num_chars])','MID':'=MID(text, start_num, num_chars)','LEN':'=LEN(text)','TRIM':'=TRIM(text)','UPPER':'=UPPER(text)','LOWER':'=LOWER(text)','FIND':'=FIND(find_text, within_text, [start_num])','SEARCH':'=SEARCH(find_text, within_text, [start_num])','SUBSTITUTE':'=SUBSTITUTE(text, old_text, new_text, [instance_num])','TEXT':'=TEXT(value, format_text)','VALUE':'=VALUE(text)','DATE':'=DATE(year, month, day)','TODAY':'=TODAY()','NOW':'=NOW()','YEAR':'=YEAR(serial_number)','MONTH':'=MONTH(serial_number)','DAY':'=DAY(serial_number)','DATEDIF':'=DATEDIF(start_date, end_date, unit)','EOMONTH':'=EOMONTH(start_date, months)','ROUND':'=ROUND(number, num_digits)','INT':'=INT(number)','MOD':'=MOD(number, divisor)','ABS':'=ABS(number)','SWITCH':'=SWITCH(expression, value1, result1, ..., [default])',
     };
 
-    const refBody = document.getElementById('refBody');
-    daxMap.forEach(r => {
-      const tr = document.createElement('tr');
-      const syntax = excelSyntax[r.excel] || '';
-      const syntaxHTML = syntax
-        ? '<div class="ref-syntax" data-fn="' + r.excel + '"><div class="syn-label">Excel Syntax</div><code>' + syntax + '</code></div>'
-        : '';
-      tr.innerHTML =
-        '<td><span class="ref-fn-name">' + r.excel + '</span>' + syntaxHTML + '</td>' +
-        '<td>' + r.dax + '</td>' +
-        '<td>' + r.note + '</td>';
-      refBody.appendChild(tr);
-    });
+    // Populate reference table
+    var refBody = document.getElementById('refBody');
+    if (refBody) {
+      daxMap.forEach(function(r) {
+        var tr = document.createElement('tr');
+        var syntax = excelSyntax[r.excel] || '';
+        var syntaxHTML = syntax ? '<div class="ref-syntax" data-fn="' + r.excel + '"><div class="syn-label">Excel Syntax</div><code>' + syntax + '</code></div>' : '';
+        tr.innerHTML = '<td><span class="ref-fn-name">' + r.excel + '</span>' + syntaxHTML + '</td><td>' + r.dax + '</td><td>' + r.note + '</td>';
+        refBody.appendChild(tr);
+      });
 
-    // Expandable Excel syntax on click
-    refBody.addEventListener('click', function(e) {
-      const fnName = e.target.closest('.ref-fn-name');
-      if (!fnName) return;
-      const td = fnName.closest('td');
-      const syntax = td.querySelector('.ref-syntax');
-      if (syntax) {
-        syntax.classList.toggle('open');
-      }
-    });
-
-    // Reference search + collapse
-    let refOpen = false;
-
-    function toggleRef() {
-      refOpen = !refOpen;
-      const body = document.getElementById('refTableBody');
-      const btn = document.getElementById('refToggle');
-      const search = document.getElementById('refSearch');
-
-      if (refOpen) {
-        body.classList.add('open');
-        btn.classList.add('open');
-        btn.querySelector('span').textContent = 'Collapse';
-        // Show all rows when manually opened
-        if (!search.value.trim()) {
-          refBody.querySelectorAll('tr').forEach(tr => tr.classList.remove('hidden'));
-          document.getElementById('refCount').style.display = 'none';
-        }
-      } else {
-        body.classList.remove('open');
-        body.classList.remove('searching');
-        btn.classList.remove('open');
-        btn.querySelector('span').textContent = 'Show All';
-        document.getElementById('refCount').style.display = 'none';
-        // Clear search when collapsing
-        search.value = '';
-        refBody.querySelectorAll('tr').forEach(tr => tr.classList.remove('hidden'));
-      }
-    }
-
-    document.getElementById('refSearch').addEventListener('input', function() {
-      const q = this.value.toLowerCase().trim();
-      const body = document.getElementById('refTableBody');
-      const countEl = document.getElementById('refCount');
-      const btn = document.getElementById('refToggle');
-
-      if (q) {
-        // Auto-expand when searching, even if collapsed
-        body.classList.add('searching');
-
-        let count = 0;
-        refBody.querySelectorAll('tr').forEach(tr => {
-          const text = tr.textContent.toLowerCase();
-          const match = text.includes(q);
-          tr.classList.toggle('hidden', !match);
-          if (match) count++;
-        });
-
-        countEl.textContent = count + ' match' + (count !== 1 ? 'es' : '') + ' found';
-        countEl.style.display = 'block';
-      } else {
-        // Search cleared
-        if (!refOpen) {
-          body.classList.remove('searching');
-        }
-        refBody.querySelectorAll('tr').forEach(tr => tr.classList.remove('hidden'));
-        countEl.style.display = 'none';
-      }
-    });
-
-    // Converter logic
-    function convertFormula(excel) {
-      let input = excel.trim();
-      if (input.startsWith('=')) input = input.slice(1);
-      if (!input) return { dax: '', notes: [] };
-
-      let dax = input;
-      const notes = [];
-      const upper = input.toUpperCase();
-
-      // Track which conversions we applied
-      const applied = [];
-
-      // Cell reference detection
-      if (/\b[A-Z]{1,3}\d{1,7}\b/.test(dax) && !/Table\[/.test(dax)) {
-        notes.push('Cell references (e.g. A1, B2:B100) do not exist in DAX. Replace with <span class="hl">Table[Column]</span> references.');
-      }
-
-      // Sheet reference detection
-      if (/\w+!/.test(dax)) {
-        notes.push('Sheet references (e.g. Sheet1!) are not used in DAX. Use <span class="hl">RELATED()</span> for joined tables or reference the table name directly.');
-        dax = dax.replace(/(\w+)!/g, '/* $1. */');
-      }
-
-      // SUMIFS / SUMIF
-      const sumifs = upper.match(/SUMIFS?\s*\(/);
-      if (sumifs) {
-        applied.push('SUMIFS -> CALCULATE + SUM');
-        notes.push('Converted to <span class="hl">CALCULATE ( SUM(...), filters )</span>. Replace Table[Column] with your actual column references.');
-        dax = dax.replace(/SUMIFS?\s*\(([^)]*)\)/gi, function(m, args) {
-          return 'CALCULATE ( SUM ( Table[ValueColumn] ), Table[FilterCol] = "criteria" )';
-        });
-      }
-
-      // COUNTIFS / COUNTIF
-      const countifs = upper.match(/COUNTIFS?\s*\(/);
-      if (countifs) {
-        applied.push('COUNTIFS -> CALCULATE + COUNTROWS');
-        notes.push('Converted to <span class="hl">CALCULATE ( COUNTROWS(...), filters )</span>.');
-        dax = dax.replace(/COUNTIFS?\s*\(([^)]*)\)/gi, function(m, args) {
-          return 'CALCULATE ( COUNTROWS ( Table ), Table[FilterCol] = "criteria" )';
-        });
-      }
-
-      // AVERAGEIFS / AVERAGEIF
-      const avgifs = upper.match(/AVERAGEIFS?\s*\(/);
-      if (avgifs) {
-        applied.push('AVERAGEIF -> CALCULATE + AVERAGE');
-        dax = dax.replace(/AVERAGEIFS?\s*\(([^)]*)\)/gi, function() {
-          return 'CALCULATE ( AVERAGE ( Table[Column] ), Table[FilterCol] = "criteria" )';
-        });
-      }
-
-      // VLOOKUP / HLOOKUP / XLOOKUP
-      if (/VLOOKUP|HLOOKUP|XLOOKUP/i.test(upper)) {
-        applied.push('VLOOKUP -> LOOKUPVALUE');
-        notes.push('Converted to <span class="hl">LOOKUPVALUE</span>. If the tables are related in your model, consider using <span class="hl">RELATED()</span> instead.');
-        dax = dax.replace(/[VHX]LOOKUP\s*\(([^)]*)\)/gi, function(m, args) {
-          return 'LOOKUPVALUE ( Table[ReturnColumn], Table[SearchColumn], SearchValue )';
-        });
-      }
-
-      // IFS -> SWITCH(TRUE())
-      if (/\bIFS\s*\(/i.test(upper) && !/SUMIFS|COUNTIFS|AVERAGEIFS/i.test(upper)) {
-        applied.push('IFS -> SWITCH(TRUE())');
-        dax = dax.replace(/\bIFS\s*\(([^)]*)\)/gi, function(m, args) {
-          return 'SWITCH ( TRUE(), condition1, result1, condition2, result2, default_result )';
-        });
-      }
-
-      // CONCATENATE -> &
-      if (/CONCATENATE\s*\(/i.test(upper)) {
-        applied.push('CONCATENATE -> & operator');
-        notes.push('DAX uses the <span class="hl">&</span> operator for concatenation.');
-        dax = dax.replace(/CONCATENATE\s*\(\s*([^,]+)\s*,\s*([^)]+)\)/gi, '$1 & $2');
-      }
-
-      // TEXTJOIN -> CONCATENATEX
-      if (/TEXTJOIN\s*\(/i.test(upper)) {
-        applied.push('TEXTJOIN -> CONCATENATEX');
-        dax = dax.replace(/TEXTJOIN\s*\(([^)]*)\)/gi, 'CONCATENATEX ( Table, Table[Column], ", " )');
-      }
-
-      // TEXT -> FORMAT
-      if (/\bTEXT\s*\(/i.test(upper)) {
-        applied.push('TEXT -> FORMAT');
-        dax = dax.replace(/\bTEXT\s*\(/gi, 'FORMAT (');
-      }
-
-      // DATEDIF -> DATEDIFF
-      if (/DATEDIF\s*\(/i.test(upper)) {
-        applied.push('DATEDIF -> DATEDIFF');
-        notes.push('Note: DAX uses DATE<span class="hl">DIFF</span> (two Fs). Intervals: DAY, MONTH, QUARTER, YEAR.');
-        dax = dax.replace(/DATEDIF\s*\(/gi, 'DATEDIFF (');
-      }
-
-      // CHOOSE -> SWITCH
-      if (/\bCHOOSE\s*\(/i.test(upper)) {
-        applied.push('CHOOSE -> SWITCH');
-        dax = dax.replace(/\bCHOOSE\s*\(/gi, 'SWITCH (');
-      }
-
-      // RANK -> RANKX
-      if (/\bRANK\s*\(/i.test(upper)) {
-        applied.push('RANK -> RANKX');
-        dax = dax.replace(/\bRANK\s*\(/gi, 'RANKX ( ALL(Table), ');
-        notes.push('RANKX requires a table as the first argument. <span class="hl">ALL(Table)</span> is commonly used.');
-      }
-
-      // Generic: if no specific conversions applied, try simple function name matches
-      if (applied.length === 0) {
-        const simpleSwaps = {
-          'PROPER': '/* No DAX equivalent for PROPER. Use Power Query or UPPER(LEFT(...)) & LOWER(MID(...)) */',
-          'NETWORKDAYS': '/* No direct DAX equivalent for NETWORKDAYS. Calculate using FILTER + WEEKDAY */',
-        };
-        for (const [fn, repl] of Object.entries(simpleSwaps)) {
-          if (upper.includes(fn)) {
-            dax = repl;
-            applied.push(fn + ' (no direct equivalent)');
-            notes.push('This function has no direct DAX equivalent. Handle in <span class="hl">Power Query</span> or build custom logic.');
-          }
-        }
-      }
-
-      if (applied.length === 0 && dax === input) {
-        notes.push('This formula may work in DAX as-is, or may need <span class="hl">Table[Column]</span> references instead of cell references.');
-      }
-
-      return { dax: dax, notes: notes, applied: applied };
-    }
-
-    function highlightDAX(text) {
-      let out = text
-        .replace(/\b(CALCULATE|SUM|AVERAGE|COUNTROWS|COUNT|COUNTA|MIN|MAX|FILTER|ALL|ALLEXCEPT|VALUES|DISTINCT|LOOKUPVALUE|RELATED|RELATEDTABLE|SWITCH|IF|IFERROR|FORMAT|RANKX|TOPN|CONCATENATEX|DATEDIFF|EOMONTH|YEAR|MONTH|DAY|TODAY|NOW|LEFT|RIGHT|MID|LEN|TRIM|UPPER|LOWER|FIND|SEARCH|SUBSTITUTE|ROUND|ROUNDUP|ROUNDDOWN|INT|MOD|ABS|POWER|SQRT|AND|OR|NOT|TRUE|FALSE|BLANK|ISBLANK|DIVIDE|SELECTEDVALUE|HASONEVALUE|DISTINCTCOUNT|EARLIER|EARLIEST)\b/g, '<span class="fn">$1</span>')
-        .replace(/(Table\[\w+\])/g, '<span class="tbl">$1</span>')
-        .replace(/"([^"]*)"/g, '<span class="str">"$1"</span>')
-        .replace(/\b(\d+\.?\d*)\b/g, '<span class="num">$1</span>');
-      return out;
-    }
-
-    function convertAndRender() {
-      const input = document.getElementById('excelInput').value;
-      const output = document.getElementById('daxOutput');
-      const notesEl = document.getElementById('convNotes');
-
-      if (!input.trim()) {
-        output.innerHTML = '<span class="placeholder">DAX formula will appear here...</span>';
-        notesEl.style.display = 'none';
-        return;
-      }
-
-      const result = convertFormula(input);
-      output.innerHTML = highlightDAX(result.dax);
-
-      if (result.notes.length > 0) {
-        notesEl.style.display = 'block';
-        notesEl.innerHTML = result.notes.map(n => '<div class="conv-note">' + n + '</div>').join('');
-      } else {
-        notesEl.style.display = 'none';
-      }
-    }
-
-    function copyDAX() {
-      const output = document.getElementById('daxOutput');
-      const text = output.textContent;
-      navigator.clipboard.writeText(text).then(() => {
-        const btn = document.getElementById('daxCopy');
-        btn.textContent = 'Copied!';
-        btn.classList.add('copied');
-        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      refBody.addEventListener('click', function(e) {
+        var fnName = e.target.closest('.ref-fn-name');
+        if (!fnName) return;
+        var syntax = fnName.closest('td').querySelector('.ref-syntax');
+        if (syntax) syntax.classList.toggle('open');
       });
     }
 
-    document.getElementById('excelInput').addEventListener('input', convertAndRender);
+    // Reference table toggle
+    var refOpen = false;
+    function toggleRef() {
+      refOpen = !refOpen;
+      var body = document.getElementById('refTableBody');
+      var btn = document.getElementById('refToggle');
+      var search = document.getElementById('refSearch');
+      if (refOpen) {
+        body.classList.add('open'); btn.classList.add('open'); btn.querySelector('span').textContent = 'Collapse';
+        if (!search.value.trim() && refBody) refBody.querySelectorAll('tr').forEach(function(tr) { tr.classList.remove('hidden'); });
+      } else {
+        body.classList.remove('open'); body.classList.remove('searching'); btn.classList.remove('open'); btn.querySelector('span').textContent = 'Show All';
+        if (search) search.value = '';
+        if (refBody) refBody.querySelectorAll('tr').forEach(function(tr) { tr.classList.remove('hidden'); });
+      }
+      if (document.getElementById('refCount')) document.getElementById('refCount').style.display = 'none';
+    }
+    window.toggleRef = toggleRef;
+
+    // Reference search
+    var refSearchEl = document.getElementById('refSearch');
+    if (refSearchEl) {
+      refSearchEl.addEventListener('input', function() {
+        var q = this.value.toLowerCase().trim();
+        var body = document.getElementById('refTableBody');
+        var countEl = document.getElementById('refCount');
+        if (q) {
+          body.classList.add('searching');
+          var count = 0;
+          refBody.querySelectorAll('tr').forEach(function(tr) {
+            var match = tr.textContent.toLowerCase().includes(q);
+            tr.classList.toggle('hidden', !match);
+            if (match) count++;
+          });
+          countEl.textContent = count + ' match' + (count !== 1 ? 'es' : '') + ' found';
+          countEl.style.display = 'block';
+        } else {
+          if (!refOpen) body.classList.remove('searching');
+          refBody.querySelectorAll('tr').forEach(function(tr) { tr.classList.remove('hidden'); });
+          countEl.style.display = 'none';
+        }
+      });
+    }
+
+    // Converter logic
+    function convertFormula(excel) {
+      var input = excel.trim();
+      if (input.startsWith('=')) input = input.slice(1);
+      if (!input) return { dax: '', notes: [] };
+      var dax = input; var notes = []; var upper = input.toUpperCase(); var applied = [];
+      if (/\b[A-Z]{1,3}\d{1,7}\b/.test(dax) && !/Table\[/.test(dax)) notes.push('Cell references do not exist in DAX. Replace with <span class="hl">Table[Column]</span> references.');
+      if (/\w+!/.test(dax)) { notes.push('Sheet references are not used in DAX. Use <span class="hl">RELATED()</span> or reference the table name directly.'); dax = dax.replace(/(\w+)!/g, '/* $1. */'); }
+      if (/SUMIFS?\s*\(/i.test(upper)) { applied.push('SUMIFS'); dax = dax.replace(/SUMIFS?\s*\(([^)]*)\)/gi, 'CALCULATE ( SUM ( Table[ValueColumn] ), Table[FilterCol] = "criteria" )'); notes.push('Converted to <span class="hl">CALCULATE ( SUM(...), filters )</span>.'); }
+      if (/COUNTIFS?\s*\(/i.test(upper) && !applied.length) { applied.push('COUNTIFS'); dax = dax.replace(/COUNTIFS?\s*\(([^)]*)\)/gi, 'CALCULATE ( COUNTROWS ( Table ), Table[FilterCol] = "criteria" )'); }
+      if (/AVERAGEIFS?\s*\(/i.test(upper) && !applied.length) { applied.push('AVERAGEIF'); dax = dax.replace(/AVERAGEIFS?\s*\(([^)]*)\)/gi, 'CALCULATE ( AVERAGE ( Table[Column] ), Table[FilterCol] = "criteria" )'); }
+      if (/VLOOKUP|HLOOKUP|XLOOKUP/i.test(upper)) { applied.push('VLOOKUP'); dax = dax.replace(/[VHX]LOOKUP\s*\(([^)]*)\)/gi, 'LOOKUPVALUE ( Table[ReturnColumn], Table[SearchColumn], SearchValue )'); notes.push('Converted to <span class="hl">LOOKUPVALUE</span>. Consider <span class="hl">RELATED()</span> if tables are joined.'); }
+      if (/\bIFS\s*\(/i.test(upper) && !/SUMIFS|COUNTIFS|AVERAGEIFS/i.test(upper)) { applied.push('IFS'); dax = dax.replace(/\bIFS\s*\(([^)]*)\)/gi, 'SWITCH ( TRUE(), condition1, result1, condition2, result2, default_result )'); }
+      if (/CONCATENATE\s*\(/i.test(upper)) { applied.push('CONCATENATE'); dax = dax.replace(/CONCATENATE\s*\(\s*([^,]+)\s*,\s*([^)]+)\)/gi, '$1 & $2'); notes.push('DAX uses the <span class="hl">&</span> operator.'); }
+      if (/\bTEXT\s*\(/i.test(upper)) { applied.push('TEXT'); dax = dax.replace(/\bTEXT\s*\(/gi, 'FORMAT ('); }
+      if (/DATEDIF\s*\(/i.test(upper)) { applied.push('DATEDIF'); dax = dax.replace(/DATEDIF\s*\(/gi, 'DATEDIFF ('); notes.push('DAX uses DATE<span class="hl">DIFF</span> (two Fs).'); }
+      if (/\bRANK\s*\(/i.test(upper)) { applied.push('RANK'); dax = dax.replace(/\bRANK\s*\(/gi, 'RANKX ( ALL(Table), '); notes.push('RANKX requires a table as first argument.'); }
+      if (applied.length === 0) notes.push('This formula may work in DAX as-is, or may need <span class="hl">Table[Column]</span> references.');
+      return { dax: dax, notes: notes };
+    }
+
+    function convertAndRender() {
+      var input = document.getElementById('excelInput').value;
+      var output = document.getElementById('daxOutput');
+      var notesEl = document.getElementById('convNotes');
+      if (!input.trim()) { output.innerHTML = '<span class="placeholder">DAX formula will appear here...</span>'; notesEl.style.display = 'none'; return; }
+      var result = convertFormula(input);
+      output.innerHTML = highlightDAX(result.dax);
+      if (result.notes.length > 0) { notesEl.style.display = 'block'; notesEl.innerHTML = result.notes.map(function(n) { return '<div class="conv-note">' + n + '</div>'; }).join(''); } else { notesEl.style.display = 'none'; }
+    }
+
+    function copyDAX() {
+      var text = document.getElementById('daxOutput').textContent;
+      navigator.clipboard.writeText(text).then(function() {
+        var btn = document.getElementById('daxCopy');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+    window.copyDAX = copyDAX;
+
+    var excelInputEl = document.getElementById('excelInput');
+    if (excelInputEl) excelInputEl.addEventListener('input', convertAndRender);
 
 
     // ─────────────────────────────────────────
@@ -2098,6 +1307,12 @@ Segment</textarea>
         warnHTML += '<div class="warning" style="background:rgba(62,207,142,0.06);border-color:rgba(62,207,142,0.15);color:var(--green);"><div class="warning-dot" style="background:var(--green);"></div><div><strong>Fast payback:</strong> This project pays for itself in ' + breakeven + ' month' + (breakeven === 1 ? '' : 's') + '. After that, ' + fmt(annualSavings) + '/year goes straight to your bottom line.</div></div>';
       }
       $('roiWarnings').innerHTML = warnHTML;
+
+      // Dynamic nudge CTA
+      var nudgeEl = $('roiNudgeText');
+      if (nudgeEl && annualSavings > 0) {
+        nudgeEl.textContent = 'You are losing ' + fmt(annualCost) + '/year to manual reporting. Ready to fix that?';
+      }
     }
 
     ['roiReports','roiHoursPerReport','roiHourlyRate','roiAutoHours','roiBuildCost'].forEach(function(id) {
@@ -2257,149 +1472,6 @@ Segment</textarea>
 
 
     // ─────────────────────────────────────────
-    // DATA MODEL PLANNER
-    // ─────────────────────────────────────────
-
-    var dmCounter = 3;
-
-    window.addDMTable = function() {
-      var container = document.getElementById('dmTables');
-      var idx = dmCounter++;
-      var div = document.createElement('div');
-      div.className = 'dm-table-block';
-      div.setAttribute('data-idx', idx);
-      div.style.marginTop = '0.75rem';
-      div.innerHTML =
-        '<div style="display:flex;gap:0.5rem;align-items:center;margin-bottom:0.5rem;">' +
-        '<select class="field-select dm-table-type" style="max-width:120px;font-size:0.75rem;" onchange="renderDM()"><option value="fact">Fact</option><option value="dim" selected>Dimension</option></select>' +
-        '<input type="text" class="field-input dm-table-name" value="DimNew" placeholder="Table name" style="flex:1;font-size:0.75rem;" oninput="renderDM()">' +
-        '<button class="lot-remove" onclick="removeDMTable(this)" style="flex-shrink:0;">&times;</button>' +
-        '</div>' +
-        '<textarea class="conv-textarea dm-table-cols" placeholder="Column names, one per line" style="min-height:80px;font-size:0.75rem;" oninput="renderDM()">ID\nName</textarea>';
-      container.appendChild(div);
-      renderDM();
-    };
-
-    window.removeDMTable = function(btn) {
-      btn.closest('.dm-table-block').remove();
-      renderDM();
-    };
-
-    function getTableDefs() {
-      var tables = [];
-      document.querySelectorAll('.dm-table-block').forEach(function(block) {
-        var type = block.querySelector('.dm-table-type').value;
-        var name = block.querySelector('.dm-table-name').value || 'Table';
-        var cols = block.querySelector('.dm-table-cols').value.split('\n').map(function(c) { return c.trim(); }).filter(function(c) { return c; });
-        tables.push({ type: type, name: name, cols: cols });
-      });
-      return tables;
-    }
-
-    function findRelationships(tables) {
-      var rels = [];
-      tables.forEach(function(t1, i) {
-        tables.forEach(function(t2, j) {
-          if (i >= j) return;
-          t1.cols.forEach(function(c1) {
-            t2.cols.forEach(function(c2) {
-              if (c1 === c2 && c1.toLowerCase() !== 'id' && c1.length > 1) {
-                rels.push({ from: i, to: j, key: c1 });
-              }
-            });
-          });
-        });
-      });
-      return rels;
-    }
-
-    window.renderDM = function() {
-      var canvas = document.getElementById('dmCanvas');
-      var ctx = canvas.getContext('2d');
-      var tables = getTableDefs();
-      var rels = findRelationships(tables);
-      var W = canvas.width, H = canvas.height;
-
-      ctx.clearRect(0, 0, W, H);
-
-      if (tables.length === 0) return;
-
-      // Layout: facts in center, dims around
-      var facts = tables.filter(function(t) { return t.type === 'fact'; });
-      var dims = tables.filter(function(t) { return t.type === 'dim'; });
-      var positions = [];
-      var cx = W / 2, cy = H / 2;
-
-      // Position facts in center
-      facts.forEach(function(t, i) {
-        positions[tables.indexOf(t)] = { x: cx - 60 + i * 140, y: cy - 20 };
-      });
-
-      // Position dims in circle around
-      var dimIdxs = dims.map(function(t) { return tables.indexOf(t); });
-      dimIdxs.forEach(function(idx, i) {
-        var angle = (i / dimIdxs.length) * Math.PI * 2 - Math.PI / 2;
-        var rx = Math.min(W, H) * 0.35;
-        positions[idx] = { x: cx + Math.cos(angle) * rx - 50, y: cy + Math.sin(angle) * rx - 20 };
-      });
-
-      // Draw relationships
-      ctx.strokeStyle = 'rgba(192,88,24,0.4)';
-      ctx.lineWidth = 2;
-      rels.forEach(function(r) {
-        var p1 = positions[r.from], p2 = positions[r.to];
-        if (!p1 || !p2) return;
-        var x1 = p1.x + 50, y1 = p1.y + 15;
-        var x2 = p2.x + 50, y2 = p2.y + 15;
-        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
-        // Key label
-        var mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
-        ctx.fillStyle = 'rgba(192,88,24,0.7)';
-        ctx.font = '9px monospace';
-        ctx.fillText(r.key, mx + 4, my - 4);
-        // Diamond on relationship line
-        ctx.fillStyle = '#C05818';
-        ctx.beginPath(); ctx.arc(mx, my, 3, 0, Math.PI * 2); ctx.fill();
-      });
-
-      // Draw tables
-      tables.forEach(function(t, i) {
-        var p = positions[i];
-        if (!p) return;
-        var w = 110, headerH = 22;
-        var totalH = headerH + t.cols.length * 14 + 6;
-        var isFact = t.type === 'fact';
-
-        // Box
-        ctx.fillStyle = isFact ? 'rgba(0,120,212,0.12)' : 'rgba(62,207,142,0.08)';
-        ctx.strokeStyle = isFact ? '#0078D4' : '#3ECF8E';
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.roundRect(p.x, p.y, w, totalH, 6);
-        ctx.fill(); ctx.stroke();
-
-        // Header
-        ctx.fillStyle = isFact ? '#0078D4' : '#3ECF8E';
-        ctx.beginPath();
-        ctx.roundRect(p.x, p.y, w, headerH, [6, 6, 0, 0]);
-        ctx.fill();
-        ctx.fillStyle = '#fff';
-        ctx.font = 'bold 10px sans-serif';
-        ctx.fillText(t.name, p.x + 6, p.y + 15);
-
-        // Columns
-        ctx.font = '9px monospace';
-        t.cols.forEach(function(col, ci) {
-          var isKey = rels.some(function(r) { return r.key === col && (r.from === i || r.to === i); });
-          ctx.fillStyle = isKey ? '#C05818' : 'rgba(255,255,255,0.5)';
-          ctx.fillText((isKey ? '\u26BF ' : '  ') + col, p.x + 6, p.y + headerH + 12 + ci * 14);
-        });
-      });
-    };
-
-    renderDM();
-
-    // ─────────────────────────────────────────
     // POWER BI THEME GENERATOR
     // ─────────────────────────────────────────
 
@@ -2539,115 +1611,6 @@ Segment</textarea>
     $('mkMarginInput').addEventListener('input', calcFromMargin);
     calcMarkup();
 
-    // ─────────────────────────────────────────
-    // OPTIONS PROFIT CALCULATOR
-    // ─────────────────────────────────────────
-
-    var optType = 'buyCall';
-
-    window.setOptType = function(type) {
-      optType = type;
-      $('optBuyCall').classList.toggle('selected', type === 'buyCall');
-      $('optSellCall').classList.toggle('selected', type === 'sellCall');
-      $('optBuyPut').classList.toggle('selected', type === 'buyPut');
-      $('optSellPut').classList.toggle('selected', type === 'sellPut');
-      calcOptions();
-    };
-
-    function calcOptions() {
-      var stock = parseFloat($('optStock').value) || 0;
-      var strike = parseFloat($('optStrike').value) || 0;
-      var premium = parseFloat($('optPremium').value) || 0;
-      var contracts = parseInt($('optContracts').value) || 1;
-      var shares = contracts * 100;
-      var totalCost = premium * shares;
-      var isCall = optType === 'buyCall' || optType === 'sellCall';
-      var isBuy = optType === 'buyCall' || optType === 'buyPut';
-
-      // Break-even
-      var breakeven = isCall ? strike + premium : strike - premium;
-
-      // Max loss / max profit
-      var maxLossText, maxProfitText, costLabel;
-      if (optType === 'buyCall') {
-        maxLossText = '-' + fmt(totalCost);
-        maxProfitText = 'Unlimited';
-        costLabel = fmt(totalCost) + ' (debit)';
-      } else if (optType === 'sellCall') {
-        maxLossText = 'Unlimited';
-        maxProfitText = '+' + fmt(totalCost);
-        costLabel = fmt(totalCost) + ' (credit)';
-      } else if (optType === 'buyPut') {
-        maxLossText = '-' + fmt(totalCost);
-        maxProfitText = '+' + fmt(Math.max(0, (strike - premium) * shares));
-        costLabel = fmt(totalCost) + ' (debit)';
-      } else { // sellPut
-        maxLossText = '-' + fmt(Math.max(0, (strike - premium) * shares));
-        maxProfitText = '+' + fmt(totalCost);
-        costLabel = fmt(totalCost) + ' (credit)';
-      }
-
-      $('optBreakeven').textContent = '$' + breakeven.toFixed(2);
-      $('optMaxLoss').textContent = maxLossText;
-      $('optMaxLoss').style.color = maxLossText === 'Unlimited' ? '#CC2936' : '#CC2936';
-      $('optMaxProfit').textContent = maxProfitText;
-      $('optMaxProfit').style.color = maxProfitText === 'Unlimited' ? 'var(--green)' : 'var(--green)';
-      $('optTotalCost').textContent = costLabel;
-      $('optTotalCost').style.color = isBuy ? 'var(--copper)' : 'var(--green)';
-
-      // Slider range
-      var rangeMin = Math.max(0, Math.round(strike * 0.5));
-      var rangeMax = Math.round(strike * 1.8);
-      var slider = $('optExpPrice');
-      slider.min = rangeMin;
-      slider.max = rangeMax;
-      $('optRangeMin').textContent = '$' + rangeMin;
-      $('optRangeMax').textContent = '$' + rangeMax;
-
-      // P&L at slider price
-      var expPrice = parseFloat(slider.value) || strike;
-      $('optRangeCur').textContent = '$' + expPrice.toFixed(2);
-
-      var intrinsic = isCall ? Math.max(0, expPrice - strike) : Math.max(0, strike - expPrice);
-      var pnl;
-      if (isBuy) {
-        pnl = (intrinsic - premium) * shares;
-      } else {
-        pnl = (premium - intrinsic) * shares;
-      }
-      var returnPct = totalCost > 0 ? (pnl / totalCost) * 100 : 0;
-
-      var pnlColor = pnl >= 0 ? 'var(--green)' : 'var(--red)';
-      $('optPnlAtPrice').textContent = (pnl >= 0 ? '+' : '') + fmt(pnl);
-      $('optPnlAtPrice').style.color = pnlColor;
-      $('optReturnPct').textContent = (returnPct >= 0 ? '+' : '') + returnPct.toFixed(1) + '%';
-      $('optReturnPct').style.color = pnlColor;
-      $('optIntrinsic').textContent = '$' + intrinsic.toFixed(2);
-
-      // P&L table
-      var body = $('optPnlBody');
-      body.innerHTML = '';
-      var step = Math.max(1, Math.round((rangeMax - rangeMin) / 15));
-      for (var p = rangeMin; p <= rangeMax; p += step) {
-        var iv = isCall ? Math.max(0, p - strike) : Math.max(0, strike - p);
-        var pl = isBuy ? (iv - premium) * shares : (premium - iv) * shares;
-        var rp = totalCost > 0 ? (pl / totalCost) * 100 : 0;
-        var color = pl >= 0 ? 'var(--green)' : 'var(--red)';
-        var isBE = Math.abs(p - breakeven) < step / 2;
-        body.innerHTML +=
-          '<tr style="' + (isBE ? 'background:rgba(192,88,24,0.06);' : '') + '">' +
-          '<td class="lot-total">' + (isBE ? '<strong>$' + p + ' (BE)</strong>' : '$' + p) + '</td>' +
-          '<td class="lot-total">$' + iv.toFixed(2) + '</td>' +
-          '<td class="lot-total" style="color:' + color + ';font-weight:600;">' + (pl >= 0 ? '+' : '') + fmt(pl) + '</td>' +
-          '<td class="lot-total" style="color:' + color + ';">' + (rp >= 0 ? '+' : '') + rp.toFixed(1) + '%</td></tr>';
-      }
-    }
-
-    ['optStock','optStrike','optPremium','optContracts'].forEach(function(id) {
-      $(id).addEventListener('input', calcOptions);
-    });
-    $('optExpPrice').addEventListener('input', calcOptions);
-    calcOptions();
   </script>
 </body>
 </html>
