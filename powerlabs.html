@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PowerLabs — Free Tools | Power Integrate</title>
-  <meta name="description" content="Free calculators and tools built by Power Integrate. Cash-out refinance calculator, stock cost basis calculator, and more.">
+  <meta name="description" content="Free Power BI, data, and finance tools built by Power Integrate. DAX converter, SQL to M, theme generator, data model planner, options calculator, and more.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Lora:ital,wght@0,400;0,600;1,400;1,600;1,700&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
@@ -101,9 +101,14 @@
     /* ── TOOL SECTIONS (collapsible) ── */
     .tool-section {
       margin: 0 6vw; border: 1px solid rgba(24,29,42,0.09);
-      border-radius: 1.5rem; overflow: hidden; margin-top: 1.5rem;
+      border-radius: 1.5rem; overflow: hidden; margin-top: 1rem;
       box-shadow: 0 2px 16px rgba(0,0,0,0.04);
       background: #fff;
+      transition: border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+    .tool-section.open {
+      border-color: rgba(192,88,24,0.2);
+      box-shadow: 0 4px 32px rgba(192,88,24,0.08), 0 2px 16px rgba(0,0,0,0.06);
     }
     .tool-header {
       padding: 1.25rem 1.75rem; display: flex; align-items: center; gap: 1rem;
@@ -112,11 +117,14 @@
       position: relative;
     }
     .tool-header:hover { background: rgba(24,29,42,0.02); }
+    .tool-section.open .tool-header { border-bottom: 1px solid rgba(24,29,42,0.06); }
     .tool-header-left { display: flex; align-items: center; gap: 0.875rem; flex: 1; min-width: 0; }
     .tool-icon {
       width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
       font-size: 0.75rem; font-weight: 700; color: #fff; flex-shrink: 0;
+      transition: box-shadow 0.3s ease;
     }
+    .tool-section.open .tool-icon { box-shadow: 0 0 12px rgba(192,88,24,0.25); }
     .tool-name { font-weight: 800; font-size: 1.125rem; color: var(--ink); letter-spacing: -0.02em; }
     .tool-badge {
       font-family: var(--font-mono); font-size: 0.5rem; font-weight: 600; color: var(--copper);
@@ -124,6 +132,11 @@
       padding: 0.2rem 0.625rem; border-radius: 100px; letter-spacing: 0.1em; text-transform: uppercase;
       flex-shrink: 0;
     }
+    .tool-status {
+      font-family: var(--font-mono); font-size: 0.5rem; font-weight: 600;
+      color: var(--green); letter-spacing: 0.08em; display: none;
+    }
+    .tool-section.open .tool-status { display: inline; }
     .tool-chevron {
       width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
       background: rgba(24,29,42,0.04); flex-shrink: 0;
@@ -137,14 +150,34 @@
       max-height: 0; overflow: hidden;
       transition: max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
-    .tool-section.open .tool-body { max-height: 6000px; }
-    .tool-body-inner { padding: 0 1.75rem 2rem; }
+    .tool-section.open .tool-body { max-height: 8000px; }
+    .tool-body-inner { padding: 0 1.75rem 0; }
+
+    /* ── LEAD NUDGE (appears after interaction) ── */
+    .tool-nudge {
+      display: flex; align-items: center; justify-content: center; gap: 0.75rem;
+      padding: 1rem 1.75rem; margin-top: 1rem;
+      border-top: 1px solid rgba(24,29,42,0.06);
+      opacity: 0; max-height: 0; overflow: hidden;
+      transition: opacity 0.6s ease, max-height 0.4s ease;
+    }
+    .tool-nudge.visible { opacity: 1; max-height: 60px; padding-bottom: 1.5rem; }
+    .tool-nudge-text { font-size: 0.75rem; color: var(--slate); }
+    .tool-nudge-cta {
+      font-family: var(--font-mono); font-size: 0.625rem; font-weight: 600;
+      color: var(--copper); background: rgba(192,88,24,0.06);
+      border: 1px solid rgba(192,88,24,0.2); padding: 0.3rem 0.75rem;
+      border-radius: 100px; text-decoration: none; white-space: nowrap;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+    .tool-nudge-cta:hover { background: rgba(192,88,24,0.12); border-color: var(--copper); }
 
     @media (max-width: 780px) {
-      .tool-section { margin: 0 4vw; margin-top: 1rem; }
+      .tool-section { margin: 0 4vw; margin-top: 0.75rem; }
       .tool-header { padding: 1rem 1.25rem; }
-      .tool-body-inner { padding: 0 1.25rem 1.5rem; }
+      .tool-body-inner { padding: 0 1.25rem 0; }
       .tool-badge { display: none; }
+      .tool-nudge { flex-direction: column; text-align: center; }
     }
 
     /* ── CALCULATOR ── */
@@ -283,10 +316,11 @@
     .tool-index-card:hover { border-color: var(--copper); box-shadow: 0 2px 12px var(--copper-glow); }
 
     /* ── TOOL SEGMENTS ── */
-    .tool-segment { margin: 2.5rem 6vw 0; }
-    .tool-segment:first-of-type { margin-top: 2rem; }
+    .tool-segment { margin: 0 6vw; }
+    .tool-segment:first-of-type { margin-top: 1.5rem; }
+    .tool-segment + .tool-segment { margin-top: 1.25rem; }
     .tool-segment-header {
-      display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;
     }
     .tool-segment-line { flex: 1; height: 1px; background: rgba(24,29,42,0.08); }
     .tool-segment-label {
@@ -294,10 +328,31 @@
       letter-spacing: 0.18em; text-transform: uppercase; color: var(--slate);
       white-space: nowrap;
     }
-    .tool-segment-cards { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .tool-segment-cards {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.5rem;
+    }
+    .tool-index-card {
+      display: flex; align-items: center; gap: 0.625rem;
+      padding: 0.625rem 1rem; border-radius: 0.75rem;
+      background: var(--card); border: 1px solid rgba(24,29,42,0.06);
+      cursor: pointer; transition: all 0.25s ease;
+      text-decoration: none; color: var(--ink);
+    }
+    .tool-index-card:hover { border-color: var(--copper); box-shadow: 0 2px 12px var(--copper-glow); transform: translateY(-1px); }
+    .tool-index-card.active { border-color: var(--copper); background: rgba(192,88,24,0.04); }
+    .tool-index-icon {
+      width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center;
+      font-size: 0.6875rem; font-weight: 700; color: #fff; flex-shrink: 0;
+    }
+    .tool-index-icon.refi { background: var(--signal); }
+    .tool-index-icon.dca { background: var(--green); }
+    .tool-index-name { font-weight: 600; font-size: 0.75rem; line-height: 1.3; }
+    .tool-index-sub { font-family: var(--font-mono); font-size: 0.4375rem; color: var(--slate); letter-spacing: 0.06em; margin-top: 0.1rem; }
     @media (max-width: 780px) {
-      .tool-segment { margin: 1.5rem 4vw 0; }
-      .tool-segment-cards { gap: 0.5rem; }
+      .tool-segment { margin: 0 4vw; }
+      .tool-segment-cards { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.375rem; }
+      .tool-index-card { padding: 0.5rem 0.75rem; }
     }
     .tool-index-icon {
       width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
@@ -522,21 +577,21 @@
       <div class="tool-segment-line"></div>
     </div>
     <div class="tool-segment-cards">
-      <a class="tool-index-card" onclick="openTool('dax')">
+      <a class="tool-index-card active" data-tool="dax" onclick="openTool('dax')">
         <div class="tool-index-icon" style="background:var(--copper);">fx</div>
         <div><div class="tool-index-name">Excel to DAX Converter</div><div class="tool-index-sub">Formula Translator</div></div>
       </a>
-      <a class="tool-index-card" onclick="openTool('pqm')">
-        <div class="tool-index-icon" style="background:var(--signal);">M</div>
-        <div><div class="tool-index-name">SQL to Power Query (M)</div><div class="tool-index-sub">Query Translator</div></div>
-      </a>
-      <a class="tool-index-card" onclick="openTool('daxgen')">
+      <a class="tool-index-card" data-tool="daxgen" onclick="openTool('daxgen')">
         <div class="tool-index-icon" style="background:#8B5CF6;">fx</div>
         <div><div class="tool-index-name">DAX Measure Generator</div><div class="tool-index-sub">Common Business Measures</div></div>
       </a>
-      <a class="tool-index-card" onclick="openTool('csvtom')">
-        <div class="tool-index-icon" style="background:var(--green);">{}</div>
-        <div><div class="tool-index-name">JSON/CSV to M Converter</div><div class="tool-index-sub">Data to Power Query</div></div>
+      <a class="tool-index-card" data-tool="datamodel" onclick="openTool('datamodel')">
+        <div class="tool-index-icon" style="background:#0078D4;">DM</div>
+        <div><div class="tool-index-name">Data Model Planner</div><div class="tool-index-sub">Star Schema Builder</div></div>
+      </a>
+      <a class="tool-index-card" data-tool="pbitheme" onclick="openTool('pbitheme')">
+        <div class="tool-index-icon" style="background:#E8860A;">T</div>
+        <div><div class="tool-index-name">Power BI Theme Generator</div><div class="tool-index-sub">JSON Theme Builder</div></div>
       </a>
     </div>
   </div>
@@ -548,17 +603,25 @@
       <div class="tool-segment-line"></div>
     </div>
     <div class="tool-segment-cards">
-      <a class="tool-index-card" onclick="openTool('roi')">
+      <a class="tool-index-card" data-tool="roi" onclick="openTool('roi')">
         <div class="tool-index-icon" style="background:#CC2936;">%</div>
         <div><div class="tool-index-name">Reporting ROI Calculator</div><div class="tool-index-sub">Cost of Manual Reporting</div></div>
       </a>
-      <a class="tool-index-card" onclick="openTool('refi')">
+      <a class="tool-index-card" data-tool="refi" onclick="openTool('refi')">
         <div class="tool-index-icon refi">R</div>
         <div><div class="tool-index-name">Cash-Out Refi Calculator</div><div class="tool-index-sub">DTI + Approval Analysis</div></div>
       </a>
-      <a class="tool-index-card" onclick="openTool('dca')">
+      <a class="tool-index-card" data-tool="dca" onclick="openTool('dca')">
         <div class="tool-index-icon dca">$</div>
         <div><div class="tool-index-name">Cost Basis / DCA Calculator</div><div class="tool-index-sub">Stock + Crypto Lots</div></div>
+      </a>
+      <a class="tool-index-card" data-tool="markup" onclick="openTool('markup')">
+        <div class="tool-index-icon" style="background:var(--ink);">%</div>
+        <div><div class="tool-index-name">Markup vs Margin</div><div class="tool-index-sub">Quick Converter</div></div>
+      </a>
+      <a class="tool-index-card" data-tool="options" onclick="openTool('options')">
+        <div class="tool-index-icon" style="background:#16A34A;">OP</div>
+        <div><div class="tool-index-name">Options Profit Calculator</div><div class="tool-index-sub">Calls + Puts P&L</div></div>
       </a>
     </div>
   </div>
@@ -609,55 +672,15 @@
             </div>
           </div>
         </div>
+        <div class="tool-nudge">
+          <span class="tool-nudge-text">Need this built into your reporting stack?</span>
+          <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="tool-nudge-cta">Book a Free Audit</a>
+        </div>
+
       </div>
     </div>
   </div>
 
-  <!-- ═══ SQL TO POWER QUERY (M) ═══ -->
-  <div class="tool-section" id="pqm">
-    <div class="tool-header" onclick="toggleTool('pqm')">
-      <div class="tool-header-left">
-        <div class="tool-icon" style="background:var(--signal);">M</div>
-        <h2 class="tool-name">SQL to Power Query (M)</h2>
-      </div>
-      <span class="tool-badge">Query Translator</span>
-      <div class="tool-chevron"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
-    </div>
-    <div class="tool-body">
-      <div class="tool-body-inner">
-        <div class="conv-layout">
-          <div class="conv-panel">
-            <div class="conv-panel-label sql">SQL Query</div>
-            <textarea class="conv-textarea" id="sqlInput" placeholder="Enter a SQL query...&#10;&#10;Examples:&#10;SELECT Name, SUM(Sales) FROM Orders WHERE Region = 'East' GROUP BY Name&#10;SELECT * FROM Customers WHERE Status IN ('Active','VIP')&#10;SELECT TOP 10 * FROM Products ORDER BY Price DESC" style="border-color:rgba(204,41,54,0.2);"></textarea>
-          </div>
-          <div class="conv-panel dark">
-            <div class="conv-panel-label mcode">Power Query (M)</div>
-            <div class="conv-output" id="mOutput"><span class="placeholder">M code will appear here...</span></div>
-            <button class="conv-copy" id="mCopy" onclick="copyM()">Copy</button>
-            <div class="conv-notes" id="mNotes" style="display:none;"></div>
-          </div>
-          <div class="ref-table-wrap">
-            <div class="ref-panel">
-              <div class="ref-header">
-                <div class="panel-title" style="margin-bottom:0;">SQL to M Reference</div>
-                <button class="ref-toggle" id="mRefToggle" onclick="toggleMRef()"><span>Show All</span> <span class="ref-toggle-arrow">&#9660;</span></button>
-              </div>
-              <input type="text" class="ref-search" id="mRefSearch" placeholder="Search SQL functions...">
-              <div class="ref-result-count" id="mRefCount"></div>
-              <div class="ref-table-body" id="mRefTableBody">
-                <div class="lot-table-wrap">
-                  <table class="ref-table" id="mRefTable">
-                    <thead><tr><th>SQL<span class="ref-expand-hint">(click to expand)</span></th><th>Power Query (M)</th><th>Notes</th></tr></thead>
-                    <tbody id="mRefBody"></tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- ═══ DAX MEASURE GENERATOR ═══ -->
   <div class="tool-section" id="daxgen">
@@ -719,53 +742,181 @@
             <div class="conv-notes" id="daxgenNotes" style="display:none;"></div>
           </div>
         </div>
+        <div class="tool-nudge">
+          <span class="tool-nudge-text">Need this built into your reporting stack?</span>
+          <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="tool-nudge-cta">Book a Free Audit</a>
+        </div>
+
       </div>
     </div>
   </div>
 
-  <!-- ═══ JSON/CSV TO M CONVERTER ═══ -->
-  <div class="tool-section" id="csvtom">
-    <div class="tool-header" onclick="toggleTool('csvtom')">
+
+  <!-- ═══ DATA MODEL PLANNER ═══ -->
+  <div class="tool-section" id="datamodel">
+    <div class="tool-header" onclick="toggleTool('datamodel')">
       <div class="tool-header-left">
-        <div class="tool-icon" style="background:var(--green);">{}</div>
-        <h2 class="tool-name">JSON/CSV to Power Query (M)</h2>
+        <div class="tool-icon" style="background:#0078D4;">DM</div>
+        <h2 class="tool-name">Data Model Planner</h2>
       </div>
-      <span class="tool-badge">Data to M Code</span>
+      <span class="tool-badge">Star Schema Builder</span>
       <div class="tool-chevron"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
     </div>
     <div class="tool-body">
       <div class="tool-body-inner">
         <div class="conv-layout">
           <div class="conv-panel">
-            <div style="display:flex;gap:0.5rem;margin-bottom:1rem;">
-              <button class="scope-check selected" id="csvModeCSV" onclick="setCsvMode('csv')" style="flex:1;justify-content:center;font-size:0.75rem;font-weight:600;">CSV</button>
-              <button class="scope-check" id="csvModeJSON" onclick="setCsvMode('json')" style="flex:1;justify-content:center;font-size:0.75rem;font-weight:600;">JSON</button>
+            <div class="conv-panel-label" style="color:#0078D4;">Define Tables</div>
+            <div id="dmTables">
+              <div class="dm-table-block" data-idx="0">
+                <div style="display:flex;gap:0.5rem;align-items:center;margin-bottom:0.5rem;">
+                  <select class="field-select dm-table-type" style="max-width:120px;font-size:0.75rem;" onchange="renderDM()">
+                    <option value="fact" selected>Fact</option><option value="dim">Dimension</option>
+                  </select>
+                  <input type="text" class="field-input dm-table-name" value="FactSales" placeholder="Table name" style="flex:1;font-size:0.75rem;" oninput="renderDM()">
+                  <button class="lot-remove" onclick="removeDMTable(this)" style="flex-shrink:0;">&times;</button>
+                </div>
+                <textarea class="conv-textarea dm-table-cols" placeholder="Column names, one per line&#10;SalesID&#10;Date&#10;ProductKey&#10;Amount" style="min-height:80px;font-size:0.75rem;" oninput="renderDM()">SalesID
+Date
+ProductKey
+CustomerKey
+Amount
+Quantity</textarea>
+              </div>
+              <div class="dm-table-block" data-idx="1" style="margin-top:0.75rem;">
+                <div style="display:flex;gap:0.5rem;align-items:center;margin-bottom:0.5rem;">
+                  <select class="field-select dm-table-type" style="max-width:120px;font-size:0.75rem;" onchange="renderDM()">
+                    <option value="fact">Fact</option><option value="dim" selected>Dimension</option>
+                  </select>
+                  <input type="text" class="field-input dm-table-name" value="DimProduct" placeholder="Table name" style="flex:1;font-size:0.75rem;" oninput="renderDM()">
+                  <button class="lot-remove" onclick="removeDMTable(this)" style="flex-shrink:0;">&times;</button>
+                </div>
+                <textarea class="conv-textarea dm-table-cols" placeholder="Column names, one per line" style="min-height:80px;font-size:0.75rem;" oninput="renderDM()">ProductKey
+ProductName
+Category
+SubCategory</textarea>
+              </div>
+              <div class="dm-table-block" data-idx="2" style="margin-top:0.75rem;">
+                <div style="display:flex;gap:0.5rem;align-items:center;margin-bottom:0.5rem;">
+                  <select class="field-select dm-table-type" style="max-width:120px;font-size:0.75rem;" onchange="renderDM()">
+                    <option value="fact">Fact</option><option value="dim" selected>Dimension</option>
+                  </select>
+                  <input type="text" class="field-input dm-table-name" value="DimCustomer" placeholder="Table name" style="flex:1;font-size:0.75rem;" oninput="renderDM()">
+                  <button class="lot-remove" onclick="removeDMTable(this)" style="flex-shrink:0;">&times;</button>
+                </div>
+                <textarea class="conv-textarea dm-table-cols" placeholder="Column names, one per line" style="min-height:80px;font-size:0.75rem;" oninput="renderDM()">CustomerKey
+CustomerName
+Region
+Segment</textarea>
+              </div>
             </div>
-            <div class="conv-panel-label" style="color:var(--green);" id="csvInputLabel">Paste CSV Data</div>
-            <textarea class="conv-textarea" id="csvInput" style="min-height:200px;border-color:rgba(62,207,142,0.2);" placeholder="Name,Department,Salary&#10;Alice,Engineering,95000&#10;Bob,Marketing,72000&#10;Carol,Engineering,88000"></textarea>
-            <div class="field" style="margin-top:0.75rem;">
-              <label class="field-label">Delimiter (CSV only)</label>
-              <select class="field-select" id="csvDelimiter" style="max-width:160px;">
-                <option value="," selected>Comma (,)</option>
-                <option value="&#9;">Tab</option>
-                <option value=";">Semicolon (;)</option>
-                <option value="|">Pipe (|)</option>
-              </select>
-            </div>
+            <button class="add-lot-btn" onclick="addDMTable()" style="margin-top:0.75rem;">+ Add Table</button>
           </div>
-          <div class="conv-panel dark">
-            <div class="conv-panel-label mcode">Power Query (M)</div>
-            <div class="conv-output" id="csvMOutput"><span class="placeholder">Paste data on the left...</span></div>
-            <button class="conv-copy" id="csvMCopy" onclick="copyCsvM()">Copy</button>
-            <div class="conv-notes" id="csvMNotes" style="display:none;"></div>
+          <div class="conv-panel dark" style="min-height:400px;position:relative;">
+            <div class="conv-panel-label" style="color:#0078D4;">Schema Diagram</div>
+            <canvas id="dmCanvas" width="500" height="400" style="width:100%;border-radius:0.5rem;background:rgba(0,0,0,0.2);cursor:grab;"></canvas>
+            <div class="conv-notes" style="display:block;margin-top:0.75rem;">
+              <div class="conv-note">Fact tables (blue) sit at the center. Dimensions (green) connect via matching key columns.</div>
+              <div class="conv-note">Relationships are auto-detected by matching column names across tables.</div>
+            </div>
           </div>
         </div>
+        <div class="tool-nudge">
+          <span class="tool-nudge-text">Need this built into your reporting stack?</span>
+          <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="tool-nudge-cta">Book a Free Audit</a>
+        </div>
+
       </div>
     </div>
   </div>
 
-  <!-- ════════════════════════════════════════ -->
-  <!-- SEGMENT: BUSINESS & FINANCE             -->
+  <!-- ═══ POWER BI THEME GENERATOR ═══ -->
+  <div class="tool-section" id="pbitheme">
+    <div class="tool-header" onclick="toggleTool('pbitheme')">
+      <div class="tool-header-left">
+        <div class="tool-icon" style="background:#E8860A;">T</div>
+        <h2 class="tool-name">Power BI Theme Generator</h2>
+      </div>
+      <span class="tool-badge">JSON Theme Builder</span>
+      <div class="tool-chevron"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+    </div>
+    <div class="tool-body">
+      <div class="tool-body-inner">
+        <div class="conv-layout">
+          <div class="conv-panel">
+            <div class="conv-panel-label" style="color:#E8860A;">Theme Settings</div>
+            <div class="field" style="margin-bottom:1rem;">
+              <label class="field-label">Theme Name</label>
+              <input type="text" class="field-input" id="themeNameInput" value="My Custom Theme" oninput="generateTheme()">
+            </div>
+            <div class="field" style="margin-bottom:1rem;">
+              <label class="field-label">Data Colors (6 palette colors)</label>
+              <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:0.5rem;" id="themeColors">
+                <div><input type="color" value="#C05818" class="theme-color-input" oninput="generateTheme()" style="width:100%;height:36px;border:none;border-radius:0.375rem;cursor:pointer;"><div style="font-family:var(--font-mono);font-size:0.5rem;text-align:center;margin-top:0.25rem;color:var(--slate);" class="theme-color-hex">#C05818</div></div>
+                <div><input type="color" value="#1A52E8" class="theme-color-input" oninput="generateTheme()" style="width:100%;height:36px;border:none;border-radius:0.375rem;cursor:pointer;"><div style="font-family:var(--font-mono);font-size:0.5rem;text-align:center;margin-top:0.25rem;color:var(--slate);" class="theme-color-hex">#1A52E8</div></div>
+                <div><input type="color" value="#3ECF8E" class="theme-color-input" oninput="generateTheme()" style="width:100%;height:36px;border:none;border-radius:0.375rem;cursor:pointer;"><div style="font-family:var(--font-mono);font-size:0.5rem;text-align:center;margin-top:0.25rem;color:var(--slate);" class="theme-color-hex">#3ECF8E</div></div>
+                <div><input type="color" value="#E8860A" class="theme-color-input" oninput="generateTheme()" style="width:100%;height:36px;border:none;border-radius:0.375rem;cursor:pointer;"><div style="font-family:var(--font-mono);font-size:0.5rem;text-align:center;margin-top:0.25rem;color:var(--slate);" class="theme-color-hex">#E8860A</div></div>
+                <div><input type="color" value="#8B5CF6" class="theme-color-input" oninput="generateTheme()" style="width:100%;height:36px;border:none;border-radius:0.375rem;cursor:pointer;"><div style="font-family:var(--font-mono);font-size:0.5rem;text-align:center;margin-top:0.25rem;color:var(--slate);" class="theme-color-hex">#8B5CF6</div></div>
+                <div><input type="color" value="#CC2936" class="theme-color-input" oninput="generateTheme()" style="width:100%;height:36px;border:none;border-radius:0.375rem;cursor:pointer;"><div style="font-family:var(--font-mono);font-size:0.5rem;text-align:center;margin-top:0.25rem;color:var(--slate);" class="theme-color-hex">#CC2936</div></div>
+              </div>
+            </div>
+            <div class="field" style="margin-bottom:1rem;">
+              <label class="field-label">Background Color</label>
+              <div style="display:flex;gap:0.5rem;align-items:center;">
+                <input type="color" value="#FFFFFF" id="themeBg" oninput="generateTheme()" style="width:48px;height:36px;border:none;border-radius:0.375rem;cursor:pointer;">
+                <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--slate);" id="themeBgHex">#FFFFFF</span>
+              </div>
+            </div>
+            <div class="field" style="margin-bottom:1rem;">
+              <label class="field-label">Foreground / Text Color</label>
+              <div style="display:flex;gap:0.5rem;align-items:center;">
+                <input type="color" value="#181D2A" id="themeFg" oninput="generateTheme()" style="width:48px;height:36px;border:none;border-radius:0.375rem;cursor:pointer;">
+                <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--slate);" id="themeFgHex">#181D2A</span>
+              </div>
+            </div>
+            <div class="field" style="margin-bottom:1rem;">
+              <label class="field-label">Font Family</label>
+              <select class="field-select" id="themeFont" onchange="generateTheme()">
+                <option value="Segoe UI" selected>Segoe UI</option>
+                <option value="Arial">Arial</option>
+                <option value="Calibri">Calibri</option>
+                <option value="DIN">DIN</option>
+                <option value="Helvetica Neue">Helvetica Neue</option>
+                <option value="Verdana">Verdana</option>
+                <option value="Trebuchet MS">Trebuchet MS</option>
+              </select>
+            </div>
+            <div class="field" style="margin-bottom:0;">
+              <label class="field-label">Preset Themes</label>
+              <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+                <button class="scope-check" onclick="applyPreset('corporate')" style="font-size:0.7rem;">Corporate</button>
+                <button class="scope-check" onclick="applyPreset('dark')" style="font-size:0.7rem;">Dark Mode</button>
+                <button class="scope-check" onclick="applyPreset('earth')" style="font-size:0.7rem;">Earth Tones</button>
+                <button class="scope-check" onclick="applyPreset('powerintegrate')" style="font-size:0.7rem;">Power Integrate</button>
+              </div>
+            </div>
+          </div>
+          <div class="conv-panel dark">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div class="conv-panel-label" style="color:#E8860A;">theme.json</div>
+              <button class="conv-copy" id="themeCopy" onclick="copyTheme()" style="margin:0;">Copy</button>
+            </div>
+            <div class="conv-output" id="themeOutput" style="min-height:250px;font-size:0.7rem;line-height:1.6;"></div>
+            <button class="add-lot-btn" onclick="downloadTheme()" style="margin-top:0.75rem;border-color:rgba(232,134,10,0.3);color:#E8860A;">Download .json</button>
+            <div class="conv-notes" style="display:block;margin-top:0.75rem;">
+              <div class="conv-note">Import in Power BI Desktop: View > Themes > Browse for themes > select your .json file</div>
+            </div>
+          </div>
+        </div>
+        <div class="tool-nudge">
+          <span class="tool-nudge-text">Need this built into your reporting stack?</span>
+          <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="tool-nudge-cta">Book a Free Audit</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <!-- ════════════════════════════════════════ -->
   <div class="tool-segment" style="margin-top:3rem;">
     <div class="tool-segment-header">
@@ -844,6 +995,11 @@
             <div id="warnings"></div>
           </div>
         </div>
+        <div class="tool-nudge">
+          <span class="tool-nudge-text">Need this built into your reporting stack?</span>
+          <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="tool-nudge-cta">Book a Free Audit</a>
+        </div>
+
       </div>
     </div>
   </div>
@@ -887,6 +1043,11 @@
           <div class="kpi"><div class="kpi-label">Avg Cost / Share</div><div class="kpi-value" id="avgCost" style="color:var(--copper);">$0</div></div>
           <div class="kpi"><div class="kpi-label">Current Value</div><div class="kpi-value" id="currentValue" style="color:var(--signal);">$0</div></div>
         </div>
+        <div class="tool-nudge">
+          <span class="tool-nudge-text">Need this built into your reporting stack?</span>
+          <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="tool-nudge-cta">Book a Free Audit</a>
+        </div>
+
       </div>
     </div>
   </div>
@@ -988,6 +1149,189 @@
             <div id="roiWarnings"></div>
           </div>
         </div>
+        <div class="tool-nudge">
+          <span class="tool-nudge-text">Need this built into your reporting stack?</span>
+          <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="tool-nudge-cta">Book a Free Audit</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ MARKUP VS MARGIN ═══ -->
+  <div class="tool-section" id="markup">
+    <div class="tool-header" onclick="toggleTool('markup')">
+      <div class="tool-header-left">
+        <div class="tool-icon" style="background:var(--ink);">%</div>
+        <h2 class="tool-name">Markup vs Margin Calculator</h2>
+      </div>
+      <span class="tool-badge">Quick Converter</span>
+      <div class="tool-chevron"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+    </div>
+    <div class="tool-body">
+      <div class="tool-body-inner">
+        <div class="calc-grid" style="grid-template-columns:1fr 1fr 1fr;">
+          <div class="input-panel">
+            <div class="panel-title"><div class="panel-icon" style="background:var(--ink);">$</div> Inputs</div>
+            <div class="field">
+              <label class="field-label">Cost</label>
+              <input type="number" class="field-input" id="mkCost" value="60" min="0" step="0.01">
+            </div>
+            <div class="field">
+              <label class="field-label">Selling Price</label>
+              <input type="number" class="field-input" id="mkPrice" value="100" min="0" step="0.01">
+            </div>
+            <div style="border-top:1px solid rgba(24,29,42,0.08);margin:1rem 0;padding-top:1rem;">
+              <div class="field">
+                <label class="field-label">Or enter a Markup %</label>
+                <input type="number" class="field-input" id="mkMarkupInput" value="" placeholder="e.g. 66.7" step="0.1">
+              </div>
+              <div class="field">
+                <label class="field-label">Or enter a Margin %</label>
+                <input type="number" class="field-input" id="mkMarginInput" value="" placeholder="e.g. 40" step="0.1">
+              </div>
+            </div>
+          </div>
+          <div class="result-panel" style="text-align:center;">
+            <div class="result-title" style="justify-content:center;">Markup</div>
+            <div style="font-weight:900;font-size:2.5rem;color:var(--copper);letter-spacing:-0.03em;" id="mkMarkupResult">66.7%</div>
+            <p style="font-size:0.75rem;color:var(--slate);line-height:1.6;margin-top:1rem;">Markup = (Price - Cost) / Cost</p>
+            <p style="font-size:0.75rem;color:var(--slate);line-height:1.6;">How much you add <strong>on top of cost</strong></p>
+          </div>
+          <div class="result-panel" style="text-align:center;">
+            <div class="result-title" style="justify-content:center;">Margin</div>
+            <div style="font-weight:900;font-size:2.5rem;color:var(--signal);letter-spacing:-0.03em;" id="mkMarginResult">40.0%</div>
+            <p style="font-size:0.75rem;color:var(--slate);line-height:1.6;margin-top:1rem;">Margin = (Price - Cost) / Price</p>
+            <p style="font-size:0.75rem;color:var(--slate);line-height:1.6;">How much of the price <strong>is profit</strong></p>
+          </div>
+        </div>
+        <div class="result-panel" style="margin-top:1rem;">
+          <div class="result-title">Quick Reference</div>
+          <div class="kpi-row" style="grid-template-columns:repeat(5,1fr);">
+            <div class="kpi"><div class="kpi-label">Markup</div><div class="kpi-value" style="font-size:1rem;">50%</div><div class="kpi-label" style="margin-top:0.25rem;">= 33.3% margin</div></div>
+            <div class="kpi"><div class="kpi-label">Markup</div><div class="kpi-value" style="font-size:1rem;">100%</div><div class="kpi-label" style="margin-top:0.25rem;">= 50% margin</div></div>
+            <div class="kpi"><div class="kpi-label">Markup</div><div class="kpi-value" style="font-size:1rem;">200%</div><div class="kpi-label" style="margin-top:0.25rem;">= 66.7% margin</div></div>
+            <div class="kpi"><div class="kpi-label">Margin</div><div class="kpi-value" style="font-size:1rem;">25%</div><div class="kpi-label" style="margin-top:0.25rem;">= 33.3% markup</div></div>
+            <div class="kpi"><div class="kpi-label">Margin</div><div class="kpi-value" style="font-size:1rem;">40%</div><div class="kpi-label" style="margin-top:0.25rem;">= 66.7% markup</div></div>
+          </div>
+        </div>
+        <div class="tool-nudge">
+          <span class="tool-nudge-text">Need this built into your reporting stack?</span>
+          <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="tool-nudge-cta">Book a Free Audit</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ OPTIONS PROFIT CALCULATOR ═══ -->
+  <div class="tool-section" id="options">
+    <div class="tool-header" onclick="toggleTool('options')">
+      <div class="tool-header-left">
+        <div class="tool-icon" style="background:#16A34A;">OP</div>
+        <h2 class="tool-name">Options Profit Calculator</h2>
+      </div>
+      <span class="tool-badge">Calls + Puts P&L</span>
+      <div class="tool-chevron"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+    </div>
+    <div class="tool-body">
+      <div class="tool-body-inner">
+        <div class="calc-grid">
+          <div class="calc-inputs">
+            <div class="input-panel">
+              <div class="panel-title"><div class="panel-icon" style="background:#16A34A;">OP</div> Contract Details</div>
+              <div class="field">
+                <label class="field-label">Strategy</label>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;">
+                  <button class="scope-check selected" id="optBuyCall" onclick="setOptType('buyCall')" style="justify-content:center;font-weight:600;font-size:0.7rem;">Buy Call</button>
+                  <button class="scope-check" id="optSellCall" onclick="setOptType('sellCall')" style="justify-content:center;font-weight:600;font-size:0.7rem;">Sell Call</button>
+                  <button class="scope-check" id="optBuyPut" onclick="setOptType('buyPut')" style="justify-content:center;font-weight:600;font-size:0.7rem;">Buy Put</button>
+                  <button class="scope-check" id="optSellPut" onclick="setOptType('sellPut')" style="justify-content:center;font-weight:600;font-size:0.7rem;">Sell Put</button>
+                </div>
+              </div>
+              <div class="field">
+                <label class="field-label">Current Stock Price ($)</label>
+                <input type="number" class="field-input" id="optStock" value="150" min="0" step="0.01">
+              </div>
+              <div class="field">
+                <label class="field-label">Strike Price ($)</label>
+                <input type="number" class="field-input" id="optStrike" value="155" min="0" step="0.01">
+              </div>
+              <div class="field">
+                <label class="field-label">Premium Paid per Share ($)</label>
+                <input type="number" class="field-input" id="optPremium" value="3.50" min="0" step="0.01">
+              </div>
+              <div class="field">
+                <label class="field-label">Number of Contracts</label>
+                <input type="number" class="field-input" id="optContracts" value="1" min="1" step="1">
+                <div class="field-hint">1 contract = 100 shares</div>
+              </div>
+            </div>
+          </div>
+          <div class="calc-results">
+            <div class="result-panel dark">
+              <div class="result-title" style="color:#fff;">P&L Summary</div>
+              <div class="factors-grid" style="grid-template-columns:repeat(2,1fr);">
+                <div class="factor-card">
+                  <div class="factor-name">Break-Even</div>
+                  <div class="factor-status" id="optBreakeven" style="color:#fff;">$0</div>
+                </div>
+                <div class="factor-card">
+                  <div class="factor-name">Max Loss</div>
+                  <div class="factor-status" id="optMaxLoss" style="color:#CC2936;">$0</div>
+                </div>
+                <div class="factor-card">
+                  <div class="factor-name">Max Profit</div>
+                  <div class="factor-status" id="optMaxProfit" style="color:var(--green);">Unlimited</div>
+                </div>
+                <div class="factor-card">
+                  <div class="factor-name">Total Cost</div>
+                  <div class="factor-status" id="optTotalCost" style="color:var(--copper);">$0</div>
+                </div>
+              </div>
+            </div>
+            <div class="result-panel">
+              <div class="result-title">P&L at Expiration</div>
+              <div class="field" style="margin-bottom:0.75rem;">
+                <label class="field-label">Stock Price at Expiration ($)</label>
+                <input type="range" id="optExpPrice" min="0" max="300" value="160" step="0.5" style="width:100%;accent-color:var(--copper);" oninput="calcOptions()">
+                <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:0.625rem;color:var(--slate);">
+                  <span id="optRangeMin">$0</span>
+                  <span id="optRangeCur" style="font-weight:700;color:var(--ink);">$160.00</span>
+                  <span id="optRangeMax">$300</span>
+                </div>
+              </div>
+              <div class="kpi-row" style="grid-template-columns:repeat(3,1fr);">
+                <div class="kpi">
+                  <div class="kpi-label">P&L at This Price</div>
+                  <div class="kpi-value" id="optPnlAtPrice" style="color:var(--green);">$0</div>
+                </div>
+                <div class="kpi">
+                  <div class="kpi-label">Return %</div>
+                  <div class="kpi-value" id="optReturnPct" style="color:var(--green);">0%</div>
+                </div>
+                <div class="kpi">
+                  <div class="kpi-label">Intrinsic Value</div>
+                  <div class="kpi-value" id="optIntrinsic" style="color:var(--ink);">$0</div>
+                </div>
+              </div>
+            </div>
+            <div class="result-panel">
+              <div class="result-title">P&L Table</div>
+              <div class="lot-table-wrap" style="max-height:200px;overflow-y:auto;">
+                <table class="lot-table" id="optPnlTable">
+                  <thead><tr><th>Stock Price</th><th>Intrinsic</th><th>P&L</th><th>Return %</th></tr></thead>
+                  <tbody id="optPnlBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tool-nudge">
+          <span class="tool-nudge-text">Need this built into your reporting stack?</span>
+          <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="tool-nudge-cta">Book a Free Audit</a>
+        </div>
+
       </div>
     </div>
   </div>
@@ -1137,23 +1481,72 @@
     }
 
     // ─────────────────────────────────────────
-    // TOOL SECTION TOGGLE
+    // TOOL SECTION TOGGLE (exclusive mode)
     // ─────────────────────────────────────────
+
+    var nudgeTimers = {};
 
     function toggleTool(id) {
       const section = document.getElementById(id);
-      section.classList.toggle('open');
+      const wasOpen = section.classList.contains('open');
+
+      // Close all sections
+      document.querySelectorAll('.tool-section.open').forEach(function(s) {
+        s.classList.remove('open');
+        var nudge = s.querySelector('.tool-nudge');
+        if (nudge) nudge.classList.remove('visible');
+      });
+      document.querySelectorAll('.tool-index-card.active').forEach(function(c) { c.classList.remove('active'); });
+
+      // Open this one if it was closed
+      if (!wasOpen) {
+        section.classList.add('open');
+        var card = document.querySelector('.tool-index-card[data-tool="' + id + '"]');
+        if (card) card.classList.add('active');
+      }
     }
 
     function openTool(id) {
+      // Close all
+      document.querySelectorAll('.tool-section.open').forEach(function(s) {
+        s.classList.remove('open');
+        var nudge = s.querySelector('.tool-nudge');
+        if (nudge) nudge.classList.remove('visible');
+      });
+      document.querySelectorAll('.tool-index-card.active').forEach(function(c) { c.classList.remove('active'); });
+
+      // Open target
       const section = document.getElementById(id);
-      if (!section.classList.contains('open')) {
-        section.classList.add('open');
-      }
+      section.classList.add('open');
+      var card = document.querySelector('.tool-index-card[data-tool="' + id + '"]');
+      if (card) card.classList.add('active');
+
       setTimeout(() => {
         section.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
     }
+
+    // Lead nudge: show after user interacts with a tool
+    function triggerNudge(toolId) {
+      if (nudgeTimers[toolId]) return;
+      nudgeTimers[toolId] = setTimeout(function() {
+        var section = document.getElementById(toolId);
+        if (section && section.classList.contains('open')) {
+          var nudge = section.querySelector('.tool-nudge');
+          if (nudge) nudge.classList.add('visible');
+        }
+      }, 4000);
+    }
+
+    // Listen for interaction inside tool sections
+    document.querySelectorAll('.tool-section').forEach(function(section) {
+      var id = section.id;
+      section.addEventListener('input', function() { triggerNudge(id); });
+      section.addEventListener('change', function() { triggerNudge(id); });
+      section.addEventListener('click', function(e) {
+        if (!e.target.closest('.tool-header')) triggerNudge(id);
+      });
+    });
 
     // Bind refi inputs by ID
     ['currentHomeValue','currentLoanBalance','desiredLoanAmount','newInterestRate','loanTerm',
@@ -1650,316 +2043,6 @@
 
     document.getElementById('excelInput').addEventListener('input', convertAndRender);
 
-    // ─────────────────────────────────────────
-    // SQL TO POWER QUERY (M) CONVERTER
-    // ─────────────────────────────────────────
-
-    const mMap = [
-      { sql: 'SELECT',        m: 'Table.SelectColumns ( Source, {"Col1","Col2"} )', note: 'SELECT specific columns maps to Table.SelectColumns. SELECT * keeps all columns.', syntax: 'SELECT col1, col2 FROM table_name' },
-      { sql: 'SELECT *',      m: 'Source  (no transformation needed)', note: 'Selecting all columns is the default in M. Just reference the source step.', syntax: 'SELECT * FROM table_name' },
-      { sql: 'WHERE',         m: 'Table.SelectRows ( Source, each [Col] = "value" )', note: 'WHERE conditions become Table.SelectRows with an "each" predicate function.', syntax: 'SELECT * FROM t WHERE col = value' },
-      { sql: 'AND / OR',      m: 'each [Col1] = "a" and [Col2] > 10', note: 'Use lowercase "and" / "or" in M predicates inside Table.SelectRows.', syntax: 'WHERE col1 = "a" AND col2 > 10' },
-      { sql: 'IN',            m: 'List.Contains ( {"val1","val2"}, [Col] )', note: 'SQL IN clause becomes List.Contains with a list of values.', syntax: 'WHERE col IN ("val1", "val2", "val3")' },
-      { sql: 'BETWEEN',       m: 'each [Col] >= start and [Col] <= end', note: 'No BETWEEN in M. Use explicit >= and <= comparisons.', syntax: 'WHERE col BETWEEN 10 AND 20' },
-      { sql: 'LIKE',          m: 'Text.Contains ( [Col], "text" )', note: 'Use Text.Contains, Text.StartsWith, or Text.EndsWith depending on wildcard position.', syntax: 'WHERE col LIKE "%text%"' },
-      { sql: 'IS NULL',       m: 'each [Col] = null', note: 'M uses = null directly. For IS NOT NULL use <> null.', syntax: 'WHERE col IS NULL' },
-      { sql: 'ORDER BY',      m: 'Table.Sort ( Source, {{"Col", Order.Ascending}} )', note: 'Use Order.Ascending or Order.Descending. Multiple sort columns go in the list.', syntax: 'SELECT * FROM t ORDER BY col ASC' },
-      { sql: 'ORDER BY DESC', m: 'Table.Sort ( Source, {{"Col", Order.Descending}} )', note: 'DESC becomes Order.Descending in the sort specification.', syntax: 'ORDER BY col DESC' },
-      { sql: 'GROUP BY',      m: 'Table.Group ( Source, {"GroupCol"}, {{"Sum", each List.Sum([ValCol]), type number}} )', note: 'Table.Group takes the grouping columns and a list of aggregation specs.', syntax: 'SELECT col, SUM(val) FROM t GROUP BY col' },
-      { sql: 'HAVING',        m: 'Table.SelectRows after Table.Group', note: 'Apply Table.SelectRows to the grouped result. M has no separate HAVING keyword.', syntax: 'GROUP BY col HAVING SUM(val) > 100' },
-      { sql: 'JOIN / INNER JOIN', m: 'Table.NestedJoin ( Table1, "Key1", Table2, "Key2", "Joined", JoinKind.Inner )', note: 'Table.NestedJoin creates a nested column. Follow with Table.ExpandTableColumn to flatten.', syntax: 'SELECT * FROM t1 INNER JOIN t2 ON t1.key = t2.key' },
-      { sql: 'LEFT JOIN',     m: 'Table.NestedJoin ( ..., JoinKind.LeftOuter )', note: 'Same as INNER JOIN but use JoinKind.LeftOuter. Then expand the nested column.', syntax: 'SELECT * FROM t1 LEFT JOIN t2 ON t1.key = t2.key' },
-      { sql: 'RIGHT JOIN',    m: 'Table.NestedJoin ( ..., JoinKind.RightOuter )', note: 'Use JoinKind.RightOuter for right joins.', syntax: 'SELECT * FROM t1 RIGHT JOIN t2 ON ...' },
-      { sql: 'FULL OUTER JOIN', m: 'Table.NestedJoin ( ..., JoinKind.FullOuter )', note: 'Use JoinKind.FullOuter for full outer joins.', syntax: 'SELECT * FROM t1 FULL OUTER JOIN t2 ON ...' },
-      { sql: 'CROSS JOIN',    m: 'Table.NestedJoin ( ..., JoinKind.Cross )', note: 'Cartesian product. Use sparingly on large tables.', syntax: 'SELECT * FROM t1 CROSS JOIN t2' },
-      { sql: 'UNION',         m: 'Table.Combine ( {Table1, Table2} )', note: 'Table.Combine appends tables vertically. Equivalent to UNION ALL.', syntax: 'SELECT * FROM t1 UNION ALL SELECT * FROM t2' },
-      { sql: 'UNION (distinct)', m: 'Table.Distinct ( Table.Combine ( {Table1, Table2} ) )', note: 'Wrap Table.Combine with Table.Distinct for UNION (without ALL).', syntax: 'SELECT * FROM t1 UNION SELECT * FROM t2' },
-      { sql: 'DISTINCT',      m: 'Table.Distinct ( Source )', note: 'Removes duplicate rows. Can also use Table.Distinct(Source, {"Col"}) for specific columns.', syntax: 'SELECT DISTINCT col FROM table_name' },
-      { sql: 'TOP N',         m: 'Table.FirstN ( Source, N )', note: 'Returns the first N rows. Sort first if you need TOP N by a specific order.', syntax: 'SELECT TOP 10 * FROM table_name' },
-      { sql: 'LIMIT / OFFSET', m: 'Table.FirstN / Table.Skip', note: 'LIMIT N = Table.FirstN(Source, N). OFFSET M = Table.Skip(Source, M).', syntax: 'SELECT * FROM t LIMIT 10 OFFSET 20' },
-      { sql: 'COUNT(*)',      m: 'Table.RowCount ( Source )', note: 'Returns the total number of rows as a scalar value.', syntax: 'SELECT COUNT(*) FROM table_name' },
-      { sql: 'COUNT(col)',    m: 'List.NonNullCount ( Source[Col] )', note: 'Counts non-null values in a column. Use inside Table.Group for grouped counts.', syntax: 'SELECT COUNT(col) FROM table_name' },
-      { sql: 'SUM',           m: 'List.Sum ( Source[Col] )', note: 'Sums a column. Use inside Table.Group for grouped sums.', syntax: 'SELECT SUM(col) FROM table_name' },
-      { sql: 'AVG',           m: 'List.Average ( Source[Col] )', note: 'Averages a column. Use inside Table.Group for grouped averages.', syntax: 'SELECT AVG(col) FROM table_name' },
-      { sql: 'MIN / MAX',     m: 'List.Min ( Source[Col] ) / List.Max ( Source[Col] )', note: 'Returns min or max value from a column.', syntax: 'SELECT MIN(col), MAX(col) FROM t' },
-      { sql: 'CASE WHEN',     m: 'if [Col] = "x" then "A" else if [Col] = "y" then "B" else "C"', note: 'CASE WHEN maps to if...then...else if...then...else chains in M.', syntax: 'CASE WHEN col = "x" THEN "A" WHEN col = "y" THEN "B" ELSE "C" END' },
-      { sql: 'COALESCE',      m: 'if [Col1] <> null then [Col1] else [Col2]', note: 'No COALESCE in M. Use if...then...else to check nulls in order.', syntax: 'COALESCE(col1, col2, col3)' },
-      { sql: 'CAST / CONVERT', m: 'Table.TransformColumnTypes ( Source, {{"Col", type text}} )', note: 'Type conversions use Table.TransformColumnTypes. Types: type text, Int64.Type, type number, type date, etc.', syntax: 'CAST(col AS VARCHAR(50))' },
-      { sql: 'CONCAT',        m: '[Col1] & " " & [Col2]', note: 'Use the & operator for string concatenation. Also Text.Combine for lists.', syntax: 'CONCAT(col1, " ", col2)' },
-      { sql: 'SUBSTRING',     m: 'Text.Range ( [Col], start, length )', note: 'M uses 0-based indexing for start position (SQL uses 1-based).', syntax: 'SUBSTRING(col, start, length)' },
-      { sql: 'LEFT / RIGHT',  m: 'Text.Start ( [Col], n ) / Text.End ( [Col], n )', note: 'Text.Start = LEFT, Text.End = RIGHT.', syntax: 'LEFT(col, 5)' },
-      { sql: 'UPPER / LOWER', m: 'Text.Upper ( [Col] ) / Text.Lower ( [Col] )', note: 'Direct equivalents.', syntax: 'UPPER(col)' },
-      { sql: 'TRIM',          m: 'Text.Trim ( [Col] )', note: 'Trims both sides. Also Text.TrimStart and Text.TrimEnd available.', syntax: 'TRIM(col)' },
-      { sql: 'REPLACE',       m: 'Text.Replace ( [Col], "old", "new" )', note: 'Direct equivalent.', syntax: 'REPLACE(col, "old", "new")' },
-      { sql: 'LEN / LENGTH',  m: 'Text.Length ( [Col] )', note: 'Direct equivalent.', syntax: 'LEN(col)' },
-      { sql: 'CHARINDEX / POSITION', m: 'Text.PositionOf ( [Col], "search" )', note: 'Returns 0-based position (SQL is 1-based). Returns -1 if not found.', syntax: 'CHARINDEX("search", col)' },
-      { sql: 'GETDATE / NOW', m: 'DateTime.LocalNow()', note: 'Returns current local datetime.', syntax: 'SELECT GETDATE()' },
-      { sql: 'DATEADD',       m: 'Date.AddDays / Date.AddMonths / Date.AddYears', note: 'Separate functions per interval. Also Date.AddWeeks, Date.AddQuarters.', syntax: 'DATEADD(day, 7, date_col)' },
-      { sql: 'DATEDIFF',      m: 'Duration.Days ( [EndDate] - [StartDate] )', note: 'Subtract dates to get a Duration, then extract days, hours, etc.', syntax: 'DATEDIFF(day, start_date, end_date)' },
-      { sql: 'YEAR/MONTH/DAY', m: 'Date.Year / Date.Month / Date.Day', note: 'Direct equivalents.', syntax: 'YEAR(date_col)' },
-      { sql: 'ISNULL / IFNULL', m: 'if [Col] = null then default else [Col]', note: 'No ISNULL function in M. Use if...then...else null check.', syntax: 'ISNULL(col, default_value)' },
-      { sql: 'ADD COLUMN',    m: 'Table.AddColumn ( Source, "NewCol", each [Col1] + [Col2] )', note: 'Adds a computed column using an "each" expression.', syntax: 'ALTER TABLE t ADD col AS (col1 + col2)' },
-      { sql: 'RENAME COLUMN', m: 'Table.RenameColumns ( Source, {{"OldName","NewName"}} )', note: 'Renames one or more columns. Pass a list of rename pairs.', syntax: 'EXEC sp_rename "old_name", "new_name"' },
-      { sql: 'DROP COLUMN',   m: 'Table.RemoveColumns ( Source, {"Col1","Col2"} )', note: 'Removes specified columns from the table.', syntax: 'ALTER TABLE t DROP COLUMN col' },
-      { sql: 'PIVOT',         m: 'Table.Pivot ( Source, List.Distinct(Source[PivotCol]), "PivotCol", "ValueCol" )', note: 'Pivots rows into columns. Specify the pivot column and value column.', syntax: 'PIVOT (SELECT ... FOR col IN (...))' },
-      { sql: 'UNPIVOT',       m: 'Table.UnpivotOtherColumns ( Source, {"KeepCol"}, "Attribute", "Value" )', note: 'Unpivots all columns except the specified ones into attribute/value pairs.', syntax: 'UNPIVOT (col1, col2 FOR attr IN (...))' },
-    ];
-
-    // Populate M reference table
-    const mRefBody = document.getElementById('mRefBody');
-    mMap.forEach(r => {
-      const tr = document.createElement('tr');
-      const syntaxHTML = r.syntax
-        ? '<div class="ref-syntax" data-fn="' + r.sql + '"><div class="syn-label">SQL Syntax</div><code>' + r.syntax + '</code></div>'
-        : '';
-      tr.innerHTML =
-        '<td><span class="ref-fn-name">' + r.sql + '</span>' + syntaxHTML + '</td>' +
-        '<td>' + r.m + '</td>' +
-        '<td>' + r.note + '</td>';
-      mRefBody.appendChild(tr);
-    });
-
-    // Expandable SQL syntax on click
-    mRefBody.addEventListener('click', function(e) {
-      const fnName = e.target.closest('.ref-fn-name');
-      if (!fnName) return;
-      const td = fnName.closest('td');
-      const syntax = td.querySelector('.ref-syntax');
-      if (syntax) syntax.classList.toggle('open');
-    });
-
-    // M reference toggle
-    let mRefOpen = false;
-    function toggleMRef() {
-      mRefOpen = !mRefOpen;
-      const body = document.getElementById('mRefTableBody');
-      const btn = document.getElementById('mRefToggle');
-      const search = document.getElementById('mRefSearch');
-      if (mRefOpen) {
-        body.classList.add('open');
-        btn.classList.add('open');
-        btn.querySelector('span').textContent = 'Collapse';
-        if (!search.value.trim()) {
-          mRefBody.querySelectorAll('tr').forEach(tr => tr.classList.remove('hidden'));
-          document.getElementById('mRefCount').style.display = 'none';
-        }
-      } else {
-        body.classList.remove('open');
-        body.classList.remove('searching');
-        btn.classList.remove('open');
-        btn.querySelector('span').textContent = 'Show All';
-        document.getElementById('mRefCount').style.display = 'none';
-        search.value = '';
-        mRefBody.querySelectorAll('tr').forEach(tr => tr.classList.remove('hidden'));
-      }
-    }
-
-    // M reference search
-    document.getElementById('mRefSearch').addEventListener('input', function() {
-      const q = this.value.toLowerCase().trim();
-      const body = document.getElementById('mRefTableBody');
-      const countEl = document.getElementById('mRefCount');
-      if (q) {
-        body.classList.add('searching');
-        let count = 0;
-        mRefBody.querySelectorAll('tr').forEach(tr => {
-          const match = tr.textContent.toLowerCase().includes(q);
-          tr.classList.toggle('hidden', !match);
-          if (match) count++;
-        });
-        countEl.textContent = count + ' match' + (count !== 1 ? 'es' : '') + ' found';
-        countEl.style.display = 'block';
-      } else {
-        if (!mRefOpen) body.classList.remove('searching');
-        mRefBody.querySelectorAll('tr').forEach(tr => tr.classList.remove('hidden'));
-        countEl.style.display = 'none';
-      }
-    });
-
-    // SQL-to-M converter logic
-    function convertSQL(sql) {
-      let input = sql.trim();
-      if (!input) return { m: '', notes: [] };
-
-      let mCode = '';
-      const notes = [];
-      const upper = input.toUpperCase();
-
-      // Detect query type
-      const isSelect = /^\s*SELECT\b/i.test(input);
-
-      if (isSelect) {
-        let steps = [];
-        let stepNum = 1;
-
-        // Extract table name
-        const fromMatch = input.match(/FROM\s+(\[?\w+\]?\.?\[?\w+\]?)/i);
-        const tableName = fromMatch ? fromMatch[1].replace(/[\[\]]/g, '') : 'YourTable';
-        steps.push('Source = YourDatabase{[Schema="dbo",Item="' + tableName + '"]}[Data]');
-
-        // SELECT columns
-        const selectMatch = input.match(/SELECT\s+(.*?)\s+FROM/is);
-        if (selectMatch) {
-          const cols = selectMatch[1].trim();
-          if (cols !== '*' && !/\bCOUNT\b|\bSUM\b|\bAVG\b|\bMIN\b|\bMAX\b/i.test(cols)) {
-            const colList = cols.split(',').map(c => '"' + c.trim().replace(/[\[\]]/g, '').split(/\s+AS\s+/i)[0].trim() + '"').join(', ');
-            steps.push('SelectCols = Table.SelectColumns ( Step' + stepNum + ', {' + colList + '} )');
-            stepNum++;
-          }
-        }
-
-        // WHERE clause
-        const whereMatch = input.match(/WHERE\s+(.*?)(?=GROUP|ORDER|HAVING|LIMIT|$)/is);
-        if (whereMatch) {
-          let cond = whereMatch[1].trim();
-          // Convert conditions to M syntax
-          cond = cond.replace(/(\w+)\s*=\s*'([^']+)'/g, '[' + '$1] = "$2"');
-          cond = cond.replace(/(\w+)\s*=\s*(\d+)/g, '[$1] = $2');
-          cond = cond.replace(/(\w+)\s+IN\s*\(([^)]+)\)/gi, function(m, col, vals) {
-            const vlist = vals.split(',').map(v => v.trim().replace(/'/g, '"')).join(', ');
-            return 'List.Contains ( {' + vlist + '}, [' + col + '] )';
-          });
-          cond = cond.replace(/(\w+)\s+LIKE\s+'%([^%]+)%'/gi, 'Text.Contains ( [$1], "$2" )');
-          cond = cond.replace(/(\w+)\s+IS\s+NULL/gi, '[$1] = null');
-          cond = cond.replace(/(\w+)\s+IS\s+NOT\s+NULL/gi, '[$1] <> null');
-          cond = cond.replace(/\bAND\b/gi, 'and');
-          cond = cond.replace(/\bOR\b/gi, 'or');
-          steps.push('FilterRows = Table.SelectRows ( Step' + stepNum + ', each ' + cond + ' )');
-          stepNum++;
-          notes.push('WHERE becomes <span class="hl">Table.SelectRows</span> with an "each" predicate.');
-        }
-
-        // GROUP BY
-        const groupMatch = input.match(/GROUP\s+BY\s+(.*?)(?=HAVING|ORDER|LIMIT|$)/is);
-        if (groupMatch) {
-          const groupCols = groupMatch[1].split(',').map(c => '"' + c.trim().replace(/[\[\]]/g, '') + '"').join(', ');
-          // Detect aggregations
-          const aggs = [];
-          const aggPatterns = input.match(/(COUNT|SUM|AVG|MIN|MAX)\s*\(\s*(\*|\w+)\s*\)/gi) || [];
-          aggPatterns.forEach(a => {
-            const parts = a.match(/(COUNT|SUM|AVG|MIN|MAX)\s*\(\s*(\*|\w+)\s*\)/i);
-            if (parts) {
-              const fn = parts[1].toUpperCase();
-              const col = parts[2];
-              const mFn = fn === 'COUNT' && col === '*' ? 'Table.RowCount' : 'List.' + fn.charAt(0) + fn.slice(1).toLowerCase();
-              const mCol = fn === 'COUNT' && col === '*' ? '_' : col;
-              if (fn === 'COUNT' && col === '*') {
-                aggs.push('{"Count", each Table.RowCount(_), Int64.Type}');
-              } else {
-                aggs.push('{"' + fn + '_' + col + '", each List.' + fn.charAt(0) + fn.slice(1).toLowerCase() + '(_[' + col + ']), type number}');
-              }
-            }
-          });
-          const aggStr = aggs.length > 0 ? aggs.join(', ') : '{"Count", each Table.RowCount(_), Int64.Type}';
-          steps.push('GroupRows = Table.Group ( Step' + stepNum + ', {' + groupCols + '}, {' + aggStr + '} )');
-          stepNum++;
-          notes.push('GROUP BY becomes <span class="hl">Table.Group</span> with aggregation specs.');
-        }
-
-        // ORDER BY
-        const orderMatch = input.match(/ORDER\s+BY\s+(.*?)(?=LIMIT|OFFSET|$)/is);
-        if (orderMatch) {
-          const sortParts = orderMatch[1].split(',').map(p => {
-            const parts = p.trim().split(/\s+/);
-            const col = parts[0].replace(/[\[\]]/g, '');
-            const dir = parts[1] && parts[1].toUpperCase() === 'DESC' ? 'Order.Descending' : 'Order.Ascending';
-            return '{"' + col + '", ' + dir + '}';
-          });
-          steps.push('SortRows = Table.Sort ( Step' + stepNum + ', {' + sortParts.join(', ') + '} )');
-          stepNum++;
-          notes.push('ORDER BY becomes <span class="hl">Table.Sort</span>.');
-        }
-
-        // TOP N or LIMIT
-        const topMatch = input.match(/SELECT\s+TOP\s+(\d+)/i);
-        const limitMatch = input.match(/LIMIT\s+(\d+)/i);
-        const n = topMatch ? topMatch[1] : (limitMatch ? limitMatch[1] : null);
-        if (n) {
-          steps.push('TopN = Table.FirstN ( Step' + stepNum + ', ' + n + ' )');
-          stepNum++;
-          notes.push('TOP / LIMIT becomes <span class="hl">Table.FirstN</span>.');
-        }
-
-        // Build M code
-        mCode = 'let\n';
-        steps.forEach((s, i) => {
-          const stepName = s.split(' = ')[0];
-          const stepExpr = s.split(' = ').slice(1).join(' = ');
-          // Replace StepN references with actual previous step names
-          let expr = stepExpr;
-          for (let j = i; j >= 1; j--) {
-            expr = expr.replace('Step' + j, steps[j - 1].split(' = ')[0]);
-          }
-          if (i === 0) {
-            mCode += '    ' + stepName + ' = ' + expr;
-          } else {
-            mCode += ',\n    ' + stepName + ' = ' + expr;
-          }
-        });
-        const lastStep = steps[steps.length - 1].split(' = ')[0];
-        mCode += '\nin\n    ' + lastStep;
-
-      } else {
-        // Non-SELECT queries
-        if (/^\s*INSERT/i.test(input)) {
-          mCode = '// INSERT maps to Table.InsertRows\nTable.InsertRows ( Source, 0, { [Col1 = "val1", Col2 = "val2"] } )';
-          notes.push('INSERT becomes <span class="hl">Table.InsertRows</span>. M is typically read-only; writes go through other channels.');
-        } else if (/^\s*UPDATE/i.test(input)) {
-          mCode = '// UPDATE maps to Table.ReplaceValue\nTable.ReplaceValue ( Source, "old", "new", Replacer.ReplaceText, {"Col"} )';
-          notes.push('UPDATE becomes <span class="hl">Table.ReplaceValue</span>. For conditional updates, use Table.TransformRows.');
-        } else if (/^\s*DELETE/i.test(input)) {
-          mCode = '// DELETE maps to Table.SelectRows (inverted condition)\nTable.SelectRows ( Source, each [Col] <> "value_to_delete" )';
-          notes.push('DELETE becomes <span class="hl">Table.SelectRows</span> with an inverted filter (keep everything except).');
-        } else {
-          mCode = '// Paste a SELECT, INSERT, UPDATE, or DELETE query';
-          notes.push('Enter a SQL query to see the Power Query (M) equivalent.');
-        }
-      }
-
-      return { m: mCode, notes: notes };
-    }
-
-    function highlightM(text) {
-      return text
-        .replace(/\b(let|in|each|if|then|else|and|or|not|true|false|null|type|as|try|otherwise|error)\b/g, '<span class="kw-m">$1</span>')
-        .replace(/\b(Table\.\w+|List\.\w+|Text\.\w+|Date\.\w+|DateTime\.\w+|Duration\.\w+|Number\.\w+|Int64\.Type|Order\.\w+|JoinKind\.\w+|Replacer\.\w+)\b/g, '<span class="fn-m">$1</span>')
-        .replace(/"([^"]*)"/g, '<span class="str">"$1"</span>')
-        .replace(/(\/\/[^\n]*)/g, '<span class="comment-m">$1</span>');
-    }
-
-    function convertSQLAndRender() {
-      const input = document.getElementById('sqlInput').value;
-      const output = document.getElementById('mOutput');
-      const notesEl = document.getElementById('mNotes');
-
-      if (!input.trim()) {
-        output.innerHTML = '<span class="placeholder">M code will appear here...</span>';
-        notesEl.style.display = 'none';
-        return;
-      }
-
-      const result = convertSQL(input);
-      output.innerHTML = highlightM(result.m);
-
-      if (result.notes.length > 0) {
-        notesEl.style.display = 'block';
-        notesEl.innerHTML = result.notes.map(n => '<div class="conv-note">' + n + '</div>').join('');
-      } else {
-        notesEl.style.display = 'none';
-      }
-    }
-
-    function copyM() {
-      const output = document.getElementById('mOutput');
-      navigator.clipboard.writeText(output.textContent).then(() => {
-        const btn = document.getElementById('mCopy');
-        btn.textContent = 'Copied!';
-        btn.classList.add('copied');
-        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-      });
-    }
-
-    document.getElementById('sqlInput').addEventListener('input', convertSQLAndRender);
 
     // ─────────────────────────────────────────
     // REPORTING ROI CALCULATOR
@@ -2172,147 +2255,399 @@
     });
     generateDAX();
 
+
     // ─────────────────────────────────────────
-    // JSON/CSV TO M CONVERTER
+    // DATA MODEL PLANNER
     // ─────────────────────────────────────────
 
-    var csvMode = 'csv';
+    var dmCounter = 3;
 
-    window.setCsvMode = function(mode) {
-      csvMode = mode;
-      $('csvModeCSV').classList.toggle('selected', mode === 'csv');
-      $('csvModeJSON').classList.toggle('selected', mode === 'json');
-      $('csvInputLabel').textContent = mode === 'csv' ? 'Paste CSV Data' : 'Paste JSON Data';
-      $('csvDelimiter').closest('.field').style.display = mode === 'csv' ? '' : 'none';
-      var ta = $('csvInput');
-      if (mode === 'json') {
-        ta.placeholder = '[\n  {"Name":"Alice","Dept":"Engineering","Salary":95000},\n  {"Name":"Bob","Dept":"Marketing","Salary":72000}\n]';
-      } else {
-        ta.placeholder = 'Name,Department,Salary\nAlice,Engineering,95000\nBob,Marketing,72000\nCarol,Engineering,88000';
-      }
-      convertCsvToM();
+    window.addDMTable = function() {
+      var container = document.getElementById('dmTables');
+      var idx = dmCounter++;
+      var div = document.createElement('div');
+      div.className = 'dm-table-block';
+      div.setAttribute('data-idx', idx);
+      div.style.marginTop = '0.75rem';
+      div.innerHTML =
+        '<div style="display:flex;gap:0.5rem;align-items:center;margin-bottom:0.5rem;">' +
+        '<select class="field-select dm-table-type" style="max-width:120px;font-size:0.75rem;" onchange="renderDM()"><option value="fact">Fact</option><option value="dim" selected>Dimension</option></select>' +
+        '<input type="text" class="field-input dm-table-name" value="DimNew" placeholder="Table name" style="flex:1;font-size:0.75rem;" oninput="renderDM()">' +
+        '<button class="lot-remove" onclick="removeDMTable(this)" style="flex-shrink:0;">&times;</button>' +
+        '</div>' +
+        '<textarea class="conv-textarea dm-table-cols" placeholder="Column names, one per line" style="min-height:80px;font-size:0.75rem;" oninput="renderDM()">ID\nName</textarea>';
+      container.appendChild(div);
+      renderDM();
     };
 
-    function convertCsvToM() {
-      var input = $('csvInput').value.trim();
-      var output = $('csvMOutput');
-      var notesEl = $('csvMNotes');
+    window.removeDMTable = function(btn) {
+      btn.closest('.dm-table-block').remove();
+      renderDM();
+    };
 
-      if (!input) {
-        output.innerHTML = '<span class="placeholder">Paste data on the left...</span>';
-        notesEl.style.display = 'none';
-        return;
-      }
-
-      var mCode = '';
-      var notes = [];
-
-      if (csvMode === 'json') {
-        try {
-          var data = JSON.parse(input);
-          if (!Array.isArray(data)) data = [data];
-          if (data.length === 0) { output.innerHTML = '<span class="placeholder">Empty JSON array</span>'; return; }
-
-          var keys = Object.keys(data[0]);
-          var rows = data.map(function(row) {
-            var fields = keys.map(function(k) {
-              var v = row[k];
-              if (typeof v === 'string') return '[' + k + ' = "' + v + '"]';
-              if (v === null) return '[' + k + ' = null]';
-              return '[' + k + ' = ' + v + ']';
-            });
-            return '        ' + fields.join(', ').replace(/\]/, '] ').replace(/\], /g, '], ');
-          });
-
-          // Build proper record format
-          var rowStrs = data.map(function(row) {
-            var pairs = keys.map(function(k) {
-              var v = row[k];
-              if (typeof v === 'string') return k + ' = "' + v + '"';
-              if (v === null) return k + ' = null';
-              return k + ' = ' + v;
-            });
-            return '        [' + pairs.join(', ') + ']';
-          });
-
-          // Type detection
-          var types = keys.map(function(k) {
-            var v = data[0][k];
-            if (typeof v === 'number') return '{"' + k + '", type number}';
-            return '{"' + k + '", type text}';
-          });
-
-          mCode = 'let\n';
-          mCode += '    Source = Table.FromRecords(\n        {\n';
-          mCode += rowStrs.join(',\n');
-          mCode += '\n        }\n    ),\n';
-          mCode += '    SetTypes = Table.TransformColumnTypes(\n        Source,\n        {' + types.join(', ') + '}\n    )\n';
-          mCode += 'in\n    SetTypes';
-
-          notes.push('Parsed ' + data.length + ' record' + (data.length === 1 ? '' : 's') + ' with ' + keys.length + ' column' + (keys.length === 1 ? '' : 's') + ': ' + keys.join(', '));
-        } catch (e) {
-          output.innerHTML = '<span style="color:var(--red);">Invalid JSON: ' + e.message + '</span>';
-          notesEl.style.display = 'none';
-          return;
-        }
-      } else {
-        // CSV mode
-        var delim = $('csvDelimiter').value;
-        var lines = input.split('\n').map(function(l) { return l.trim(); }).filter(function(l) { return l.length > 0; });
-        if (lines.length < 2) { output.innerHTML = '<span class="placeholder">Need at least a header row and one data row</span>'; return; }
-
-        var headers = lines[0].split(delim).map(function(h) { return h.trim().replace(/^["']|["']$/g, ''); });
-        var dataRows = lines.slice(1);
-
-        // Detect types from first data row
-        var firstRow = dataRows[0].split(delim).map(function(v) { return v.trim().replace(/^["']|["']$/g, ''); });
-        var types = headers.map(function(h, i) {
-          var v = firstRow[i] || '';
-          if (!isNaN(v) && v !== '') return '{"' + h + '", type number}';
-          return '{"' + h + '", type text}';
-        });
-
-        var rowStrs = dataRows.map(function(line) {
-          var vals = line.split(delim).map(function(v) { return v.trim().replace(/^["']|["']$/g, ''); });
-          var pairs = headers.map(function(h, i) {
-            var v = vals[i] || '';
-            if (!isNaN(v) && v !== '') return h + ' = ' + v;
-            return h + ' = "' + v + '"';
-          });
-          return '        [' + pairs.join(', ') + ']';
-        });
-
-        mCode = 'let\n';
-        mCode += '    Source = Table.FromRecords(\n        {\n';
-        mCode += rowStrs.join(',\n');
-        mCode += '\n        }\n    ),\n';
-        mCode += '    SetTypes = Table.TransformColumnTypes(\n        Source,\n        {' + types.join(', ') + '}\n    )\n';
-        mCode += 'in\n    SetTypes';
-
-        notes.push('Parsed ' + dataRows.length + ' row' + (dataRows.length === 1 ? '' : 's') + ' with ' + headers.length + ' column' + (headers.length === 1 ? '' : 's') + ': ' + headers.join(', '));
-      }
-
-      output.innerHTML = highlightM(mCode);
-
-      if (notes.length > 0) {
-        notesEl.style.display = 'block';
-        notesEl.innerHTML = notes.map(function(n) { return '<div class="conv-note">' + n + '</div>'; }).join('');
-      } else {
-        notesEl.style.display = 'none';
-      }
+    function getTableDefs() {
+      var tables = [];
+      document.querySelectorAll('.dm-table-block').forEach(function(block) {
+        var type = block.querySelector('.dm-table-type').value;
+        var name = block.querySelector('.dm-table-name').value || 'Table';
+        var cols = block.querySelector('.dm-table-cols').value.split('\n').map(function(c) { return c.trim(); }).filter(function(c) { return c; });
+        tables.push({ type: type, name: name, cols: cols });
+      });
+      return tables;
     }
 
-    function copyCsvM() {
-      navigator.clipboard.writeText($('csvMOutput').textContent).then(function() {
-        var btn = $('csvMCopy');
+    function findRelationships(tables) {
+      var rels = [];
+      tables.forEach(function(t1, i) {
+        tables.forEach(function(t2, j) {
+          if (i >= j) return;
+          t1.cols.forEach(function(c1) {
+            t2.cols.forEach(function(c2) {
+              if (c1 === c2 && c1.toLowerCase() !== 'id' && c1.length > 1) {
+                rels.push({ from: i, to: j, key: c1 });
+              }
+            });
+          });
+        });
+      });
+      return rels;
+    }
+
+    window.renderDM = function() {
+      var canvas = document.getElementById('dmCanvas');
+      var ctx = canvas.getContext('2d');
+      var tables = getTableDefs();
+      var rels = findRelationships(tables);
+      var W = canvas.width, H = canvas.height;
+
+      ctx.clearRect(0, 0, W, H);
+
+      if (tables.length === 0) return;
+
+      // Layout: facts in center, dims around
+      var facts = tables.filter(function(t) { return t.type === 'fact'; });
+      var dims = tables.filter(function(t) { return t.type === 'dim'; });
+      var positions = [];
+      var cx = W / 2, cy = H / 2;
+
+      // Position facts in center
+      facts.forEach(function(t, i) {
+        positions[tables.indexOf(t)] = { x: cx - 60 + i * 140, y: cy - 20 };
+      });
+
+      // Position dims in circle around
+      var dimIdxs = dims.map(function(t) { return tables.indexOf(t); });
+      dimIdxs.forEach(function(idx, i) {
+        var angle = (i / dimIdxs.length) * Math.PI * 2 - Math.PI / 2;
+        var rx = Math.min(W, H) * 0.35;
+        positions[idx] = { x: cx + Math.cos(angle) * rx - 50, y: cy + Math.sin(angle) * rx - 20 };
+      });
+
+      // Draw relationships
+      ctx.strokeStyle = 'rgba(192,88,24,0.4)';
+      ctx.lineWidth = 2;
+      rels.forEach(function(r) {
+        var p1 = positions[r.from], p2 = positions[r.to];
+        if (!p1 || !p2) return;
+        var x1 = p1.x + 50, y1 = p1.y + 15;
+        var x2 = p2.x + 50, y2 = p2.y + 15;
+        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+        // Key label
+        var mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+        ctx.fillStyle = 'rgba(192,88,24,0.7)';
+        ctx.font = '9px monospace';
+        ctx.fillText(r.key, mx + 4, my - 4);
+        // Diamond on relationship line
+        ctx.fillStyle = '#C05818';
+        ctx.beginPath(); ctx.arc(mx, my, 3, 0, Math.PI * 2); ctx.fill();
+      });
+
+      // Draw tables
+      tables.forEach(function(t, i) {
+        var p = positions[i];
+        if (!p) return;
+        var w = 110, headerH = 22;
+        var totalH = headerH + t.cols.length * 14 + 6;
+        var isFact = t.type === 'fact';
+
+        // Box
+        ctx.fillStyle = isFact ? 'rgba(0,120,212,0.12)' : 'rgba(62,207,142,0.08)';
+        ctx.strokeStyle = isFact ? '#0078D4' : '#3ECF8E';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.roundRect(p.x, p.y, w, totalH, 6);
+        ctx.fill(); ctx.stroke();
+
+        // Header
+        ctx.fillStyle = isFact ? '#0078D4' : '#3ECF8E';
+        ctx.beginPath();
+        ctx.roundRect(p.x, p.y, w, headerH, [6, 6, 0, 0]);
+        ctx.fill();
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 10px sans-serif';
+        ctx.fillText(t.name, p.x + 6, p.y + 15);
+
+        // Columns
+        ctx.font = '9px monospace';
+        t.cols.forEach(function(col, ci) {
+          var isKey = rels.some(function(r) { return r.key === col && (r.from === i || r.to === i); });
+          ctx.fillStyle = isKey ? '#C05818' : 'rgba(255,255,255,0.5)';
+          ctx.fillText((isKey ? '\u26BF ' : '  ') + col, p.x + 6, p.y + headerH + 12 + ci * 14);
+        });
+      });
+    };
+
+    renderDM();
+
+    // ─────────────────────────────────────────
+    // POWER BI THEME GENERATOR
+    // ─────────────────────────────────────────
+
+    var themePresets = {
+      corporate: { colors: ['#003366','#336699','#6699CC','#99CCFF','#CC9933','#996633'], bg:'#FFFFFF', fg:'#333333', font:'Segoe UI' },
+      dark: { colors: ['#4FC3F7','#81C784','#FFB74D','#E57373','#BA68C8','#4DD0E1'], bg:'#1E1E1E', fg:'#E0E0E0', font:'Segoe UI' },
+      earth: { colors: ['#8B4513','#D2691E','#CD853F','#556B2F','#6B8E23','#DAA520'], bg:'#FAF8F0', fg:'#3E2723', font:'Calibri' },
+      powerintegrate: { colors: ['#C05818','#1A52E8','#3ECF8E','#E8860A','#8B5CF6','#CC2936'], bg:'#FFFFFF', fg:'#181D2A', font:'Segoe UI' },
+    };
+
+    window.applyPreset = function(name) {
+      var p = themePresets[name];
+      if (!p) return;
+      var colorInputs = document.querySelectorAll('.theme-color-input');
+      p.colors.forEach(function(c, i) { if (colorInputs[i]) colorInputs[i].value = c; });
+      $('themeBg').value = p.bg;
+      $('themeFg').value = p.fg;
+      $('themeFont').value = p.font;
+      generateTheme();
+    };
+
+    function generateTheme() {
+      var name = $('themeNameInput').value || 'Custom Theme';
+      var colors = [];
+      document.querySelectorAll('.theme-color-input').forEach(function(inp, i) {
+        colors.push(inp.value.toUpperCase());
+        var hexLabel = inp.parentElement.querySelector('.theme-color-hex');
+        if (hexLabel) hexLabel.textContent = inp.value.toUpperCase();
+      });
+      var bg = $('themeBg').value.toUpperCase();
+      var fg = $('themeFg').value.toUpperCase();
+      var font = $('themeFont').value;
+
+      $('themeBgHex').textContent = bg;
+      $('themeFgHex').textContent = fg;
+
+      var theme = {
+        name: name,
+        dataColors: colors,
+        background: bg,
+        foreground: fg,
+        tableAccent: colors[0],
+        textClasses: {
+          callout: { fontFace: font, fontSize: 28 },
+          title: { fontFace: font, fontSize: 16, fontWeight: 'Bold' },
+          header: { fontFace: font, fontSize: 12 },
+          label: { fontFace: font, fontSize: 10 }
+        },
+        visualStyles: {
+          '*': {
+            '*': {
+              background: [{ color: { solid: { color: bg } }, transparency: 0 }],
+              foreground: [{ color: { solid: { color: fg } } }],
+              outlineColor: [{ color: { solid: { color: colors[0] } } }]
+            }
+          }
+        }
+      };
+
+      var jsonStr = JSON.stringify(theme, null, 2);
+      // Syntax highlight
+      var highlighted = jsonStr
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"([^"]+)":/g, '<span class="fn">"$1"</span>:')
+        .replace(/: "([^"]+)"/g, ': <span class="str">"$1"</span>')
+        .replace(/: (\d+)/g, ': <span class="num">$1</span>');
+      $('themeOutput').innerHTML = highlighted;
+      $('themeOutput')._rawJSON = jsonStr;
+    }
+
+    window.copyTheme = function() {
+      var json = $('themeOutput')._rawJSON || $('themeOutput').textContent;
+      navigator.clipboard.writeText(json).then(function() {
+        var btn = $('themeCopy');
         btn.textContent = 'Copied!'; btn.classList.add('copied');
         setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
       });
-    }
-    window.copyCsvM = copyCsvM;
+    };
 
-    $('csvInput').addEventListener('input', convertCsvToM);
-    $('csvDelimiter').addEventListener('change', convertCsvToM);
+    window.downloadTheme = function() {
+      var json = $('themeOutput')._rawJSON || $('themeOutput').textContent;
+      var name = ($('themeNameInput').value || 'custom-theme').toLowerCase().replace(/\s+/g, '-');
+      var blob = new Blob([json], { type: 'application/json' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = name + '.json';
+      a.click();
+    };
+
+    window.generateTheme = generateTheme;
+    generateTheme();
+
+    // ─────────────────────────────────────────
+    // MARKUP VS MARGIN CALCULATOR
+    // ─────────────────────────────────────────
+
+    function calcMarkup() {
+      var cost = parseFloat($('mkCost').value);
+      var price = parseFloat($('mkPrice').value);
+
+      if (cost > 0 && price > 0) {
+        var markup = ((price - cost) / cost) * 100;
+        var margin = ((price - cost) / price) * 100;
+        $('mkMarkupResult').textContent = markup.toFixed(1) + '%';
+        $('mkMarginResult').textContent = margin.toFixed(1) + '%';
+        $('mkMarkupResult').style.color = markup >= 0 ? 'var(--copper)' : 'var(--red)';
+        $('mkMarginResult').style.color = margin >= 0 ? 'var(--signal)' : 'var(--red)';
+      }
+    }
+
+    // Reverse calc from markup %
+    function calcFromMarkup() {
+      var mkVal = parseFloat($('mkMarkupInput').value);
+      if (isNaN(mkVal)) return;
+      var cost = parseFloat($('mkCost').value) || 60;
+      var price = cost * (1 + mkVal / 100);
+      $('mkPrice').value = price.toFixed(2);
+      var margin = ((price - cost) / price) * 100;
+      $('mkMarkupResult').textContent = mkVal.toFixed(1) + '%';
+      $('mkMarginResult').textContent = margin.toFixed(1) + '%';
+    }
+
+    // Reverse calc from margin %
+    function calcFromMargin() {
+      var mgVal = parseFloat($('mkMarginInput').value);
+      if (isNaN(mgVal) || mgVal >= 100) return;
+      var cost = parseFloat($('mkCost').value) || 60;
+      var price = cost / (1 - mgVal / 100);
+      $('mkPrice').value = price.toFixed(2);
+      var markup = ((price - cost) / cost) * 100;
+      $('mkMarkupResult').textContent = markup.toFixed(1) + '%';
+      $('mkMarginResult').textContent = mgVal.toFixed(1) + '%';
+    }
+
+    ['mkCost', 'mkPrice'].forEach(function(id) { $(id).addEventListener('input', calcMarkup); });
+    $('mkMarkupInput').addEventListener('input', calcFromMarkup);
+    $('mkMarginInput').addEventListener('input', calcFromMargin);
+    calcMarkup();
+
+    // ─────────────────────────────────────────
+    // OPTIONS PROFIT CALCULATOR
+    // ─────────────────────────────────────────
+
+    var optType = 'buyCall';
+
+    window.setOptType = function(type) {
+      optType = type;
+      $('optBuyCall').classList.toggle('selected', type === 'buyCall');
+      $('optSellCall').classList.toggle('selected', type === 'sellCall');
+      $('optBuyPut').classList.toggle('selected', type === 'buyPut');
+      $('optSellPut').classList.toggle('selected', type === 'sellPut');
+      calcOptions();
+    };
+
+    function calcOptions() {
+      var stock = parseFloat($('optStock').value) || 0;
+      var strike = parseFloat($('optStrike').value) || 0;
+      var premium = parseFloat($('optPremium').value) || 0;
+      var contracts = parseInt($('optContracts').value) || 1;
+      var shares = contracts * 100;
+      var totalCost = premium * shares;
+      var isCall = optType === 'buyCall' || optType === 'sellCall';
+      var isBuy = optType === 'buyCall' || optType === 'buyPut';
+
+      // Break-even
+      var breakeven = isCall ? strike + premium : strike - premium;
+
+      // Max loss / max profit
+      var maxLossText, maxProfitText, costLabel;
+      if (optType === 'buyCall') {
+        maxLossText = '-' + fmt(totalCost);
+        maxProfitText = 'Unlimited';
+        costLabel = fmt(totalCost) + ' (debit)';
+      } else if (optType === 'sellCall') {
+        maxLossText = 'Unlimited';
+        maxProfitText = '+' + fmt(totalCost);
+        costLabel = fmt(totalCost) + ' (credit)';
+      } else if (optType === 'buyPut') {
+        maxLossText = '-' + fmt(totalCost);
+        maxProfitText = '+' + fmt(Math.max(0, (strike - premium) * shares));
+        costLabel = fmt(totalCost) + ' (debit)';
+      } else { // sellPut
+        maxLossText = '-' + fmt(Math.max(0, (strike - premium) * shares));
+        maxProfitText = '+' + fmt(totalCost);
+        costLabel = fmt(totalCost) + ' (credit)';
+      }
+
+      $('optBreakeven').textContent = '$' + breakeven.toFixed(2);
+      $('optMaxLoss').textContent = maxLossText;
+      $('optMaxLoss').style.color = maxLossText === 'Unlimited' ? '#CC2936' : '#CC2936';
+      $('optMaxProfit').textContent = maxProfitText;
+      $('optMaxProfit').style.color = maxProfitText === 'Unlimited' ? 'var(--green)' : 'var(--green)';
+      $('optTotalCost').textContent = costLabel;
+      $('optTotalCost').style.color = isBuy ? 'var(--copper)' : 'var(--green)';
+
+      // Slider range
+      var rangeMin = Math.max(0, Math.round(strike * 0.5));
+      var rangeMax = Math.round(strike * 1.8);
+      var slider = $('optExpPrice');
+      slider.min = rangeMin;
+      slider.max = rangeMax;
+      $('optRangeMin').textContent = '$' + rangeMin;
+      $('optRangeMax').textContent = '$' + rangeMax;
+
+      // P&L at slider price
+      var expPrice = parseFloat(slider.value) || strike;
+      $('optRangeCur').textContent = '$' + expPrice.toFixed(2);
+
+      var intrinsic = isCall ? Math.max(0, expPrice - strike) : Math.max(0, strike - expPrice);
+      var pnl;
+      if (isBuy) {
+        pnl = (intrinsic - premium) * shares;
+      } else {
+        pnl = (premium - intrinsic) * shares;
+      }
+      var returnPct = totalCost > 0 ? (pnl / totalCost) * 100 : 0;
+
+      var pnlColor = pnl >= 0 ? 'var(--green)' : 'var(--red)';
+      $('optPnlAtPrice').textContent = (pnl >= 0 ? '+' : '') + fmt(pnl);
+      $('optPnlAtPrice').style.color = pnlColor;
+      $('optReturnPct').textContent = (returnPct >= 0 ? '+' : '') + returnPct.toFixed(1) + '%';
+      $('optReturnPct').style.color = pnlColor;
+      $('optIntrinsic').textContent = '$' + intrinsic.toFixed(2);
+
+      // P&L table
+      var body = $('optPnlBody');
+      body.innerHTML = '';
+      var step = Math.max(1, Math.round((rangeMax - rangeMin) / 15));
+      for (var p = rangeMin; p <= rangeMax; p += step) {
+        var iv = isCall ? Math.max(0, p - strike) : Math.max(0, strike - p);
+        var pl = isBuy ? (iv - premium) * shares : (premium - iv) * shares;
+        var rp = totalCost > 0 ? (pl / totalCost) * 100 : 0;
+        var color = pl >= 0 ? 'var(--green)' : 'var(--red)';
+        var isBE = Math.abs(p - breakeven) < step / 2;
+        body.innerHTML +=
+          '<tr style="' + (isBE ? 'background:rgba(192,88,24,0.06);' : '') + '">' +
+          '<td class="lot-total">' + (isBE ? '<strong>$' + p + ' (BE)</strong>' : '$' + p) + '</td>' +
+          '<td class="lot-total">$' + iv.toFixed(2) + '</td>' +
+          '<td class="lot-total" style="color:' + color + ';font-weight:600;">' + (pl >= 0 ? '+' : '') + fmt(pl) + '</td>' +
+          '<td class="lot-total" style="color:' + color + ';">' + (rp >= 0 ? '+' : '') + rp.toFixed(1) + '%</td></tr>';
+      }
+    }
+
+    ['optStock','optStrike','optPremium','optContracts'].forEach(function(id) {
+      $(id).addEventListener('input', calcOptions);
+    });
+    $('optExpPrice').addEventListener('input', calcOptions);
+    calcOptions();
   </script>
 </body>
 </html>
