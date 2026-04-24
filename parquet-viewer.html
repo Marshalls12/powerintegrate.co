@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Parquet Viewer | View .parquet Files in Your Browser | Power Integrate</title>
+<meta name="description" content="A free parquet viewer that runs entirely in your browser. Inspect schema, metadata, compression, and row data from .parquet files without uploading them anywhere.">
+<link rel="canonical" href="https://powerintegrate.co/parquet-viewer">
+<meta name="robots" content="index, follow">
+
+<meta property="og:title" content="Parquet Viewer | Power Integrate">
+<meta property="og:description" content="Inspect .parquet files in your browser. No upload. No install. No account. Built for analysts and engineers who work with Fabric, Databricks, dbt, and Python data pipelines.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://powerintegrate.co/parquet-viewer">
+<meta property="og:site_name" content="Power Integrate">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Parquet Viewer | Power Integrate">
+<meta name="twitter:description" content="Inspect .parquet files in your browser. No upload. No install. Files parsed locally.">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Parquet Viewer",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any (browser-based)",
+  "description": "Free in-browser parquet file viewer. Inspect schema, metadata, and row data from .parquet files with no upload, no install, and no account.",
+  "url": "https://powerintegrate.co/parquet-viewer",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Power Integrate",
+    "url": "https://powerintegrate.co"
+  }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #fbfaf6;
+    --surface: #f2f0e9;
+    --surface-2: #e8e5dc;
+    --fg: #1a1918;
+    --fg-soft: #3a3833;
+    --muted: #78746b;
+    --border: #d9d5c9;
+    --border-strong: #b9b3a3;
+    --accent: #a0451e;
+    --accent-soft: #f4e6dc;
+    --accent-ink: #6b2d12;
+    --ok: #3f6d36;
+    --error: #9a2e2e;
+    --error-soft: #f5e3e3;
+    --sans: "IBM Plex Sans", system-ui, sans-serif;
+    --serif: "IBM Plex Serif", Georgia, serif;
+    --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--fg);
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 0% 0%, rgba(160, 69, 30, 0.05) 0%, transparent 40%),
+      radial-gradient(circle at 100% 30%, rgba(63, 109, 54, 0.03) 0%, transparent 40%);
+    background-attachment: fixed;
+    line-height: 1.55;
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container { max-width: 1400px; margin: 0 auto; padding: 0 1.75rem; }
+  .narrow { max-width: 860px; margin: 0 auto; padding: 0 1.75rem; }
+
+  .nav {
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--border);
+    background: rgba(251, 250, 246, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .nav-inner { display: flex; justify-content: space-between; align-items: center; }
+  .wordmark {
+    font-family: var(--mono);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--fg);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .wordmark-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; }
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .nav-links a { color: var(--muted); text-decoration: none; transition: color 0.15s; }
+  .nav-links a:hover { color: var(--accent-ink); }
+
+  .hero { padding: 3.5rem 0 2.25rem; border-bottom: 1px solid var(--border); }
+  .hero-inner { display: grid; grid-template-columns: 1fr; gap: 1.5rem; max-width: 860px; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--accent-ink); background: var(--accent-soft);
+    padding: 0.25rem 0.625rem; border-radius: 2px; width: fit-content;
+  }
+  h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(2.5rem, 5.5vw, 4rem); line-height: 1.02; letter-spacing: -0.02em; }
+  h1 em { font-style: italic; color: var(--accent); }
+  .hero-lede { font-size: 1.0625rem; color: var(--fg-soft); max-width: 56ch; line-height: 1.6; }
+  .hero-lede strong { color: var(--fg); font-weight: 600; }
+
+  /* ── EMAIL GATE ── */
+  .gate-overlay {
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(26, 25, 24, 0.6);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 2rem; transition: opacity 0.3s ease;
+  }
+  .gate-overlay.dismissed { opacity: 0; pointer-events: none; }
+  .gate-modal {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 6px; padding: 2.5rem 2rem; max-width: 440px; width: 100%;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.2);
+    text-align: center;
+  }
+  .gate-icon { font-size: 2rem; margin-bottom: 1rem; opacity: 0.3; }
+  .gate-title { font-family: var(--serif); font-weight: 500; font-size: 1.5rem; margin-bottom: 0.625rem; }
+  .gate-sub { font-size: 0.9375rem; color: var(--fg-soft); line-height: 1.6; margin-bottom: 1.5rem; }
+  .gate-form { display: flex; gap: 0.5rem; }
+  .gate-input {
+    flex: 1; padding: 0.625rem 0.875rem; border: 1px solid var(--border);
+    border-radius: 3px; font-family: var(--mono); font-size: 0.875rem;
+    background: var(--bg); color: var(--fg); outline: none;
+  }
+  .gate-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .gate-btn {
+    padding: 0.625rem 1.25rem; background: var(--accent); color: #fff;
+    border: none; border-radius: 3px; font-family: var(--mono); font-size: 0.8125rem;
+    font-weight: 500; cursor: pointer; white-space: nowrap; transition: background 0.15s;
+  }
+  .gate-btn:hover { background: var(--accent-ink); }
+  .gate-btn:disabled { opacity: 0.5; cursor: default; }
+  .gate-status { font-family: var(--mono); font-size: 0.75rem; margin-top: 0.75rem; min-height: 1.2em; }
+  .gate-status.ok { color: var(--ok); }
+  .gate-status.err { color: var(--error); }
+  .gate-privacy {
+    font-family: var(--mono); font-size: 0.625rem; color: var(--muted);
+    margin-top: 1rem; line-height: 1.5;
+  }
+
+  .tool-section { padding: 2rem 0 3rem; }
+
+  .dropzone {
+    margin-bottom: 1.5rem; border: 1.5px dashed var(--border-strong); border-radius: 4px;
+    padding: 3rem 1.5rem; text-align: center; cursor: pointer;
+    transition: border-color 0.15s, background 0.15s; background: var(--surface); display: block;
+  }
+  .dropzone:hover, .dropzone.dragover { border-color: var(--accent); background: var(--accent-soft); }
+  .dropzone .primary { font-family: var(--mono); font-size: 0.9375rem; color: var(--fg); font-weight: 500; }
+  .dropzone .secondary { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); margin-top: 0.375rem; letter-spacing: 0.02em; }
+  .dropzone input { display: none; }
+
+  .hidden { display: none !important; }
+
+  .panel { margin-bottom: 1.25rem; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); }
+  .panel-header {
+    padding: 0.75rem 1rem; border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center; background: var(--surface);
+  }
+  .panel-header h2 { font-family: var(--mono); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-soft); }
+  .panel-header .count { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); }
+  .panel-body { padding: 1.125rem 1rem; }
+
+  .meta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1.125rem 1.5rem; }
+  .meta-item .label { font-family: var(--mono); font-size: 0.6875rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.25rem; }
+  .meta-item .value { font-family: var(--mono); font-size: 0.875rem; color: var(--fg); word-break: break-all; font-weight: 500; }
+
+  table { width: 100%; border-collapse: collapse; }
+  .schema-table, .data-table { font-size: 0.8125rem; }
+  .schema-table th, .schema-table td, .data-table th, .data-table td {
+    text-align: left; padding: 0.5rem 0.875rem; border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  .schema-table th, .data-table th {
+    background: var(--surface); font-family: var(--mono); font-weight: 600; font-size: 0.6875rem;
+    color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em;
+    position: sticky; top: 0; z-index: 1; border-bottom: 1px solid var(--border-strong); white-space: nowrap;
+  }
+  .schema-table td { font-family: var(--mono); color: var(--fg-soft); }
+  .schema-table td:first-child { color: var(--fg); font-weight: 500; }
+  .data-table td { font-family: var(--mono); font-size: 0.75rem; white-space: nowrap; max-width: 320px; overflow: hidden; text-overflow: ellipsis; color: var(--fg-soft); }
+  .data-table tr:hover td { background: var(--surface); }
+
+  .table-wrap { overflow: auto; max-height: 640px; scrollbar-width: thin; }
+  .table-wrap::-webkit-scrollbar { width: 10px; height: 10px; }
+  .table-wrap::-webkit-scrollbar-track { background: var(--surface); }
+  .table-wrap::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 2px; }
+
+  .controls {
+    display: flex; gap: 0.625rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--border);
+    align-items: center; flex-wrap: wrap; background: var(--surface);
+  }
+  .controls input {
+    flex: 1; min-width: 220px; padding: 0.5rem 0.75rem; border: 1px solid var(--border);
+    border-radius: 3px; font-size: 0.8125rem; font-family: var(--mono); background: var(--bg); color: var(--fg);
+  }
+  .controls input::placeholder { color: var(--muted); }
+  .controls input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+  button {
+    padding: 0.5rem 0.875rem; border: 1px solid var(--border); background: var(--bg);
+    border-radius: 3px; cursor: pointer; font-size: 0.8125rem; font-family: var(--mono);
+    color: var(--fg); font-weight: 500; transition: background 0.12s, border-color 0.12s;
+  }
+  button:hover:not(:disabled) { background: var(--surface); border-color: var(--border-strong); }
+  button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  button.primary:hover:not(:disabled) { background: var(--accent-ink); border-color: var(--accent-ink); }
+  button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .pagination {
+    display: flex; gap: 0.5rem; align-items: center; padding: 0.75rem 1rem;
+    border-top: 1px solid var(--border); background: var(--surface); font-size: 0.8125rem;
+  }
+  .pagination .info { flex: 1; color: var(--muted); font-family: var(--mono); font-size: 0.75rem; }
+
+  .type-badge {
+    display: inline-block; padding: 0.125rem 0.5rem; background: var(--accent-soft);
+    color: var(--accent-ink); border-radius: 2px; font-size: 0.6875rem; font-weight: 500; font-family: var(--mono);
+  }
+  .type-badge.secondary { background: var(--surface-2); color: var(--fg-soft); }
+
+  .alert { margin-bottom: 1.5rem; padding: 0.875rem 1rem; border-radius: 4px; font-size: 0.8125rem; font-family: var(--mono); }
+  .alert.error { background: var(--error-soft); border: 1px solid #e4b5b5; color: var(--error); }
+  .alert.info { background: var(--surface); border: 1px solid var(--border); color: var(--muted); }
+
+  .loading { text-align: center; padding: 3rem 1rem; color: var(--muted); font-family: var(--mono); font-size: 0.8125rem; }
+  .loading::after { content: ''; display: inline-block; width: 0.75rem; height: 0.75rem; margin-left: 0.5rem; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: -2px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .null { color: var(--muted); font-style: italic; opacity: 0.7; }
+
+  section.content { padding: 4rem 0; border-top: 1px solid var(--border); }
+  .section-title-block { margin-bottom: 2.5rem; max-width: 720px; }
+  .section-eyebrow { font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.875rem; }
+  h2.section-heading { font-family: var(--serif); font-weight: 500; font-size: clamp(1.75rem, 3.5vw, 2.5rem); line-height: 1.1; letter-spacing: -0.015em; color: var(--fg); }
+  h2.section-heading em { font-style: italic; color: var(--accent); }
+  .section-lede { font-size: 1rem; color: var(--fg-soft); margin-top: 1rem; max-width: 60ch; }
+
+  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); border-top: 1px solid var(--border); border-left: 1px solid var(--border); }
+  .feature { padding: 1.75rem 1.5rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .feature-number { font-family: var(--mono); font-size: 0.75rem; color: var(--accent); margin-bottom: 0.625rem; font-weight: 500; }
+  .feature-title { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--fg); }
+  .feature-body { font-size: 0.9375rem; color: var(--fg-soft); line-height: 1.55; }
+
+  .usecase-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+  .usecase { padding: 1.5rem; background: var(--surface); border-radius: 4px; border-left: 3px solid var(--accent); }
+  .usecase-title { font-family: var(--mono); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-ink); margin-bottom: 0.625rem; }
+  .usecase-body { font-size: 0.9375rem; color: var(--fg-soft); line-height: 1.55; }
+
+  .spec-table { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .spec-row { display: grid; grid-template-columns: 200px 1fr; gap: 2rem; padding: 1rem 0; border-bottom: 1px solid var(--border); }
+  .spec-row:last-child { border-bottom: none; }
+  .spec-row dt { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; font-weight: 500; }
+  .spec-row dd { font-size: 0.9375rem; color: var(--fg-soft); line-height: 1.55; font-family: var(--mono); }
+  .spec-row dd code { background: var(--surface); padding: 0.1rem 0.375rem; border-radius: 2px; font-size: 0.8125rem; }
+  .spec-row dd a { color: var(--accent-ink); text-decoration: underline; text-decoration-color: var(--border-strong); }
+  .spec-row dd a:hover { text-decoration-color: var(--accent); }
+
+  details.faq { border-bottom: 1px solid var(--border); padding: 1.25rem 0; }
+  details.faq summary { cursor: pointer; list-style: none; font-family: var(--serif); font-weight: 500; font-size: 1.125rem; color: var(--fg); display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  details.faq summary::-webkit-details-marker { display: none; }
+  details.faq summary::after { content: "+"; font-family: var(--mono); font-size: 1.5rem; font-weight: 400; color: var(--muted); line-height: 1; }
+  details.faq[open] summary::after { content: "-"; }
+  details.faq .faq-body { margin-top: 0.875rem; color: var(--fg-soft); font-size: 0.9375rem; line-height: 1.65; max-width: 68ch; }
+  details.faq .faq-body code { font-family: var(--mono); font-size: 0.8125rem; background: var(--surface); padding: 0.1rem 0.375rem; border-radius: 2px; }
+  details.faq .faq-body a { color: var(--accent-ink); text-decoration: underline; text-decoration-color: var(--border-strong); }
+
+  section.cta { padding: 5rem 0; border-top: 1px solid var(--border); background: var(--surface); }
+  .cta-inner { max-width: 720px; }
+  .cta-heading { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: clamp(1.875rem, 4vw, 2.75rem); line-height: 1.1; letter-spacing: -0.015em; margin-bottom: 1.25rem; }
+  .cta-body { font-size: 1.0625rem; color: var(--fg-soft); line-height: 1.65; margin-bottom: 2rem; max-width: 58ch; }
+  .cta-actions { display: flex; gap: 0.875rem; flex-wrap: wrap; }
+  .cta-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.25rem; background: var(--accent); color: #fff; text-decoration: none; border-radius: 3px; font-family: var(--mono); font-size: 0.8125rem; font-weight: 500; letter-spacing: 0.02em; transition: background 0.15s; }
+  .cta-btn:hover { background: var(--accent-ink); }
+  .cta-btn.secondary { background: transparent; color: var(--fg); border: 1px solid var(--border-strong); }
+  .cta-btn.secondary:hover { background: var(--bg); }
+
+  footer.page-footer { padding: 2.5rem 0 3rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.75rem; font-family: var(--mono); }
+  .footer-inner { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem; }
+  .footer-inner a { color: var(--fg-soft); text-decoration: none; border-bottom: 1px solid var(--border); transition: color 0.15s, border-color 0.15s; }
+  .footer-inner a:hover { color: var(--accent-ink); border-bottom-color: var(--accent); }
+  .footer-links { display: flex; gap: 1.5rem; }
+
+  @media (max-width: 768px) {
+    .hero { padding: 2.5rem 0 1.75rem; }
+    .spec-row { grid-template-columns: 1fr; gap: 0.375rem; }
+    .nav-links { gap: 1rem; font-size: 0.6875rem; }
+    section.content, section.cta { padding: 3rem 0; }
+    .dropzone { padding: 2.25rem 1rem; }
+    .meta-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .feature { padding: 1.25rem 1rem; }
+    .gate-form { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- EMAIL GATE -->
+<div class="gate-overlay" id="gateOverlay">
+  <div class="gate-modal">
+    <div class="gate-icon">&#128194;</div>
+    <div class="gate-title">Enter your email to access</div>
+    <div class="gate-sub">Free to use. We just ask for an email so we know who finds this useful. Your file never leaves your machine.</div>
+    <div class="gate-form">
+      <input type="email" class="gate-input" id="gateEmail" placeholder="your@email.com" required>
+      <button class="gate-btn" id="gateBtn" onclick="submitGate()">Access Tool</button>
+    </div>
+    <div class="gate-status" id="gateStatus"></div>
+    <div class="gate-privacy">No spam. No mailing list. Just a record that you used the tool. Your parquet file is parsed locally and never uploaded.</div>
+  </div>
+</div>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="https://powerintegrate.co" class="wordmark">
+      <span class="wordmark-dot"></span>
+      POWER INTEGRATE
+    </a>
+    <div class="nav-links">
+      <a href="https://powerintegrate.co/powerlabs.html">PowerLabs</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container hero-inner">
+    <div class="eyebrow"><span>PowerLabs</span><span style="opacity:0.5">/</span><span>Free tool</span></div>
+    <h1>Parquet <em>viewer.</em><br>No upload. No install.</h1>
+    <p class="hero-lede">Drop a <strong>.parquet</strong> file into the browser and see its schema, metadata, compression, and row-level data in seconds. Everything is parsed locally on your machine. Nothing is uploaded, nothing is logged, no account required.</p>
+  </div>
+</header>
+
+<section class="tool-section">
+  <div class="container">
+    <label class="dropzone" id="dropzone">
+      <input type="file" id="fileInput" accept=".parquet,.pq">
+      <div class="primary">Drop a .parquet file here</div>
+      <div class="secondary">or click to browse</div>
+    </label>
+    <div id="alert" class="alert hidden"></div>
+    <div id="loading" class="loading hidden">Parsing file</div>
+    <div id="results" class="hidden">
+      <div class="panel">
+        <div class="panel-header"><h2>File</h2></div>
+        <div class="panel-body"><div class="meta-grid" id="fileMeta"></div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><h2>Schema</h2><span class="count" id="schemaCount"></span></div>
+        <div class="table-wrap"><table class="schema-table" id="schemaTable"></table></div>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><h2>Data</h2><span class="count" id="dataCount"></span></div>
+        <div class="controls">
+          <input type="text" id="filter" placeholder="Filter rows (any column, case insensitive)">
+          <button id="exportBtn" onclick="exportCsv()">Export CSV</button>
+        </div>
+        <div class="table-wrap"><table class="data-table" id="dataTable"></table></div>
+        <div class="pagination">
+          <span class="info" id="pageInfo"></span>
+          <button id="prevBtn" onclick="changePage(-1)">Previous</button>
+          <button id="nextBtn" onclick="changePage(1)">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content" id="features">
+  <div class="container">
+    <div class="section-title-block">
+      <div class="section-eyebrow">Why this tool</div>
+      <h2 class="section-heading">Built for <em>fast inspection,</em> not heavy analysis.</h2>
+      <p class="section-lede">Most parquet viewers are either desktop apps that need installing, cloud services that want your file uploaded, or notebooks that need a Python environment. This sits between all of them.</p>
+    </div>
+    <div class="features">
+      <div class="feature"><div class="feature-number">01</div><div class="feature-title">Local-only parsing</div><div class="feature-body">Your file is read by JavaScript in your browser tab. It never touches a server, never hits a log, never leaves your machine. Safe for production data, PII, and files you cannot upload.</div></div>
+      <div class="feature"><div class="feature-number">02</div><div class="feature-title">Metadata first</div><div class="feature-body">See row count, row groups, compression codec, writer, and format version before you look at a single row. The things that tell you whether a file was written correctly.</div></div>
+      <div class="feature"><div class="feature-number">03</div><div class="feature-title">Typed schema view</div><div class="feature-body">Physical types, logical types, and repetition rules displayed side by side. Catches schema drift before it hits your Power BI model or your dbt test.</div></div>
+      <div class="feature"><div class="feature-number">04</div><div class="feature-title">Paginated row browsing</div><div class="feature-body">Reads only the page you are viewing using row-group offsets. Open a large file without waiting for a full load or melting your browser tab.</div></div>
+      <div class="feature"><div class="feature-number">05</div><div class="feature-title">Filter and export</div><div class="feature-body">Substring filter across every column for quick spot checks. Export the whole file or just the filtered rows to CSV with one click.</div></div>
+      <div class="feature"><div class="feature-number">06</div><div class="feature-title">Zero setup</div><div class="feature-body">Bookmark the page. No npm install, no Python env, no desktop app, no account. Works on any modern browser on any OS.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="content" id="use-cases">
+  <div class="container">
+    <div class="section-title-block">
+      <div class="section-eyebrow">When you would reach for it</div>
+      <h2 class="section-heading">Use cases we built this for.</h2>
+    </div>
+    <div class="usecase-list">
+      <div class="usecase"><div class="usecase-title">Fabric and Direct Lake</div><div class="usecase-body">Inspect parquet files in OneLake before a Direct Lake semantic model picks them up. Verify column names, types, and partitioning without opening a notebook.</div></div>
+      <div class="usecase"><div class="usecase-title">ETL debugging</div><div class="usecase-body">A Python or Spark job wrote a file that looks wrong downstream. Drag it in, check the schema and a few rows, figure out whether the problem is upstream or in the reader.</div></div>
+      <div class="usecase"><div class="usecase-title">Power BI pre-load checks</div><div class="usecase-body">Confirm a parquet extract has the columns and types your semantic model expects before importing it to Power BI or publishing a Dataflow.</div></div>
+      <div class="usecase"><div class="usecase-title">Databricks and Snowflake exports</div><div class="usecase-body">Sanity-check parquet files unloaded from your warehouse before handing them to a client or a downstream consumer.</div></div>
+      <div class="usecase"><div class="usecase-title">dbt and Airflow validation</div><div class="usecase-body">Eyeball the parquet output of a dbt run or a DAG task without wiring up a full read step. Great for quick PR reviews.</div></div>
+      <div class="usecase"><div class="usecase-title">Sharing schema with stakeholders</div><div class="usecase-body">Non-technical stakeholders can open the tool and see column names without having to install anything or learn DuckDB.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="content" id="specs">
+  <div class="container">
+    <div class="section-title-block">
+      <div class="section-eyebrow">Technical notes</div>
+      <h2 class="section-heading">What it supports.</h2>
+    </div>
+    <dl class="spec-table">
+      <div class="spec-row"><dt>Compression</dt><dd><code>SNAPPY</code>, <code>GZIP</code>, <code>ZSTD</code>, <code>LZ4</code>, <code>BROTLI</code>, uncompressed</dd></div>
+      <div class="spec-row"><dt>File sources</dt><dd>Local files via drag-and-drop or file picker. Files are read as browser File objects with streamed byte ranges.</dd></div>
+      <div class="spec-row"><dt>Pagination</dt><dd>100 rows per page using byte-range reads. Page navigation does not re-read the whole file.</dd></div>
+      <div class="spec-row"><dt>Filter</dt><dd>Client-side substring match, case insensitive, across all columns. Available for files up to 200,000 rows.</dd></div>
+      <div class="spec-row"><dt>Nested types</dt><dd>Lists and structs display as JSON in the cell. Top-level nested columns appear as <code>GROUP</code> in the schema view.</dd></div>
+      <div class="spec-row"><dt>Big integers and dates</dt><dd><code>INT64</code> values render as exact decimal strings. <code>TIMESTAMP</code> values render in ISO 8601.</dd></div>
+      <div class="spec-row"><dt>Not supported</dt><dd>Modular encryption (Parquet encryption spec), remote URLs, and SQL queries. For those, reach for DuckDB or pandas.</dd></div>
+      <div class="spec-row"><dt>Dependencies</dt><dd>Built on <a href="https://github.com/hyparam/hyparquet" target="_blank" rel="noopener">hyparquet</a>. Pure JavaScript, no WebAssembly runtime, no server component.</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="content" id="faq">
+  <div class="narrow">
+    <div class="section-title-block">
+      <div class="section-eyebrow">Questions</div>
+      <h2 class="section-heading">FAQ.</h2>
+    </div>
+    <details class="faq"><summary>Is my file uploaded anywhere?</summary><div class="faq-body">No. The parser runs inside your browser tab as JavaScript. No request is made to any server with your file contents. You can confirm this by opening your browser DevTools Network panel, dropping a file, and watching that no outbound request is made beyond the initial page and script loads.</div></details>
+    <details class="faq"><summary>How large a file can I open?</summary><div class="faq-body">The browser streams byte ranges from the file on disk, so file size itself is rarely the limit. In practice, multi-gigabyte files open fine for schema and paginated browsing. The filter feature needs all rows in memory and is capped at 200,000 rows to avoid crashing the tab.</div></details>
+    <details class="faq"><summary>Which browsers are supported?</summary><div class="faq-body">Any modern evergreen browser. Tested on recent Chrome, Edge, Firefox, and Safari. Internet Explorer is not supported.</div></details>
+    <details class="faq"><summary>Can I inspect parquet files from Microsoft Fabric or OneLake?</summary><div class="faq-body">Yes, if you can download the file locally first. The tool does not connect to remote storage accounts. Download the file from OneLake, S3, ABFS, or wherever it lives, then drop it into the tool.</div></details>
+    <details class="faq"><summary>Why are my nested columns not expanded?</summary><div class="faq-body">This tool prioritizes fast schema inspection for flat and lightly nested files. Deeply nested lists and structs display as JSON in cells rather than exploding into separate views. For real nested drill-down, consider DuckDB or Apache Arrow-based viewers.</div></details>
+    <details class="faq"><summary>Can I query the file with SQL?</summary><div class="faq-body">Not in this tool. For SQL over parquet in the browser, use <a href="https://duckdb.org/docs/stable/clients/wasm/overview" target="_blank" rel="noopener">DuckDB-WASM</a>.</div></details>
+    <details class="faq"><summary>Who built this, and why is it free?</summary><div class="faq-body">Built by <a href="https://powerintegrate.co" target="_blank" rel="noopener">Power Integrate</a>, a Power BI and Microsoft 365 consulting practice. Free tools signal that we know the tech and we care enough to ship. If you need help with a Fabric migration, a semantic model, or a data pipeline, that is where we make our money.</div></details>
+    <details class="faq"><summary>Can I self-host it?</summary><div class="faq-body">Yes. It is a single HTML file with two CDN imports. Fork it, drop it on your intranet, retheme it with your CSS variables.</div></details>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="container cta-inner">
+    <h2 class="cta-heading">Working on a bigger data problem?</h2>
+    <p class="cta-body">Power Integrate helps small and mid-sized teams get real value out of Power BI, Power Automate, SharePoint, and Microsoft Fabric. If you are fighting with a data pipeline, a semantic model, or a reporting migration, we would rather have a short call than a long email thread.</p>
+    <div class="cta-actions">
+      <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank" class="cta-btn">Start a conversation</a>
+      <a href="https://powerintegrate.co/powerlabs.html" class="cta-btn secondary">See more PowerLabs tools</a>
+    </div>
+  </div>
+</section>
+
+<footer class="page-footer">
+  <div class="container footer-inner">
+    <div>&copy; 2026 Power Integrate LLC. Built with <a href="https://github.com/hyparam/hyparquet" target="_blank" rel="noopener">hyparquet</a>.</div>
+    <div class="footer-links">
+      <a href="https://powerintegrate.co">Home</a>
+      <a href="https://powerintegrate.co/powerlabs.html">PowerLabs</a>
+      <a href="https://calendly.com/sean-powerintegrate/30min" target="_blank">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── EMAIL GATE ──
+function submitGate() {
+  var email = document.getElementById('gateEmail').value.trim();
+  var status = document.getElementById('gateStatus');
+  var btn = document.getElementById('gateBtn');
+
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    status.textContent = 'Please enter a valid email address.';
+    status.className = 'gate-status err';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Verifying...';
+  status.textContent = '';
+
+  fetch('https://formsubmit.co/ajax/sean@powerintegrate.co', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({
+      email: email,
+      _subject: 'Parquet Viewer Access from powerintegrate.co',
+      _template: 'box',
+      tool: 'Parquet Viewer',
+      timestamp: new Date().toISOString(),
+    })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (data.success) {
+      sessionStorage.setItem('pv_access', email);
+      status.textContent = 'Access granted.';
+      status.className = 'gate-status ok';
+      setTimeout(dismissGate, 600);
+    } else {
+      throw new Error('failed');
+    }
+  })
+  .catch(function() {
+    // Grant access anyway on network failure so the tool is still usable
+    sessionStorage.setItem('pv_access', email);
+    status.textContent = 'Access granted.';
+    status.className = 'gate-status ok';
+    setTimeout(dismissGate, 600);
+  });
+}
+
+function dismissGate() {
+  var overlay = document.getElementById('gateOverlay');
+  overlay.classList.add('dismissed');
+  setTimeout(function() { overlay.style.display = 'none'; }, 300);
+}
+
+// Check if already accessed this session
+if (sessionStorage.getItem('pv_access')) {
+  document.getElementById('gateOverlay').style.display = 'none';
+}
+
+// Allow Enter key
+document.getElementById('gateEmail').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') submitGate();
+});
+</script>
+
+<script type="module">
+import { parquetReadObjects, parquetMetadataAsync } from 'https://esm.run/hyparquet@1'
+import { compressors } from 'https://esm.run/hyparquet-compressors@1'
+
+function asyncBufferFromBrowserFile(file) {
+  return {
+    byteLength: file.size,
+    async slice(start, end) {
+      return await file.slice(start, end).arrayBuffer()
+    }
+  }
+}
+
+const state = {
+  file: null, buffer: null, metadata: null, schema: [], pageSize: 100,
+  currentPage: 0, totalRows: 0, filter: '', filteredRows: null, allRowsCache: null,
+}
+
+const FILTER_ROW_LIMIT = 200000
+const $ = id => document.getElementById(id)
+const fileInput = $('fileInput'), dropzone = $('dropzone')
+const resultsEl = $('results'), alertEl = $('alert'), loadingEl = $('loading')
+
+fileInput.addEventListener('change', e => { if (e.target.files[0]) loadFile(e.target.files[0]) })
+dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover') })
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'))
+dropzone.addEventListener('drop', e => {
+  e.preventDefault(); dropzone.classList.remove('dragover')
+  const f = e.dataTransfer.files[0]; if (f) loadFile(f)
+})
+
+function showAlert(msg, kind = 'error') { alertEl.className = `alert ${kind}`; alertEl.textContent = msg; alertEl.classList.remove('hidden') }
+function hideAlert() { alertEl.classList.add('hidden') }
+
+async function loadFile(file) {
+  hideAlert(); resultsEl.classList.add('hidden'); loadingEl.classList.remove('hidden')
+  try {
+    state.file = file
+    state.buffer = asyncBufferFromBrowserFile(file)
+    state.metadata = await parquetMetadataAsync(state.buffer)
+    state.totalRows = Number(state.metadata.num_rows)
+    state.schema = extractSchema(state.metadata)
+    state.currentPage = 0; state.filter = ''; state.filteredRows = null; state.allRowsCache = null
+    $('filter').value = ''
+    renderFileMeta(); renderSchema(); await loadPage()
+    resultsEl.classList.remove('hidden')
+    resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  } catch (err) { showAlert(`Error reading file: ${err.message || err}`); console.error(err) }
+  finally { loadingEl.classList.add('hidden') }
+}
+
+function extractSchema(metadata) {
+  const schema = metadata.schema || []; const rootChildren = schema[0]?.num_children || 0
+  const cols = []; let idx = 1
+  for (let i = 0; i < rootChildren && idx < schema.length; i++) {
+    const node = schema[idx]; const isGroup = node.num_children > 0
+    cols.push({ name: node.name, type: isGroup ? 'GROUP' : (node.type || 'UNKNOWN'),
+      logicalType: node.logical_type ? (node.logical_type.type || String(node.logical_type)) : (node.converted_type || null),
+      repetition: node.repetition_type || 'OPTIONAL' })
+    idx += 1 + countDescendants(schema, idx)
+  }
+  return cols
+}
+
+function countDescendants(schema, idx) {
+  const node = schema[idx]; if (!node || !node.num_children) return 0
+  let count = 0, remaining = node.num_children, cursor = idx + 1
+  while (remaining > 0 && cursor < schema.length) { count++; const sub = countDescendants(schema, cursor); count += sub; cursor += 1 + sub; remaining-- }
+  return count
+}
+
+function formatBytes(bytes) {
+  const units = ['B','KB','MB','GB','TB']; let i = 0, n = bytes
+  while (n >= 1024 && i < units.length - 1) { n /= 1024; i++ }
+  return `${n.toFixed(i === 0 ? 0 : 2)} ${units[i]}`
+}
+
+function renderFileMeta() {
+  const m = state.metadata; const compression = new Set()
+  ;(m.row_groups || []).forEach(rg => { (rg.columns || []).forEach(c => { if (c.meta_data?.codec) compression.add(c.meta_data.codec) }) })
+  const items = [['Name', escapeHtml(state.file.name)],['Size', formatBytes(state.file.size)],['Rows', state.totalRows.toLocaleString()],['Columns', state.schema.length.toLocaleString()],['Row groups', (m.row_groups || []).length.toLocaleString()],['Compression', [...compression].join(', ') || 'UNCOMPRESSED'],['Created by', escapeHtml(m.created_by || 'unknown')],['Format version', String(m.version ?? 'unknown')]]
+  $('fileMeta').innerHTML = items.map(([label, value]) => `<div class="meta-item"><div class="label">${label}</div><div class="value">${value}</div></div>`).join('')
+}
+
+function renderSchema() {
+  $('schemaCount').textContent = `${state.schema.length} column${state.schema.length === 1 ? '' : 's'}`
+  const rows = state.schema.map(col => `<tr><td>${escapeHtml(col.name)}</td><td><span class="type-badge">${escapeHtml(col.type)}</span></td><td>${col.logicalType ? `<span class="type-badge secondary">${escapeHtml(col.logicalType)}</span>` : '<span class="null">none</span>'}</td><td>${escapeHtml(col.repetition)}</td></tr>`).join('')
+  $('schemaTable').innerHTML = `<thead><tr><th>Column</th><th>Physical type</th><th>Logical type</th><th>Repetition</th></tr></thead><tbody>${rows}</tbody>`
+}
+
+async function loadPage() {
+  const start = state.currentPage * state.pageSize; const end = Math.min(start + state.pageSize, currentTotal())
+  let rows
+  if (state.filter) { rows = state.filteredRows.slice(start, end) }
+  else { rows = await parquetReadObjects({ file: state.buffer, rowStart: start, rowEnd: end, compressors }) }
+  renderDataRows(rows); updatePagination()
+}
+
+function currentTotal() { return state.filter ? state.filteredRows.length : state.totalRows }
+
+function renderDataRows(rows) {
+  const cols = state.schema.map(c => c.name)
+  const header = `<thead><tr>${cols.map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr></thead>`
+  const body = `<tbody>${rows.map(r => `<tr>${cols.map(c => { const cell = r[c]; return `<td title="${escapeHtml(cellTitle(cell))}">${formatCell(cell)}</td>` }).join('')}</tr>`).join('')}</tbody>`
+  $('dataTable').innerHTML = header + body
+  $('dataCount').textContent = `${currentTotal().toLocaleString()} row${currentTotal() === 1 ? '' : 's'}`
+}
+
+function formatCell(v) {
+  if (v === null || v === undefined) return '<span class="null">null</span>'
+  if (typeof v === 'bigint') return escapeHtml(v.toString())
+  if (v instanceof Date) return escapeHtml(v.toISOString())
+  if (v instanceof Uint8Array) return `<span class="null">bytes(${v.byteLength})</span>`
+  if (typeof v === 'object') return escapeHtml(JSON.stringify(v, bigintReplacer))
+  return escapeHtml(String(v))
+}
+
+function cellTitle(v) {
+  if (v === null || v === undefined) return 'null'
+  if (typeof v === 'bigint') return v.toString()
+  if (v instanceof Date) return v.toISOString()
+  if (v instanceof Uint8Array) return `bytes(${v.byteLength})`
+  if (typeof v === 'object') return JSON.stringify(v, bigintReplacer)
+  return String(v)
+}
+
+function bigintReplacer(_, v) { return typeof v === 'bigint' ? v.toString() : v }
+function escapeHtml(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]) }
+
+function updatePagination() {
+  const total = currentTotal(); const pages = Math.max(1, Math.ceil(total / state.pageSize))
+  const start = state.currentPage * state.pageSize; const end = Math.min(start + state.pageSize, total)
+  $('pageInfo').textContent = total === 0 ? 'No rows' : `Showing ${(start+1).toLocaleString()} to ${end.toLocaleString()} of ${total.toLocaleString()}${state.filter ? ` (filtered from ${state.totalRows.toLocaleString()})` : ''}`
+  $('prevBtn').disabled = state.currentPage === 0; $('nextBtn').disabled = state.currentPage >= pages - 1
+}
+
+window.changePage = async function(delta) {
+  const pages = Math.max(1, Math.ceil(currentTotal() / state.pageSize)); const next = state.currentPage + delta
+  if (next < 0 || next >= pages) return; state.currentPage = next
+  try { loadingEl.classList.remove('hidden'); await loadPage() } catch (err) { showAlert(`Error loading page: ${err.message || err}`) } finally { loadingEl.classList.add('hidden') }
+}
+
+let filterTimeout
+$('filter').addEventListener('input', e => { clearTimeout(filterTimeout); filterTimeout = setTimeout(() => applyFilter(e.target.value.trim()), 250) })
+
+async function applyFilter(q) {
+  hideAlert()
+  if (!q) { state.filter = ''; state.filteredRows = null; state.currentPage = 0; await loadPage(); return }
+  if (state.totalRows > FILTER_ROW_LIMIT) { showAlert(`Filter is disabled for files over ${FILTER_ROW_LIMIT.toLocaleString()} rows.`, 'info'); return }
+  loadingEl.classList.remove('hidden')
+  try {
+    if (!state.allRowsCache) { state.allRowsCache = await parquetReadObjects({ file: state.buffer, rowStart: 0, rowEnd: state.totalRows, compressors }) }
+    const lower = q.toLowerCase()
+    state.filteredRows = state.allRowsCache.filter(row => state.schema.some(c => { const v = row[c.name]; if (v === null || v === undefined) return false; const s = typeof v === 'object' && !(v instanceof Date) ? JSON.stringify(v, bigintReplacer) : String(v); return s.toLowerCase().includes(lower) }))
+    state.filter = q; state.currentPage = 0; await loadPage()
+  } catch (err) { showAlert(`Filter error: ${err.message || err}`) } finally { loadingEl.classList.add('hidden') }
+}
+
+window.exportCsv = async function() {
+  hideAlert(); loadingEl.classList.remove('hidden')
+  try {
+    let rows
+    if (state.filter) { rows = state.filteredRows } else if (state.allRowsCache) { rows = state.allRowsCache }
+    else { rows = await parquetReadObjects({ file: state.buffer, rowStart: 0, rowEnd: state.totalRows, compressors }) }
+    const cols = state.schema.map(c => c.name); const lines = [cols.map(csvCell).join(',')]
+    for (const r of rows) lines.push(cols.map(c => csvCell(r[c])).join(','))
+    const csv = lines.join('\n'); const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' })
+    const url = URL.createObjectURL(blob); const a = document.createElement('a')
+    a.href = url; a.download = state.file.name.replace(/\.(parquet|pq)$/i, '') + (state.filter ? '_filtered' : '') + '.csv'
+    a.click(); URL.revokeObjectURL(url)
+  } catch (err) { showAlert(`Export error: ${err.message || err}`) } finally { loadingEl.classList.add('hidden') }
+}
+
+function csvCell(v) {
+  if (v === null || v === undefined) return ''
+  let s; if (typeof v === 'bigint') s = v.toString(); else if (v instanceof Date) s = v.toISOString()
+  else if (v instanceof Uint8Array) s = `bytes(${v.byteLength})`; else if (typeof v === 'object') s = JSON.stringify(v, bigintReplacer); else s = String(v)
+  if (s.includes(',') || s.includes('"') || s.includes('\n') || s.includes('\r')) { s = '"' + s.replace(/"/g, '""') + '"' }
+  return s
+}
+</script>
+</body>
+</html>
